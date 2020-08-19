@@ -1,0 +1,87 @@
+ManifestFileVersion: 0
+CRC: 2228994104
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5ef05690340e8a04087e1cc572b137d1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 22c8b1eb91264761cfc77cffd4587eec
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: df9f338034892c44ebb62d97894772f1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7e933e81d3c20c74ea6fdc708a67e3a5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 269f14b18cbcfc942b20f2580f7f8de2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0950df82e7936c84983497630bde5b54, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5178bc8574ce2bf4388e787a2e2af326, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 527c235617063904eb043b69db8ec46d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b71d1996d67004241a3b69960856ffcb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: df8e1d778abf442e4bec449c360e9e1c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: be44691af1b1a9343af31f07fa4d32bc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4f07515ada089df47868559a20dd6783, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 47d1056d85bce394682dfe71110f17a1, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 143
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/3DUITK/Techniques/Depth Ray/Prefabs/DepthRay_Technique.prefab
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Prefabs/CanvasHolder.prefab
+- Assets/3DUITK/Techniques/Depth Ray/Prefabs/Laser.prefab
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Prefabs/Manipulation_Icons.prefab
+- Assets/3DUITK/Technique Example Scenes/Prefabs/Testobject.prefab
+- Assets/Oculus/VR/Prefabs/OVRPlayerController.prefab
+Dependencies:
+- C:/Users/Jesse/Desktop/Thesis/OVRAssetBundles/OVRMasterBundle/asset_png0
+- C:/Users/Jesse/Desktop/Thesis/OVRAssetBundles/OVRMasterBundle/asset_mat0

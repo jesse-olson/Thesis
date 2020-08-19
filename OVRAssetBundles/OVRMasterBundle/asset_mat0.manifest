@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 734340881
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bfd7b5cce0a91f198b3098372edc763f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2164263bd948184a9373784f776f453a
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/3DUITK/Technique Example Scenes/Materials/DarkBlue.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Materials/Cauldron.mat
+- Assets/3DUITK/Technique Example Scenes/Materials/Green.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Materials/BookBottleCandleSkull;.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/ModelColours/Yellow.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/ModelColours/Blue.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/ModelColours/Orange.mat
+- Assets/3DUITK/Techniques/3DBubbleCursor/Prefabs/2DTransparent.mat
+- Assets/3DUITK/Technique Example Scenes/Materials/Red.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/ModelColours/Green.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/ModelColours/Floor.mat
+- Assets/3DUITK/Technique Example Scenes/Materials/White.mat
+- Assets/3DUITK/Technique Example Scenes/Materials/DockMaterial.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Materials/Firewood.mat
+- Assets/3DUITK/Dependencies/SteamVR/InteractionSystem/Longbow/Materials/ItemPickupOutline.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/ModelColours/Red.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Materials/Table.mat
+- Assets/3DUITK/Dependencies/SteamVR/InteractionSystem/Teleport/Materials/TeleportAreaVisible.mat
+- Assets/3DUITK/Technique Example Scenes/Materials/Floor.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Materials/Chest.mat
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/ModelColours/Purple.mat
+- Assets/3DUITK/Techniques/Depth Ray/Prefabs/Materials/Laser 3.mat
+- Assets/3DUITK/Technique Example Scenes/Materials/Black.mat
+Dependencies:
+- C:/Users/Jesse/Desktop/Thesis/OVRAssetBundles/OVRMasterBundle/asset_png0
+- C:/Users/Jesse/Desktop/Thesis/OVRAssetBundles/OVRMasterBundle/asset_shader0
+- C:/Users/Jesse/Desktop/Thesis/OVRAssetBundles/OVRMasterBundle/asset_tga0

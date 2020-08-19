@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1805354996
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 15545d4c6ac9cce8d3aba3b203e4d9a9
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: f19fbf085e00d23fbc8d6cf7b345590b
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/3DUITK/Dependencies/SteamVR/InteractionSystem/Teleport/Textures/TeleportAreaPatternColor.tga
+Dependencies: []

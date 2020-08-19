@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 628878825
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: bd80b78d7e2a8cb23b4eb87ec6a810c0
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 677a1d6a6e8c5d2da1d9d0fadde392d8
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/3DUITK/Dependencies/SteamVR/InteractionSystem/Teleport/Shaders/Highlight.shader
+- Assets/3DUITK/Dependencies/SteamVR/InteractionSystem/Core/Shaders/Silhouette.shader
+Dependencies: []

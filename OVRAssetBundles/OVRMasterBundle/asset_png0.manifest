@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+CRC: 1839193913
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 50f771c1de7c7f3823395c084ed6154a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb3f6df5cbc4a2990c44c2787bc9553a
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/blackwheel.png
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Textures/SconceFirewood_D.png
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Textures/Table_D.png
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/reposition_icon.png
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Textures/Cauldron_N.png
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Textures/Cauldron_D.png
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Textures/SkullBookBottleCandle_D.png
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Textures/Cauldron_M.png
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/colorwheel.png
+- Assets/3DUITK/Dependencies/SteamVR/InteractionSystem/Core/Icons/vr_interaction_system.png
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/plus-icon.png
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/colorpicker-icon.png
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/delete-icon.png
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/return.png
+- Assets/3DUITK/Technique Example Scenes/ExampleModels/Textures/Chest_D.png
+- Assets/3DUITK/Experimental Scripts/#_Object_Manipulation/Sprites/minus-icon.png
+Dependencies: []
