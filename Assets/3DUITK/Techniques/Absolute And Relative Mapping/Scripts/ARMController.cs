@@ -59,7 +59,16 @@ public class ARMController : MonoBehaviour {
         } else {
             return;
         }
+#elif Oculus_Quest_Hands
+        OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+        if (cameraRig != null)
+        {
+            cameraRig.EnsureGameObjectIntegrity();
 
+            //Making controller game objects and attaching them to their respective transform
+            leftController = cameraRig.leftHandAnchor.GetComponentInChildren<OVRHand>().gameObject;
+            rightController = cameraRig.rightHandAnchor.GetComponentInChildren<OVRHand>().gameObject;
+        }
 #else
         OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
         if (cameraRig != null)
@@ -96,7 +105,8 @@ public class ARMController : MonoBehaviour {
     private void setARMinfo(GameObject controller, GameObject shadowObject)
     {
         ARMLaser component      = shadowObject.GetComponent<ARMLaser>();
-        component.theController = controller;
+        component.leftController = controller;
+        component.rightController = controller;
 #if Steam
         component.theModel      = controller.GetComponentInChildren<SteamVR_RenderModel>().gameObject;
 #endif

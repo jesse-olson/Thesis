@@ -10,7 +10,7 @@ public class HookSelectAndSendToController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		selectObject.selectedObject.AddListener(tellTesterOfSelection);
+		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
 		controller = this.GetComponentInParent<TesterController>();
 	}
 	

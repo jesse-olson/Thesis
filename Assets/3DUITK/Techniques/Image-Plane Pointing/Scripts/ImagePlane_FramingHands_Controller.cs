@@ -43,6 +43,32 @@ public class ImagePlane_FramingHands_Controller : MonoBehaviour {
         hands.controllerLeft = leftController;
         hands.cameraHead = head;
         hands.cameraRig = rig;
+#else
+        OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+        if (cameraRig != null)
+        {
+            cameraRig.EnsureGameObjectIntegrity();
+
+            head = new GameObject("Head");
+            head.transform.SetParent(cameraRig.centerEyeAnchor);
+
+            //Making controller game objects and attaching them to their respective transform
+            leftController = new GameObject("leftController");
+            leftController.transform.SetParent(cameraRig.leftControllerAnchor);
+
+            rightController = new GameObject("rightController");
+            rightController.transform.SetParent(cameraRig.rightControllerAnchor);
+
+            hands.controllerRight = rightController;
+            hands.controllerLeft  = leftController;
+            hands.cameraHead = head;
+            hands.cameraRig = rig;
+
+        }
+        else
+        {
+            Debug.Log("There is no camera rig.");
+        }
 #endif
     }
 }

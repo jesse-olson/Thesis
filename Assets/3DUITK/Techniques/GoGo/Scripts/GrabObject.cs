@@ -4,38 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR;
 
-public class GrabObject : MonoBehaviour {
-#if SteamVR_Legacy
-    public SteamVR_TrackedObject trackedObj;
-    private SteamVR_Controller.Device Controller {
-        get {
-            return SteamVR_Controller.Input((int)trackedObj.index);
-        }
-    }
-#elif SteamVR_2
-    public SteamVR_Behaviour_Pose trackedObj;
-    public SteamVR_Action_Boolean m_controllerPress;
+public class GrabObject : Technique {
 
-#else
-    public GameObject trackedObj;
-
-#endif
-
-    public LayerMask interactionLayers;
-
-    // Allows to choose if the script purley selects or has full manipulation
-    public enum InteractionType { Selection, Manipulation };
-    public InteractionType interactionType;
     public GameObject selection = null; // holds the selected object
 
     public GameObject collidingObject;
     private GameObject objectInHand;
-
-    public UnityEvent selectedObject; // Invoked when an object is selected
-
-    public UnityEvent hovered; // Invoked when an object is hovered by technique
-    public UnityEvent unHovered; // Invoked when an object is no longer hovered by the technique
-
 
     void OnEnable() {
         var render = SteamVR_Render.instance;
@@ -44,11 +18,7 @@ public class GrabObject : MonoBehaviour {
             return;
         }
     }
-
-    void Awake() {
-        //trackedObj = GetComponent<SteamVR_TrackedObject>();
-    }
-
+    
     private void SetCollidingObject(Collider col) {
 
         if (collidingObject || !col.GetComponent<Rigidbody>()) {
@@ -62,7 +32,7 @@ public class GrabObject : MonoBehaviour {
     public void OnTriggerEnter(Collider other) {
         SetCollidingObject(other);
         if (interactionLayers == (interactionLayers | (1 << other.gameObject.layer)) && objectInHand == null) {
-            hovered.Invoke();
+            onHover.Invoke();
         }
     }
 
@@ -77,13 +47,13 @@ public class GrabObject : MonoBehaviour {
             return;
         }
         if (interactionLayers == (interactionLayers | (1 << other.gameObject.layer))) {
-            unHovered.Invoke();
+            onUnhover.Invoke();
         }
 
         collidingObject = null;
     }
 
-    private void pickUpObject() {
+    private void PickUpObject() {
         objectInHand = collidingObject;
 
         collidingObject = null;
@@ -119,59 +89,26 @@ public class GrabObject : MonoBehaviour {
 
         objectInHand = null;
     }
-
-    public enum ControllerState {
-        TRIGGER_UP, TRIGGER_DOWN, NONE
-    }
-
-    private ControllerState controllerEvents() {
-#if SteamVR_Legacy
-        if (Controller.GetHairTriggerDown()) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        if (Controller.GetHairTriggerUp()) {
-            return ControllerState.TRIGGER_UP;
-        }
-#elif SteamVR_2
-        if (m_controllerPress.GetStateDown(trackedObj.inputSource)) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        if (m_controllerPress.GetStateUp(trackedObj.inputSource)) {
-            return ControllerState.TRIGGER_UP;
-        }
-
-#else
-        if(OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) > 0.5)
-        {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        else
-        {
-            return ControllerState.TRIGGER_UP;
-        }
-#endif
-        return ControllerState.NONE;
-    }
-
+    
     // Update is called once per frame
     void Update() {
-        if (controllerEvents() == ControllerState.TRIGGER_DOWN) {
+        if (ControllerEvents() == ControllerState.TRIGGER_DOWN) {
             if (collidingObject && interactionLayers == (interactionLayers | (1 << collidingObject.gameObject.layer))) {
-                selectedObject.Invoke();
+                onSelectObject.Invoke();
                 if (interactionType == InteractionType.Selection) {
                     // Pure selection
                     print("selected " + collidingObject);
                     selection = collidingObject;
                 } else {
                     // Manipulation
-                    pickUpObject();
+                    PickUpObject();
                     selection = collidingObject;
                 }
 
             }
         }
 
-        if (controllerEvents() == ControllerState.TRIGGER_UP) {
+        if (ControllerEvents() == ControllerState.TRIGGER_UP) {
             if (objectInHand) {
                 ReleaseObject();
             }

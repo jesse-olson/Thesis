@@ -5,8 +5,4 @@ using Valve.VR;
 
 [ExecuteInEditMode]
 public class DepthRayController : Controller {
-    private void Start()
-    {
-        Debug.Log("LOL");
-    }
 }

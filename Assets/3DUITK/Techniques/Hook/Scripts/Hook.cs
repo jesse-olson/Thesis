@@ -10,27 +10,7 @@ using Valve.VR;
 
 // TODO: Highlight closest object maybe?
 
-public class Hook : MonoBehaviour {
-#if SteamVR_Legacy
-    public SteamVR_TrackedObject trackedObj = null;
-    private SteamVR_Controller.Device Controller {
-        get {
-            return SteamVR_Controller.Input((int)trackedObj.index);
-        }
-    }
-#elif SteamVR_2
-    public SteamVR_Action_Boolean m_controllerPress;
-    public SteamVR_Behaviour_Pose trackedObj = null;
-#else
-    public GameObject trackedObj = null;
-#endif
-
-    // User can specify layers of objects that the hook will be able to select
-    public LayerMask interactionLayers;
-
-    // Allows to choose if the script purley selects or has full manipulation
-    public enum InteractionType { Selection, Manipulation };
-    public InteractionType interactionType;
+public class Hook : Technique {
     public GameObject selection; // holds the selected object
 
     //  Used lists instead of arrays incase we want future optimization where it dynamically changes
@@ -40,10 +20,7 @@ public class Hook : MonoBehaviour {
     private GameObject objectInHand;
     public bool checkForNewlySpawnedObjects = true;
     public GameObject currentlyHovered = null; // To hold the closest object
-    public UnityEvent selectedObject; // Invoked when an object is selected
 
-    public UnityEvent hovered; // Invoked when an object is hovered by technique
-    public UnityEvent unHovered; // Invoked when an object is no longer hovered by the technique
     private GameObject lastHovered = null; // To check if changed
 
 
@@ -59,28 +36,6 @@ public class Hook : MonoBehaviour {
         body.isKinematic = true;
     }
 
-    public enum ControllerState {
-        TRIGGER_UP, TRIGGER_DOWN, NONE
-    }
-
-    private ControllerState ControllerEvents() {
-#if SteamVR_Legacy
-        if (Controller.GetHairTriggerDown()) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        if (Controller.GetHairTriggerUp()) {
-            return ControllerState.TRIGGER_UP;
-        }
-#elif SteamVR_2
-        if (m_controllerPress.GetStateDown(trackedObj.inputSource)) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        if (m_controllerPress.GetStateUp(trackedObj.inputSource)) {
-            return ControllerState.TRIGGER_UP;
-        }
-#endif
-        return ControllerState.NONE;
-    }
 
     // Update is called once per frame
     void Update() {
@@ -136,8 +91,8 @@ public class Hook : MonoBehaviour {
         currentlyHovered = nearbyObjects.ElementAt<HookObject>(0).ContainingObject;
         if (currentlyHovered != null && currentlyHovered != lastHovered) {
             // Hovering a new object 
-            unHovered.Invoke();
-            hovered.Invoke();
+            onUnhover.Invoke();
+            onHover.Invoke();
         }
     }
 
@@ -172,7 +127,7 @@ public class Hook : MonoBehaviour {
                 joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
                 joint.connectedBody.useGravity = false; // turn of gravity while grabbing
             }
-            selectedObject.Invoke();
+            onSelectObject.Invoke();
         }
     }
 

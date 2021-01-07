@@ -50,6 +50,26 @@ public class iSithController : MonoBehaviour {
             laserL.controller = leftController;
             laserR.controller = rightController;
         }
+#else
+        OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+        if (cameraRig != null)
+        {
+            cameraRig.EnsureGameObjectIntegrity();
+
+            //Making controller game objects and attaching them to their respective transform
+            leftController = new GameObject("leftController");
+            leftController.transform.SetParent(cameraRig.leftControllerAnchor);
+
+            rightController = new GameObject("rightController");
+            rightController.transform.SetParent(cameraRig.rightControllerAnchor);
+
+            laserL.controller = leftController;
+            laserR.controller = rightController;
+        }
+        else
+        {
+            Debug.Log("There is no camera rig.");
+        }
 #endif
     }
 

@@ -4,44 +4,19 @@ using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR;
 
-public class AperatureSelectionSelector : MonoBehaviour {
-#if SteamVR_Legacy
-    public SteamVR_TrackedObject theController;
-    private SteamVR_Controller.Device Controller {
-        get {
-            return SteamVR_Controller.Input((int)theController.index);
-        }
-    }
-#elif SteamVR_2
-    public SteamVR_Behaviour_Pose theController;
-    public SteamVR_Action_Boolean m_controllerPress;
-#else
-    public GameObject theController;
-    public OVRManager manager;
-#endif
+public class AperatureSelectionSelector : Technique {
 
-    public LayerMask interactionLayers;
-
-    // Allows to choose if the script purley selects or has full manipulation
-    public enum InteractionType { Selection, Manipulation };
-    public InteractionType interactionType;
     public GameObject selection; // holds the selected object
 
-
-    private GameObject trackedObj;
     private List<GameObject> collidingObjects;
     private GameObject objectInHand;
     public GameObject objectHoveredOver;
     public FixedJoint joint;
 
-    public UnityEvent selectedObject; // Invoked when an object is selected
-    public UnityEvent hovered; // Invoked when an object is hovered by technique
-    public UnityEvent unHovered; // Invoked when an object is no longer hovered by the technique
-
     public GameObject orientationPlates;
 
     // Checks if holding object in hand
-    public bool holdingObject() {
+    public bool HoldingObject() {
         return objectInHand != null;
     }
 
@@ -56,7 +31,49 @@ public class AperatureSelectionSelector : MonoBehaviour {
     }
 
     void Awake() {
+        InitializeControllers();
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
+        objectHoveredOver = GetObjectHoveringOver();
+        onHover.Invoke();
+
+        ControllerState controllerState = ControllerEvents();
+
+        //Debug.Log(controllerEvents());
+        switch (controllerState)
+        {
+            case ControllerState.TRIGGER_DOWN:
+                if (collidingObjects.Count > 0)
+                {
+                    if (interactionType == InteractionType.Selection)
+                    {
+                        // Pure selection
+                        selection = objectHoveredOver;
+                    }
+                    else if (interactionType == InteractionType.Manipulation_Full)
+                    {
+                        //Manipulation
+                        GrabObject();
+                    }
+                    selection = objectHoveredOver;
+                    onSelectObject.Invoke();
+                }
+                break;
+
+            case ControllerState.TRIGGER_UP:
+                Debug.Log(objectInHand);
+                if (HoldingObject())
+                {
+                    ReleaseObject();
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 
     private void SetCollidingObject(Collider col) {
@@ -85,27 +102,26 @@ public class AperatureSelectionSelector : MonoBehaviour {
     }
 
     // Attempts to get object in selection by its orientation, if it fails will return null
-    public GameObject getByOrientation() {
+    public GameObject GetByOrientation() {
         // TODO: add orientational check
         return null;
     }
 
-    private GameObject getObjectHoveringOver() {
+    private GameObject GetObjectHoveringOver() {
         // Attempt to select the object by its orientation, if that fails it will return null and in that case select via 
         // closest object cone algorithm below it
         GameObject orientationSelection;
-        if ((orientationSelection = getByOrientation()) != null) {
+        if ((orientationSelection = GetByOrientation()) != null) {
             return orientationSelection;
         }
 
-        List<double> distancesFromCenterOfCone = new List<double>();
-        List<GameObject> viableObjects = new List<GameObject>();
+        double smallestDistance = double.MaxValue;
+        GameObject closestObject = null;
 
-        Vector3 forwardVectorFromRemote = trackedObj.transform.forward;
-        Vector3 positionOfRemote = trackedObj.transform.position;
+        Vector3 controllerFwd = trackedObj.transform.forward;
+        Vector3 controllerPos = trackedObj.transform.position;
 
         foreach (GameObject potentialObject in collidingObjects) {
-
             // Only check for objects on the interaction layer
             if (interactionLayers == (interactionLayers | (1 << potentialObject.layer))) {
                 // Object can only have one layer so can do calculation for object here
@@ -113,36 +129,26 @@ public class AperatureSelectionSelector : MonoBehaviour {
 
                 // Using vector algebra to get shortest distance between object and vector 
                 Vector3 forwardControllerToObject = trackedObj.transform.position - objectPosition;
-                Vector3 controllerForward = trackedObj.transform.forward;
-                float distanceBetweenRayAndPoint = Vector3.Magnitude(Vector3.Cross(forwardControllerToObject, controllerForward)) / Vector3.Magnitude(controllerForward);
+                float distanceBetweenRayAndPoint = Vector3.Magnitude(Vector3.Cross(forwardControllerToObject, controllerFwd)) / Vector3.Magnitude(controllerFwd);
 
-                distancesFromCenterOfCone.Add(distanceBetweenRayAndPoint);
-                viableObjects.Add(potentialObject);
-            }
-
-        }
-
-        if (viableObjects.Count > 0 && distancesFromCenterOfCone.Count > 0) {
-            // Find the smallest object by distance
-            int indexOfSmallest = 0;
-            double smallest = distancesFromCenterOfCone[0];
-            for (int index = 0; index < distancesFromCenterOfCone.Count; index++) {
-                if (distancesFromCenterOfCone[index] < smallest) {
-                    indexOfSmallest = index;
-                    smallest = distancesFromCenterOfCone[index];
+                if(0 < distanceBetweenRayAndPoint && distanceBetweenRayAndPoint < smallestDistance)
+                {
+                    smallestDistance = distanceBetweenRayAndPoint;
+                    closestObject = potentialObject;
                 }
             }
 
-            if (objectHoveredOver != viableObjects[indexOfSmallest]) {
-                unHovered.Invoke();
+            if (objectHoveredOver != closestObject)
+            {
+                onUnhover.Invoke();
             }
-
-            return viableObjects[indexOfSmallest];
         }
 
-        unHovered.Invoke();
-        return null;
+        onUnhover.Invoke();
+        return closestObject;
     }
+
+
 
     private void GrabObject() {
         objectInHand = objectHoveredOver;
@@ -172,90 +178,18 @@ public class AperatureSelectionSelector : MonoBehaviour {
             GetComponent<FixedJoint>().connectedBody = null;
             Destroy(GetComponent<FixedJoint>());
 #if SteamVR_Legacy
-            objectInHand.GetComponent<Rigidbody>().velocity = Controller.velocity * Vector3.Distance(Controller.transform.pos, objectInHand.transform.position);
+            objectInHand.GetComponent<Rigidbody>().velocity = Controller.velocity * Vector3.Distance(trackedObj.transform.position, objectInHand.transform.position);
             objectInHand.GetComponent<Rigidbody>().angularVelocity = Controller.angularVelocity;
 #elif SteamVR_2
-            objectInHand.GetComponent<Rigidbody>().velocity = theController.GetVelocity() * Vector3.Distance(theController.transform.position, objectInHand.transform.position);
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = theController.GetAngularVelocity();
+            objectInHand.GetComponent<Rigidbody>().velocity = trackedObj.GetVelocity() * Vector3.Distance(trackedObj.transform.position, objectInHand.transform.position);
+            objectInHand.GetComponent<Rigidbody>().angularVelocity = trackedObj.GetAngularVelocity();
 #else
-            objectInHand.GetComponent<Rigidbody>().velocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTrackedRemote) * Vector3.Distance(theController.transform.position, objectInHand.transform.position);
+            //objectInHand.GetComponent<Rigidbody>().velocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch) * Vector3.Distance(trackedObj.transform.position, objectInHand.transform.position);
 #endif
 
             objectInHand = null;
         }
 
         Debug.Log("Object Released");
-    }
-
-    public enum ControllerState {
-        TRIGGER_UP, TRIGGER_DOWN, NONE
-    }
-
-    private ControllerState controllerEvents() {
-#if SteamVR_Legacy
-        if (Controller.GetHairTriggerDown()) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        if (Controller.GetHairTriggerUp()) {
-            return ControllerState.TRIGGER_UP;
-        }
-#elif SteamVR_2
-        if (m_controllerPress.GetStateDown(theController.inputSource)) {
-            return ControllerState.TRIGGER_DOWN;
-        } if (m_controllerPress.GetStateUp(theController.inputSource)) {
-            return ControllerState.TRIGGER_UP;
-        }
-#else
-        if (OVRInput.Get(OVRInput.Button.One)) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        else{
-            return ControllerState.TRIGGER_UP;
-        }
-#endif
-        return ControllerState.NONE;
-    }
-
-    // Update is called once per frame
-    void Update() {
-        objectHoveredOver = getObjectHoveringOver();
-        hovered.Invoke();
-
-        OVRInput.Update();
-        OVRInput.FixedUpdate();
-
-        //Debug.Log(controllerEvents());
-        switch (controllerEvents())
-        {
-            case ControllerState.TRIGGER_DOWN:
-                if (collidingObjects.Count > 0)
-                {
-                    selectedObject.Invoke();
-                    if (interactionType == InteractionType.Selection)
-                    {
-                        // Pure selection
-                        selection = objectHoveredOver;
-                    }
-                    else if (interactionType == InteractionType.Manipulation)
-                    {
-                        //Manipulation
-                        GrabObject();
-                    }
-                    selection = objectHoveredOver;
-                }
-                break;
-
-            case ControllerState.TRIGGER_UP:
-                Debug.Log(objectInHand);
-                if (holdingObject())
-                {
-                    Debug.Log("There is an object in the hand");
-                    ReleaseObject();
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
+    }    
 }

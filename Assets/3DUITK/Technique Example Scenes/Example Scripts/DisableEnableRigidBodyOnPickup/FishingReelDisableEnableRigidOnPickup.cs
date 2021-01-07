@@ -6,8 +6,8 @@ public class FishingReelDisableEnableRigidOnPickup : MonoBehaviour {
 	public FishingReel reel;
 	// Use this for initialization
 	void Start () {
-		reel.selectedObject.AddListener(setRigidKinematic);
-		reel.droppedObject.AddListener(setRigidNotKinematic);
+		reel.onSelectObject.AddListener(setRigidKinematic);
+		reel.onDropObject.AddListener(setRigidNotKinematic);
 	}
 	
 

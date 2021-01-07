@@ -7,10 +7,10 @@ public class ControllerColliderWIM : MonoBehaviour {
     private WorldInMiniature worldInMin;
     private GameObject manipulationIcons;
 
-	private List<GameObject> listOfChildrenR = new List<GameObject>();
+	private List<GameObject> listOfChildrenR  = new List<GameObject>();
 	private List<GameObject> listOfChildrenR2 = new List<GameObject>();
 
-	private void enableRigidBody(GameObject obj){
+	private void EnableRigidBody(GameObject obj){
 		if (null == obj)
 			return;
 		foreach (Transform child in obj.transform){
@@ -20,11 +20,11 @@ public class ControllerColliderWIM : MonoBehaviour {
 				child.gameObject.GetComponent<Rigidbody> ().isKinematic = true;
 			}
 			listOfChildrenR.Add(child.gameObject);
-			enableRigidBody(child.gameObject);
+			EnableRigidBody(child.gameObject);
 		}
 	}
 
-	private void disableRigidBody(GameObject obj){
+	private void DisableRigidBody(GameObject obj){
 		if (null == obj)
 			return;
 		foreach (Transform child in obj.transform){
@@ -34,7 +34,7 @@ public class ControllerColliderWIM : MonoBehaviour {
 				child.gameObject.GetComponent<Rigidbody> ().isKinematic = false;
 			}
 			listOfChildrenR2.Add(child.gameObject);
-			disableRigidBody(child.gameObject);
+			DisableRigidBody(child.gameObject);
 		}
 	}
 

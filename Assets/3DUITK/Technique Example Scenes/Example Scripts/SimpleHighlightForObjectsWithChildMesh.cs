@@ -22,9 +22,9 @@ public class SimpleHighlightForObjectsWithChildMesh : MonoBehaviour {
 			}
 		}
 
-		selectObject.hovered.AddListener(highlight);
-		selectObject.unHovered.AddListener(unHighlight);	
-		selectObject.selectedObject.AddListener(playSelectSound);	
+		selectObject.onHover.AddListener(highlight);
+		selectObject.onUnhover.AddListener(unHighlight);	
+		selectObject.onSelectObject.AddListener(playSelectSound);	
 	}
 
 	void highlight() {

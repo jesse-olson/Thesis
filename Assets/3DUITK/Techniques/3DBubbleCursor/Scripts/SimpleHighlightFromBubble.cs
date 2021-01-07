@@ -7,25 +7,25 @@ public class SimpleHighlightFromBubble : MonoBehaviour {
 	public Material highlightMaterial;
 	private Material defaultMaterial;
 
-	public BubbleCursor selectObject;
+	public BubbleCursor bubbleCursor;
 
 	// Use this for initialization
 	void Start () {
-		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.hovered.AddListener(highlight);
-		selectObject.unHovered.AddListener(unHighlight);	
+		defaultMaterial = GetComponent<Renderer>().material;
+        bubbleCursor.onHover    .AddListener(Highlight);
+        bubbleCursor.onUnhover  .AddListener(UnHighlight);	
 	}
 
-	void highlight() {
-		if(selectObject.currentlyHovering == this.gameObject) {
+	void Highlight() {
+		if(bubbleCursor.currentlyHovering == gameObject) {
 			print("highlight");
-			this.GetComponent<Renderer>().material = highlightMaterial;
+			GetComponent<Renderer>().material = highlightMaterial;
 		} 
 	}
 
-	void unHighlight() {
-		if(selectObject.currentlyHovering == this.gameObject) {
-			this.GetComponent<Renderer>().material = defaultMaterial;
+	void UnHighlight() {
+		if(bubbleCursor.currentlyHovering == gameObject) {
+			GetComponent<Renderer>().material = defaultMaterial;
 		}
 	}
 }

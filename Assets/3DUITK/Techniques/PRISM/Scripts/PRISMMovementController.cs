@@ -5,7 +5,7 @@ using Valve.VR;
 
 [ExecuteInEditMode]
 public class PRISMMovementController : MonoBehaviour {
-
+    
     public PRISMMovement left;
     public PRISMMovement right;
 
@@ -37,11 +37,47 @@ public class PRISMMovementController : MonoBehaviour {
         left.trackedObj = leftController.GetComponent<SteamVR_Behaviour_Pose>();
         right.trackedObj = rightController.GetComponent<SteamVR_Behaviour_Pose>();
 
+#elif Oculus_Quest_Hands
+        OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+        if (cameraRig != null)
+        {
+            cameraRig.EnsureGameObjectIntegrity();
+
+            //Making controller game objects and attaching them to their respective transform
+            leftController = cameraRig.leftHandAnchor.GetComponentInChildren<OVRHand>().gameObject;
+            rightController = cameraRig.rightHandAnchor.GetComponentInChildren<OVRHand>().gameObject;
+
+            left.leftController  = leftController;
+            left.rightController  = rightController;
+
+            right.leftController  = leftController;
+            right.rightController = rightController;
+        }
+
 #else
+        OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+        if (cameraRig != null)
+        {
+            cameraRig.EnsureGameObjectIntegrity();
+
+            //Making controller game objects and attaching them to their respective transform
+            leftController = new GameObject("leftController");
+            leftController.transform.SetParent(cameraRig.leftControllerAnchor);
+
+            rightController = new GameObject("rightController");
+            rightController.transform.SetParent(cameraRig.rightControllerAnchor);
+
+            left.trackedObj  = leftController;
+            right.trackedObj = rightController;
+        }
+        else
+        {
+            Debug.Log("There is no camera rig.");
+        }
 #endif
         if (Application.isPlaying) {
-            left.transform.parent = left.trackedObj.transform;
-            right.transform.parent = right.trackedObj.transform;
+            left.transform.parent = leftController.transform;
+            right.transform.parent = rightController.transform;
         }
     }
 }

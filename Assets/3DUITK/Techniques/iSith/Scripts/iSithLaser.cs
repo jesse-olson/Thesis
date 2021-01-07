@@ -27,11 +27,10 @@ public class iSithLaser : MonoBehaviour {
         // This is to make it extend infinite. There is DEFINATELY an easier way to do this. Find it later!
         Vector3 theVector = controller.transform.forward;
         hitPoint = controller.transform.position;
-        float distance_formula_on_vector = Mathf.Sqrt(theVector.x * theVector.x + theVector.y * theVector.y + theVector.z * theVector.z);
+        float distance_formula_on_vector = theVector.magnitude;
+
         // Using formula to find a point which lies at distance on a 3D line from vector and direction
-        hitPoint.x = hitPoint.x + (100 / (distance_formula_on_vector)) * theVector.x;
-        hitPoint.y = hitPoint.y + (100 / (distance_formula_on_vector)) * theVector.y;
-        hitPoint.z = hitPoint.z + (100 / (distance_formula_on_vector)) * theVector.z;
+        hitPoint = hitPoint + (100 / (distance_formula_on_vector)) * theVector;
 
         laser.SetActive(true);
         laserTransform.position = Vector3.Lerp(controller.transform.position, hitPoint, .5f);

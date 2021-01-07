@@ -7,8 +7,8 @@ public class DepthRayDisableEnableRigidOnPickup : MonoBehaviour {
 	public DepthRay ray;
 	// Use this for initialization
 	void Start () {
-		ray.selectedObject.AddListener(setRigidKinematic);
-		ray.droppedObject.AddListener(setRigidNotKinematic);
+		ray.onSelectObject.AddListener(setRigidKinematic);
+		ray.onDropObject.AddListener(setRigidNotKinematic);
 	}
 	
 

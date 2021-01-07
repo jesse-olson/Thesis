@@ -43,10 +43,8 @@ public class FlexiblePointer : Technique {
     // Laser vars
     private int numOfLasers = 20;   // The number of segments that will make up the bezier curve
     private GameObject[] lasers;    
-    private Transform[] laserTransform;
-
-    private Vector3 hitPoint;
-
+    private Transform[] laserTransforms;
+    
     public GameObject currentlyPointingAt;  // Is the gameobject that the ray is currently touching
 
     public GameObject selection;
@@ -67,13 +65,13 @@ public class FlexiblePointer : Technique {
     {
         // Initalizing all the lasers
         lasers = new GameObject[numOfLasers];
-        laserTransform = new Transform[numOfLasers];
+        laserTransforms = new Transform[numOfLasers];
 
         for (int i = 0; i < numOfLasers; i++)
         {
             GameObject laserPart = Instantiate(laserPrefab, Vector3.zero, Quaternion.identity) as GameObject;
             lasers[i] = laserPart;
-            laserTransform[i] = laserPart.transform;
+            laserTransforms[i] = laserPart.transform;
             laserPart.transform.parent = laserContainer.transform;
         }
     }
@@ -233,7 +231,7 @@ public class FlexiblePointer : Technique {
                 selection = currentlyPointingAt;
                 this.GetComponent<SelectionManipulation>().selectedObject = selection;
             }
-            selectedObject.Invoke();
+            onSelectObject.Invoke();
         }
     }
 
@@ -253,12 +251,12 @@ public class FlexiblePointer : Technique {
 
                 float dist = Vector3.Distance(lastPos, nextPos);
 
-                laserTransform[index].position = Vector3.Lerp(lastPos, nextPos, 0.5f);
-                laserTransform[index].LookAt(nextPos);
-                laserTransform[index].localScale = 
+                laserTransforms[index].position = Vector3.Lerp(lastPos, nextPos, 0.5f);
+                laserTransforms[index].LookAt(nextPos);
+                laserTransforms[index].localScale = 
                     new Vector3(
-                        laserTransform[index].localScale.x, 
-                        laserTransform[index].localScale.y,
+                        laserTransforms[index].localScale.x, 
+                        laserTransforms[index].localScale.y,
                         dist
                         );
 
@@ -266,7 +264,7 @@ public class FlexiblePointer : Technique {
 
                 // Do a ray cast check on each part to check for collision (extended from laser part) 
                 // First object collided with is the only one that will select
-                Vector3 dir = laserTransform[index].forward;
+                Vector3 dir = laserTransforms[index].forward;
 
                 if (Physics.Raycast(lastPos, dir, out RaycastHit hit, dist))
                 {
@@ -275,11 +273,11 @@ public class FlexiblePointer : Technique {
                     {
                         if (currentlyPointingAt != hit.transform.gameObject)
                         {
-                            unHovered.Invoke(); // unhover old object
+                            onUnhover.Invoke(); // unhover old object
                         }
 
                         currentlyPointingAt = hit.transform.gameObject;
-                        hovered.Invoke();
+                        onHover.Invoke();
                         foundObject = true;
                     }
                 }
@@ -289,7 +287,7 @@ public class FlexiblePointer : Technique {
         }
         if (!foundObject) {
             // no object was hit so unhover and deselect
-            unHovered.Invoke();
+            onUnhover.Invoke();
             currentlyPointingAt = null;
         }
     }

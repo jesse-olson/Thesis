@@ -4,27 +4,20 @@ using UnityEngine;
 
 public class BendcastSelectSendToTesterController : MonoBehaviour {
 
-
-	public BendCast selectObject;
-
+	public Bendcast bendcast;
 	private TesterController controller;
 
 	// Use this for initialization
 	void Start () {
-		selectObject.selectedObject.AddListener(tellTesterOfSelection);
+        bendcast.onSelectObject.AddListener(TellTesterOfSelection);
 		controller = this.GetComponentInParent<TesterController>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.lastSelectedObject == this.gameObject) {
+		if(bendcast.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 		}	
 	}
 }

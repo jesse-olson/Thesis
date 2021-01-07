@@ -42,7 +42,7 @@ public class ImagePlane_FramingHands : MonoBehaviour {
 
     public GameObject controllerRight;
     public GameObject controllerLeft;
-    public GameObject cameraHead; // Camera etye
+    public GameObject cameraHead; // Camera eye
     public GameObject cameraRig;
 
 
@@ -61,8 +61,6 @@ public class ImagePlane_FramingHands : MonoBehaviour {
     public UnityEvent unHovered; // Invoked when an object is no longer hovered by the technique
     public GameObject selectedObject;
 
-
-
     public GameObject laserPrefab;
     private GameObject laser;
     private Transform laserTransform;
@@ -75,31 +73,66 @@ public class ImagePlane_FramingHands : MonoBehaviour {
 
     private Vector3 positionBeforeScale; // The position of camerarig when entering scaled mode
 
-
-
-    private void ShowLaser(RaycastHit hit) {
-        float controllerDist = Vector3.Distance(trackedObjL.transform.position, trackedObjR.transform.position);
-        mirroredCube.SetActive(false);
-        laser.SetActive(true);
-        laserTransform.position = Vector3.Lerp(pointOfInteraction.transform.position, hitPoint, .5f);
-        laserTransform.LookAt(hitPoint);
-        laserTransform.localScale = new Vector3(controllerDist, controllerDist, hit.distance);
-        //InstantiateObject(hit.transform.gameObject);
-    }
-
     public static Vector3 leftController = new Vector3(0, 0, 0);
     public static Vector3 rightController = new Vector3(0, 0, 0);
 
     public static Vector3 leftLaser = new Vector3(0, 0, 0);
     public static Vector3 rightLaser = new Vector3(0, 0, 0);
 
+    private float extendDistance = 0f;
+    private float cursorSpeed = 20f; // Decrease to make faster, Increase to make slower
+
+    void Awake()
+    {
+#if SteamVR_Legacy
+        trackedObjL = controllerRight.GetComponent<SteamVR_TrackedObject>();
+        trackedObjR = controllerLeft.GetComponent<SteamVR_TrackedObject>();
+#elif SteamVR_2
+        trackedObjL = controllerRight.GetComponent<SteamVR_Behaviour_Pose>();
+		trackedObjR = controllerLeft.GetComponent<SteamVR_Behaviour_Pose>();
+#else
+        trackedObjL = controllerLeft;
+        trackedObjR = controllerRight;
+#endif
+        mirroredCube = this.transform.Find("Mirrored Cube").gameObject;
+        if (interactionType == InteractionType.Manipulation_UI)
+        {
+            this.gameObject.AddComponent<SelectionManipulation>();
+            this.GetComponent<SelectionManipulation>().trackedObj = trackedObjL;
+#if SteamVR_2
+            this.GetComponent<SelectionManipulation>().m_controllerPress = m_controllerPress;
+#endif
+        }
+    }
+
+    void Start()
+    {
+        laser = Instantiate(laserPrefab);
+        laserTransform = laser.transform;
+    }
+
+
+    void Update()
+    {
+#if SteamVR_Legacy
+        controllerL = SteamVR_Controller.Input((int)trackedObjL.index);
+        controllerR = SteamVR_Controller.Input((int)trackedObjR.index);
+#endif
+        //if (objSelected == false) {
+        castRay();
+        if (objSelected == true)
+        {
+            WorldGrab(); //Using the ScaledWorldGrab to scale down the world
+        }
+    }
+
+
     void createOffSet(GameObject obj) {
         Vector3 controllerPos = pointOfInteraction.transform.forward;
         Vector3 pos = pointOfInteraction.transform.position;
-        float distance_formula_on_vector = Mathf.Sqrt(controllerPos.x * controllerPos.x + controllerPos.y * controllerPos.y + controllerPos.z * controllerPos.z);
-        pos.x += (extendDistance / (distance_formula_on_vector)) * controllerPos.x;
-        pos.y += (extendDistance / (distance_formula_on_vector)) * controllerPos.y;
-        pos.z += (extendDistance / (distance_formula_on_vector)) * controllerPos.z;
+
+        float distance_formula_on_vector = controllerPos.magnitude;
+        pos += (extendDistance / (distance_formula_on_vector)) * controllerPos;
         obj.transform.position = pos;
     }
 
@@ -113,8 +146,8 @@ public class ImagePlane_FramingHands : MonoBehaviour {
     internal void resetProperties() {
         objSelected = false;
         selectedObject.transform.SetParent(oldParent);
-        cameraHead.transform.localScale = new Vector3(1f, 1f, 1f);
-        cameraRig.transform.localScale = new Vector3(1f, 1f, 1f);
+        cameraHead.transform.localScale = Vector3.one;
+        cameraRig.transform.localScale  = Vector3.one;
         cameraRig.transform.localPosition = positionBeforeScale;
     }
 
@@ -127,6 +160,8 @@ public class ImagePlane_FramingHands : MonoBehaviour {
         target.position += pivotPos - pivot.position;
         pivot.parent = pivotParent;
     }
+
+
     float Disteh;
     float Disteo;
     float scaleAmount;
@@ -154,11 +189,9 @@ public class ImagePlane_FramingHands : MonoBehaviour {
 
                     Vector3 controllerPos = pointOfInteraction.transform.forward;
                     Vector3 pos = pointOfInteraction.transform.position;
-                    float distance_formula_on_vector = Mathf.Sqrt(controllerPos.x * controllerPos.x + controllerPos.y * controllerPos.y + controllerPos.z * controllerPos.z);
+                    float distance_formula_on_vector = controllerPos.magnitude;
                     float distextended = 0.25f;
-                    pos.x += (distextended / (distance_formula_on_vector)) * controllerPos.x;
-                    pos.y += (distextended / (distance_formula_on_vector)) * controllerPos.y;
-                    pos.z += (distextended / (distance_formula_on_vector)) * controllerPos.z;
+                    pos += (distextended / (distance_formula_on_vector)) * controllerPos;
                     obj.transform.position = pos;
 
                     selectedObject.transform.localScale = new Vector3(selectedObject.transform.localScale.x / dist, selectedObject.transform.localScale.y / dist, selectedObject.transform.localScale.z / dist);
@@ -218,6 +251,15 @@ public class ImagePlane_FramingHands : MonoBehaviour {
         } if (m_applicationMenu.GetStateDown(trackedObjL.inputSource)) {
             return ControllerState.APPLICATION_MENU;
         }
+#else
+        if (OVRInput.GetDown(OVRInput.Button.One))
+        {
+            return ControllerState.TRIGGER_DOWN;
+        }
+        //if (m_applicationMenu.GetStateDown(trackedObjL.inputSource))
+        //{
+        //    return ControllerState.APPLICATION_MENU;
+        //}
 #endif
         return ControllerState.NONE;
     }
@@ -227,14 +269,13 @@ public class ImagePlane_FramingHands : MonoBehaviour {
                                                                       //Resetting everything back to normal
             objSelected = false;
             selectedObject.transform.SetParent(oldParent);
-            cameraHead.transform.localScale = new Vector3(1f, 1f, 1f);
-            cameraRig.transform.localScale = new Vector3(1f, 1f, 1f);
-            cameraRig.transform.localPosition = new Vector3(0f, 0f, 0f);
+            cameraHead.transform.localScale   = Vector3.one;
+            cameraRig.transform.localScale    = Vector3.one;
+            cameraRig.transform.localPosition = Vector3.zero;
         }
     }
 
     void checkSurroundingObjects() {
-
         Vector3 newForward = pointOfInteraction.transform.position - cameraHead.transform.position;
 
         Vector3 forwardVectorFromRemote = newForward;
@@ -267,8 +308,7 @@ public class ImagePlane_FramingHands : MonoBehaviour {
 
 
 
-                    Vector3 newPoint = new Vector3(forwardVectorFromRemote.x * distanceBetweenRayAndPoint + positionOfRemote.x, forwardVectorFromRemote.y * distanceBetweenRayAndPoint + positionOfRemote.y
-                            , forwardVectorFromRemote.z * distanceBetweenRayAndPoint + positionOfRemote.z);
+                    Vector3 newPoint = forwardVectorFromRemote * distanceBetweenRayAndPoint + positionOfRemote;
 
                     if (distanceBetweenRayAndPoint < shortestDistance) {
                         shortestDistance = distanceBetweenRayAndPoint;
@@ -305,73 +345,50 @@ public class ImagePlane_FramingHands : MonoBehaviour {
         mirroredCube.SetActive(true);
     }
 
+    private void ShowLaser(RaycastHit hit)
+    {
+        float controllerDist = Vector3.Distance(trackedObjL.transform.position, trackedObjR.transform.position);
+        mirroredCube.SetActive(false);
+        laser.SetActive(true);
+        laserTransform.position = Vector3.Lerp(pointOfInteraction.transform.position, hitPoint, .5f);
+        laserTransform.LookAt(hitPoint);
+        laserTransform.localScale = new Vector3(controllerDist, controllerDist, hit.distance);
+        //InstantiateObject(hit.transform.gameObject);
+    }
 
-    private float extendDistance = 0f;
-    private float cursorSpeed = 20f; // Decrease to make faster, Increase to make slower
 
     void mirroredObject() {
         Vector3 controllerPos = cameraHead.transform.forward;
-        float distance_formula_on_vector = Mathf.Sqrt(controllerPos.x * controllerPos.x + controllerPos.y * controllerPos.y + controllerPos.z * controllerPos.z);
+        float distance_formula_on_vector = controllerPos.magnitude;
         Vector3 mirroredPos = pointOfInteraction.transform.position;
 
-        mirroredPos.x = mirroredPos.x + (100f / (distance_formula_on_vector)) * controllerPos.x;
-        mirroredPos.y = mirroredPos.y + (100f / (distance_formula_on_vector)) * controllerPos.y;
-        mirroredPos.z = mirroredPos.z + (100f / (distance_formula_on_vector)) * controllerPos.z;
+        mirroredPos += mirroredPos + (100f / (distance_formula_on_vector)) * controllerPos;
 
         mirroredCube.transform.position = mirroredPos;
         mirroredCube.transform.rotation = pointOfInteraction.transform.rotation;
     }
 
-    void Awake() {
-#if SteamVR_Legacy
-        trackedObjL = controllerRight.GetComponent<SteamVR_TrackedObject>();
-        trackedObjR = controllerLeft.GetComponent<SteamVR_TrackedObject>();
-#elif SteamVR_2
-        trackedObjL = controllerRight.GetComponent<SteamVR_Behaviour_Pose>();
-		trackedObjR = controllerLeft.GetComponent<SteamVR_Behaviour_Pose>();
-#endif
-        mirroredCube = this.transform.Find("Mirrored Cube").gameObject;
-        if (interactionType == InteractionType.Manipulation_UI) {
-            this.gameObject.AddComponent<SelectionManipulation>();
-            this.GetComponent<SelectionManipulation>().trackedObj = trackedObjL;
-#if SteamVR_2
-            this.GetComponent<SelectionManipulation>().m_controllerPress = m_controllerPress;
-#endif
-        }
-    }
-
-    void Start() {
-        laser = Instantiate(laserPrefab);
-        laserTransform = laser.transform;
-    }
 
     void castRay() {
+
         checkSurroundingObjects();
         print(currentlyPointingAt);
+
         selectedObject = currentlyPointingAt;
         if (currentlyPointingAt != null) {
             InstantiateObject(currentlyPointingAt.gameObject);
         }
+
         interactionPosition();
         mirroredObject();
         ShowLaser();
-        RaycastHit hit;
-        if (Physics.Raycast(pointOfInteraction.transform.position, cameraHead.transform.forward, out hit, 100)) {
+
+        if (Physics.Raycast(pointOfInteraction.transform.position, cameraHead.transform.forward, out RaycastHit hit, 100))
+        {
             hitPoint = hit.point;
             ShowLaser(hit);
         }
     }
 
-    void Update() {
-#if SteamVR_Legacy
-        controllerL = SteamVR_Controller.Input((int)trackedObjL.index);
-        controllerR = SteamVR_Controller.Input((int)trackedObjR.index);
-#endif
-        //if (objSelected == false) {
-        castRay();
-        if (objSelected == true) {
-            WorldGrab(); //Using the ScaledWorldGrab to scale down the world
-        }
-    }
 
 }

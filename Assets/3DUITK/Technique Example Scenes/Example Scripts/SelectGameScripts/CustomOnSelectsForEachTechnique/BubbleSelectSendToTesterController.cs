@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbleSelectSendToTesterController : MonoBehaviour {
 
-	public BubbleCursor selectObject;
+	public BubbleCursor bubbleCursor;
 
 	private TesterController controller;
 
@@ -12,9 +12,9 @@ public class BubbleSelectSendToTesterController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		originalParent = this.transform.parent.gameObject;
-		selectObject.selectedObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
+		originalParent = transform.parent.gameObject;
+        bubbleCursor.onSelectObject.AddListener(TellTesterOfSelection);
+		controller = GetComponentInParent<TesterController>();
 	}
 	
 	// Update is called once per frame
@@ -22,11 +22,11 @@ public class BubbleSelectSendToTesterController : MonoBehaviour {
 		
 	}
 
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.lastSelectedObject == this.gameObject) {
+		if(bubbleCursor.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 
 			// Due to bubble trying to grab with parent can cancel out with this
 			Rigidbody bod;

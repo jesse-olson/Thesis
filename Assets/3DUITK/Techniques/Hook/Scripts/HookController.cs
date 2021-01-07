@@ -37,7 +37,8 @@ public class HookController : MonoBehaviour {
 
             leftHook.trackedObj = leftController.GetComponent<SteamVR_Behaviour_Pose>();
 		    rightHook.trackedObj = rightController.GetComponent<SteamVR_Behaviour_Pose>();
-
+#elif Oculus_Quest_Controllers
+#elif Oculus_Quest_Hands
 #endif
 
         }

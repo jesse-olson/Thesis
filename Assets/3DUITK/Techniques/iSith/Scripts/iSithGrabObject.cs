@@ -28,6 +28,22 @@ public class iSithGrabObject : MonoBehaviour {
     public UnityEvent unHovered; // Invoked when an object is no longer hovered by the technique
 
 
+    // Update is called once per frame
+    void Update() {
+        if (controllerEvents() == ControllerState.TRIGGER_DOWN) {
+            if (collidingObject) {
+                // Manipulation
+                GrabObject();
+            }
+        }
+
+
+        if (controllerEvents() == ControllerState.TRIGGER_UP) {
+            if (objectInHand) {
+                ReleaseObject();
+            }
+        }
+    }
 
     void OnEnable() {
         var render = SteamVR_Render.instance;
@@ -121,24 +137,17 @@ public class iSithGrabObject : MonoBehaviour {
         } if (m_controllerPress.GetStateUp(trackedObj.inputSource)) {
             return ControllerState.TRIGGER_UP;
         }
+#else
+        if (OVRInput.GetDown(OVRInput.Button.One))
+        {
+            return ControllerState.TRIGGER_DOWN;
+        }
+        if (OVRInput.GetUp(OVRInput.Button.One))
+        {
+            return ControllerState.TRIGGER_UP;
+        }
 #endif
         return ControllerState.NONE;
     }
 
-    // Update is called once per frame
-    void Update() {
-        if (controllerEvents() == ControllerState.TRIGGER_DOWN) {
-            if (collidingObject) {
-                // Manipulation
-                GrabObject();
-            }
-        }
-
-
-        if (controllerEvents() == ControllerState.TRIGGER_UP) {
-            if (objectInHand) {
-                ReleaseObject();
-            }
-        }
-    }
 }

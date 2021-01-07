@@ -13,7 +13,7 @@ public class HOMERSelectAndSendToController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		originalParent = this.transform.parent.gameObject;
-		selectObject.selectedObjectEvent.AddListener(tellTesterOfSelection);
+		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
 		controller = this.GetComponentInParent<TesterController>();
 	}
 
@@ -24,7 +24,7 @@ public class HOMERSelectAndSendToController : MonoBehaviour {
 
 	void tellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.selectedObject == this.gameObject) {
+		if(selectObject.objectInHand == this.gameObject) {
 			print("success");
 			controller.objectSelected(this.gameObject);
 

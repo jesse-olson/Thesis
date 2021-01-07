@@ -26,7 +26,7 @@ public class MovingObject : MonoBehaviour {
         allHooks = FindObjectsOfType<Hook>();
 		foreach(Hook hook in allHooks) {
 			hook.addNewlySpawnedObjectToHook(this.gameObject);
-            hook.selectedObject.AddListener(stopMovingOnceSelected);
+            hook.onSelectObject.AddListener(stopMovingOnceSelected);
 		}
     }
 

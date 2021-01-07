@@ -1,11 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using Valve.VR;
-public class WorldInMiniature : MonoBehaviour {
-
-    /* World In Miniature implementation by Kieran May
+﻿/* World In Miniature implementation by Kieran May
      * University of South Australia
      * 
      *  Copyright(C) 2019 Kieran May
@@ -23,6 +16,13 @@ public class WorldInMiniature : MonoBehaviour {
 	 *  You should have received a copy of the GNU General Public License
 	 *  along with this program.If not, see<http://www.gnu.org/licenses/>.
 	 */
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using Valve.VR;
+public class WorldInMiniature : MonoBehaviour {
 
 #if SteamVR_Legacy
     internal SteamVR_TrackedObject trackedObj;
@@ -42,11 +42,14 @@ public class WorldInMiniature : MonoBehaviour {
 #endif
 
     public GameObject worldInMinParent;
+    public float scaleAmount = 20f;
+
     GameObject[] allSceneObjects;
     public static bool WiMrunning = false;
     public bool WiMactive = false;
+
     public List<string> ignorableObjectsString = new List<string> { "[CameraRig]", "Directional Light", "background" };
-    public float scaleAmount = 20f;
+    
     public LayerMask interactableLayer;
     public Material outlineMaterial;
 
@@ -56,8 +59,8 @@ public class WorldInMiniature : MonoBehaviour {
 
     public ControllerPicked controllerPicked;
 
-    public GameObject rightController;
     public GameObject leftController;
+    public GameObject rightController;
     public GameObject cameraHead;
     
     public GameObject selectedObject;
@@ -110,7 +113,6 @@ public class WorldInMiniature : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-
         allSceneObjects = SceneManager.GetActiveScene().GetRootGameObjects();
         for (int i = 0; i < allSceneObjects.Length; i++) {
             SetIDObject(allSceneObjects[i]);
@@ -119,12 +121,11 @@ public class WorldInMiniature : MonoBehaviour {
         worldInMinParent.transform.SetParent(trackedObj.transform);
         ResetAllProperties();
 
-        createWiM();
+        CreateWiM();
 
         //adding colliders and collider scripts to controllers for WIM if they don't allready exist
         SphereCollider col = trackedObj.transform.gameObject.GetComponent<SphereCollider>();
         if (col == null) {
-
             col = trackedObj.transform.gameObject.AddComponent<SphereCollider>();
             col.isTrigger = true;
             col.radius = 0.05f;
@@ -157,7 +158,12 @@ public class WorldInMiniature : MonoBehaviour {
     }
     
     public enum ControllerState {
-        TRIGGER_UP, TRIGGER_DOWN, TRIGGER_PRESS, APPLICATION_MENU, NONE, TOUCHPAD_TOUCH
+        TRIGGER_UP,
+        TRIGGER_DOWN,
+        TRIGGER_PRESS,
+        APPLICATION_MENU,
+        TOUCHPAD_TOUCH,
+        NONE        
     }
 
     public ControllerState ControllerEvents() {
@@ -207,49 +213,47 @@ public class WorldInMiniature : MonoBehaviour {
         return ControllerState.NONE;
     }
 
-    void createWiM() {
-        //if (ControllerEvents() == ControllerState.APPLICATION_MENU) {
-            if (!WiMactive) {
-                WiMactive = true;
-                WiMrunning = true;
-                print("Create world clone");
+    void CreateWiM() {
+        if (!WiMactive) {
+            WiMactive = true;
+            WiMrunning = true;
+            print("Create world clone");
 
-                foreach(GameObject sceneObject in allSceneObjects ){
-                    if (!ignorableObjectsString.Contains(sceneObject.name)) {
-                        // Making the cloneObject
-                        GameObject cloneObject = Instantiate(sceneObject, Vector3.zero, Quaternion.identity) as GameObject;
+            foreach(GameObject sceneObject in allSceneObjects ){
+                if (!ignorableObjectsString.Contains(sceneObject.name)) {
+                    // Making the cloneObject
+                    GameObject cloneObject = Instantiate(sceneObject, Vector3.zero, Quaternion.identity) as GameObject;
                         
-                        cloneObject.transform.SetParent(worldInMinParent.transform, false);
+                    cloneObject.transform.SetParent(worldInMinParent.transform, false);
 
-                        Rigidbody rigidBody = cloneObject.gameObject.GetComponent<Rigidbody>();
-                        // For all objects in the scene that are not affected by physics.
-                        if (rigidBody == null) {
-                            rigidBody = cloneObject.gameObject.AddComponent<Rigidbody>();
-                        }
-
-                        rigidBody.isKinematic = true;    // Make sure that all clones are kinematic
-
-                        //cloneObject.gameObject.AddComponent<Collider>();
-                        //cloneObject.GetComponent<Collider>().attachedRigidbody.isKinematic = true;
-
-                        cloneObject.transform.localScale    = sceneObject.transform.lossyScale / scaleAmount;
-                        cloneObject.transform.localRotation = sceneObject.transform.rotation;
-                        cloneObject.transform.localPosition = sceneObject.transform.position / scaleAmount; 
+                    Rigidbody rigidBody = cloneObject.gameObject.GetComponent<Rigidbody>();
+                    // For all objects in the scene that are not affected by physics.
+                    if (rigidBody == null) {
+                        rigidBody = cloneObject.gameObject.AddComponent<Rigidbody>();
                     }
-                }
 
-            worldInMinParent.transform.localEulerAngles = new Vector3(0f, trackedObj.transform.localEulerAngles.y - 45f, 0f);
-                worldInMinParent.transform.Rotate(0, tiltAroundY, 0);
+                    rigidBody.isKinematic = true;    // Make sure that all clones are kinematic
 
-            } else if (WiMactive == true) {
-                WiMactive = false;
-                WiMrunning = false;
-                foreach (Transform child in worldInMinParent.transform) {
-                    Destroy(child.gameObject);
+                    //cloneObject.gameObject.AddComponent<Collider>();
+                    //cloneObject.GetComponent<Collider>().attachedRigidbody.isKinematic = true;
+
+                    cloneObject.transform.localScale    = sceneObject.transform.lossyScale / scaleAmount;
+                    cloneObject.transform.localRotation = sceneObject.transform.rotation;
+                    cloneObject.transform.localPosition = sceneObject.transform.position / scaleAmount; 
                 }
-                ResetAllProperties();
             }
-        //}
+
+        worldInMinParent.transform.localEulerAngles = new Vector3(0f, trackedObj.transform.localEulerAngles.y - 45f, 0f);
+            worldInMinParent.transform.Rotate(0, tiltAroundY, 0);
+
+        } else if (WiMactive == true) {
+            WiMactive = false;
+            WiMrunning = false;
+            foreach (Transform child in worldInMinParent.transform) {
+                Destroy(child.gameObject);
+            }
+            ResetAllProperties();
+        }
     }
 
     private void ResetAllProperties() {

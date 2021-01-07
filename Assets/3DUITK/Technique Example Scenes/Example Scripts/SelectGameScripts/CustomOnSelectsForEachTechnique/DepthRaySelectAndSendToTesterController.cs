@@ -13,7 +13,7 @@ public class DepthRaySelectAndSendToTesterController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		originalParent = this.transform.parent.gameObject;
-		selectObject.selectedObject.AddListener(tellTesterOfSelection);
+		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
 		controller = this.GetComponentInParent<TesterController>();
 	}
 	

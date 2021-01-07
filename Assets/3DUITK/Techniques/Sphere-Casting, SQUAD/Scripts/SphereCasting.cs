@@ -23,21 +23,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR;
 
-public class SphereCasting : Technique {    
+public class SphereCasting : ScrollingTechnique {    
     private PickupObjects pickupObjs;
     private SquadMenu menu;
     public static bool inMenu = false;
 
-    private GameObject laser;
-    private Transform laserTransform;
 
     private GameObject sphereObject;
     public bool squadEnabled = true;
-
-    private float extendDiameter = 0f;  // The diameter of the Sphere being cast
-    private float cursorSpeed    = 20f; // Speed at which the diameter increases/ decreases.
-                                        // Decrease to make faster, Increase to make slower
-
+    
     private void ShowLaser(RaycastHit hit) {
         Vector3 hitPos = hit.transform.position;
 
@@ -84,6 +78,7 @@ public class SphereCasting : Technique {
         controller = SteamVR_Controller.Input((int)trackedObj.index);
 #endif
         PadScrolling();
+        sphereObject.transform.localScale = Vector3.one * extendDistance;
 
         if (Physics.Raycast(trackedObj.transform.position, trackedObj.transform.forward, out RaycastHit hit, 100))
         {
@@ -125,30 +120,4 @@ public class SphereCasting : Technique {
             }
         }
     }
-
-    private void PadScrolling()
-    {
-#if SteamVR_Legacy
-        if (controller.GetAxis().y != 0) {
-            extendDiameter += controller.GetAxis().y / cursorSpeed;
-        }
-#elif SteamVR_2
-        if (m_touchpadAxis.GetAxis(trackedObj.inputSource).y != 0) {
-            extendDiameter += m_touchpadAxis.GetAxis(trackedObj.inputSource).y / cursorSpeed;
-        }   
-#else
-        Vector2 thumbStick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
-        if (thumbStick.y != 0)
-        {
-            extendDiameter += thumbStick.y / cursorSpeed;
-        }
-#endif
-        if(extendDiameter < 0)
-        {
-            extendDiameter = 0;
-        }
-
-        sphereObject.transform.localScale = Vector3.one * extendDiameter;
-    }
-
 }

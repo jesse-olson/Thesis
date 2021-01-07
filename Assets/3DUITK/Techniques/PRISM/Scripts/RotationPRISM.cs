@@ -3,23 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 
-public class RotationPRISM : MonoBehaviour {
-
-#if SteamVR_Legacy
-    public SteamVR_TrackedObject trackedObj;
-    private SteamVR_Controller.Device Controller {
-        get {
-            return SteamVR_Controller.Input((int)trackedObj.index);
-        }
-    }
-#elif SteamVR_2
-        public SteamVR_Behaviour_Pose trackedObj;
-        public SteamVR_Action_Boolean m_controllerPress;
-#else
-        public GameObject trackedObj;
-#endif
-    public LayerMask interactionLayers;
-
+public class RotationPRISM : Technique {
+    
     private GameObject collidingObject;
     private GameObject objectInHand;
 
@@ -45,54 +30,26 @@ public class RotationPRISM : MonoBehaviour {
 
         lastHandRotation = this.transform.rotation;
     }
-
-    public enum ControllerState {
-        TRIGGER_UP, TRIGGER_DOWN, NONE
-    }
-
-    private ControllerState controllerEvents() {
-#if SteamVR_Legacy
-        if (Controller.GetHairTriggerDown()) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        if (Controller.GetHairTriggerUp()) {
-            return ControllerState.TRIGGER_UP;
-        }
-#elif SteamVR_2
-        if (m_controllerPress.GetStateDown(trackedObj.inputSource)) {
-            return ControllerState.TRIGGER_DOWN;
-        }
-        if (m_controllerPress.GetStateUp(trackedObj.inputSource)) {
-            return ControllerState.TRIGGER_UP;
-        }
-#endif
-        return ControllerState.NONE;
-    }
-
-
+       
     // Update is called once per frame
     void Update() {
         currentRotation = trackedObj.transform.rotation;
 
-        if (controllerEvents() == ControllerState.TRIGGER_DOWN) {
+        ControllerState controllerState = ControllerEvents();
+
+        if (controllerState == ControllerState.TRIGGER_DOWN) {
             if (collidingObject) {
                 pickUpObject();
             }
         }
 
 
-        if (controllerEvents() == ControllerState.TRIGGER_UP) {
+        if (controllerState == ControllerState.TRIGGER_UP) {
             if (objectInHand) {
                 ReleaseObject();
             }
         }
         updateLastRotation();
-
-        /* 
-		if(objectInHand) {
-			objectInHand.transform.position = trackedObj.transform.position;
-		}
-		*/
     }
 
     private void SetCollidingObject(Collider other) {

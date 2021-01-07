@@ -30,33 +30,30 @@ public class DebugUIBuilder : MonoBehaviour
   public const int DEBUG_PANE_LEFT = 2;
 
   [SerializeField]
-  private RectTransform buttonPrefab;
+  private RectTransform buttonPrefab = null;
   [SerializeField]
-  private RectTransform labelPrefab;
+  private RectTransform labelPrefab = null;
   [SerializeField]
-  private RectTransform sliderPrefab;
+  private RectTransform sliderPrefab = null;
   [SerializeField]
-  private RectTransform dividerPrefab;
+  private RectTransform dividerPrefab = null;
   [SerializeField]
-  private RectTransform togglePrefab;
+  private RectTransform togglePrefab = null;
   [SerializeField]
-  private RectTransform radioPrefab;
+  private RectTransform radioPrefab = null;
 
   [SerializeField]
-  private GameObject uiHelpersToInstantiate;
+  private GameObject uiHelpersToInstantiate = null;
 
   [SerializeField]
-  private Transform[] targetContentPanels;
-
-  [SerializeField]
-  private bool manuallyResizeContentPanels;
+  private Transform[] targetContentPanels = null;
 
   private bool[] reEnable;
 
   [SerializeField]
-  private List<GameObject> toEnable;
+  private List<GameObject> toEnable = null;
   [SerializeField]
-  private List<GameObject> toDisable;
+  private List<GameObject> toDisable = null;
 
   public static DebugUIBuilder instance;
 
@@ -73,10 +70,10 @@ public class DebugUIBuilder : MonoBehaviour
   private Vector3 menuOffset;
   OVRCameraRig rig;
   private Dictionary<string, ToggleGroup> radioGroups = new Dictionary<string, ToggleGroup>();
-  Laser lp;
+  LaserPointer lp;
   LineRenderer lr;
 
-  public Laser.LaserBeamBehavior laserBeamBehavior;
+  public LaserPointer.LaserBeamBehavior laserBeamBehavior;
 
   public void Awake()
   {
@@ -107,7 +104,7 @@ public class DebugUIBuilder : MonoBehaviour
       GameObject.Instantiate(uiHelpersToInstantiate);
     }
 
-    lp = FindObjectOfType<Laser>();
+    lp = FindObjectOfType<LaserPointer>();
     if (!lp)
     {
       Debug.LogError("Debug UI requires use of a LaserPointer and will not function without it. Add one to your scene, or assign the UIHelpers prefab to the DebugUIBuilder in the inspector.");

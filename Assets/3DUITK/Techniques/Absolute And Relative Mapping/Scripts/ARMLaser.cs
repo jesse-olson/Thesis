@@ -28,34 +28,25 @@ using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR;
 
-public class ARMLaser : Technique {
-    
-    public GameObject  theController;   // The controller that this technique should be attached to
+public class ARMLaser : SingleHandTechnique {
     public GameObject  theModel;        // The model that is used for the controller and the shadow
 
-    private GameObject laser;
-    private Transform  laserTransform;
-    private Vector3    hitPoint;        // Hit point of the laser
+    public static float scaleFactor = 10.0f;   // The factor by which the movement should be scaled
+    public static float scaleBy     = 1.0f / scaleFactor;
 
     private bool       ARMOn = false;
-    private Vector3    lastDirectionPointing;
-    private Quaternion lastRotation;    
-    private Vector3    lastPosition;
+
+    private Vector3    armPosition;     // The origin position set when ARM is toggled on
+    private Quaternion armRotation;     // The current rotation of the trackedObj when ARM is toggled on
     
-    public GameObject lastSelectedObject; // holds the selected object
+    public GameObject selectedObject;   // holds the selected object
 
     public GameObject currentlyPointingAt;
 
-    private bool pressed = false;
-
     void Awake() {
-#if SteamVR_Legacy
-        trackedObj = theController.GetComponent<SteamVR_TrackedObject>();
-#elif SteamVR_2
-        trackedObj = theController.GetComponent<SteamVR_Behaviour_Pose>();
-#else
-        trackedObj = theController;
-#endif
+
+        InitializeControllers();
+
         if (interactionType == InteractionType.Manipulation_UI) {
             this.gameObject.AddComponent<SelectionManipulation>();
             this.GetComponent<SelectionManipulation>().trackedObj = trackedObj;
@@ -66,129 +57,83 @@ public class ARMLaser : Technique {
     void Start() {
         laser = Instantiate(laserPrefab);
         laserTransform = laser.transform;
+        laserTransform.SetParent(transform);
+        laser.SetActive(true);
 
-        lastDirectionPointing = trackedObj.transform.forward;
-        lastRotation = trackedObj.transform.rotation;
-        lastPosition = trackedObj.transform.position;
+        armRotation = trackedObj.transform.rotation;
+        armPosition = trackedObj.transform.position;
     }
        
     
     
     // Using the hack from gogo shadow - will have to fix them all once find a better way
     void MakeModelChild() {
-        if (this.transform.childCount == 0) {
-            if (theModel.GetComponent<SteamVR_RenderModel>() != null) { // The steamVR_RenderModel is generated after code start so we cannot parent right away or it wont generate. 
-                if (theModel.transform.childCount > 0) {
-                    theModel.transform.parent = this.transform;
-                    // Due to the transfer happening at a random time down the line we need to re-align the model inside the shadow controller to 0 so nothing is wonky.
-                    theModel.transform.localPosition = Vector3.zero;
-                    theModel.transform.localRotation = Quaternion.identity;
-                }
-            } else {
-                // If it is just a custom model we can immediately parent
-                theModel.transform.parent = this.transform;
+        if (transform.childCount < 2)
+        {
+#if Oculus_Quest_Controllers
+            // If it is just a custom model we can immediately parent
+            theModel.transform.SetParent(transform);
+            // Due to the transfer happening at a random time down the line we need to re-align the model inside the shadow controller to 0 so nothing is wonky.
+            theModel.transform.localPosition = Vector3.zero;
+            theModel.transform.localRotation = Quaternion.identity;
+#elif SteamVR_Legacy || SteamVR_2
+            if (theModel.transform.childCount > 0) {
+                theModel.transform.SetParent(transform);
                 // Due to the transfer happening at a random time down the line we need to re-align the model inside the shadow controller to 0 so nothing is wonky.
                 theModel.transform.localPosition = Vector3.zero;
                 theModel.transform.localRotation = Quaternion.identity;
             }
-        }
-    }
-
-    private void ShowLaser(RaycastHit hit) {
-        laser.SetActive(true);
-        laserTransform.position = Vector3.Lerp(this.transform.position, hit.point, .5f);
-        laserTransform.LookAt(hit.point);
-        laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y,
-            hit.distance);
-
-
-        // Highlighting the object
-        if (interactionLayers == (interactionLayers | (1 << hit.transform.gameObject.layer))) {
-            if (currentlyPointingAt == null) {
-                // No object previously was highlighted so just highlight this one
-                currentlyPointingAt = hit.transform.gameObject;
-                hovered.Invoke();
-            } else if (hit.transform.gameObject != currentlyPointingAt) {
-                // unhighlight previous one and highlight this one
-                unHovered.Invoke();
-                currentlyPointingAt = hit.transform.gameObject;
-                hovered.Invoke();
-            }
-        } else {
-            unHovered.Invoke();
+#else
+            // If it is just a custom model we can immediately parent
+            theModel.transform.SetParent(transform);
+            // Due to the transfer happening at a random time down the line we need to re-align the model inside the shadow controller to 0 so nothing is wonky.
+            theModel.transform.localPosition = Vector3.zero;
+            theModel.transform.localRotation = Quaternion.identity;
+#endif
         }
     }
 
     private void ShowLaser() {
-        // removing highlight from previously highlighted object
-        if (currentlyPointingAt != null) {
-            // remove highlight from previously highlighted object 
-            unHovered.Invoke();
-            currentlyPointingAt = null;
+        bool hit = Physics.Raycast(transform.position, transform.forward, out RaycastHit hitInfo, 100, interactionLayers);
+
+        float dist = hit ? hitInfo.distance : 100;
+        laserTransform.localScale = new Vector3(1, 1, dist);
+
+        // Highlighting the object
+        if (!hit)
+        {
+            if (currentlyPointingAt != null)
+            {
+                onUnhover.Invoke();
+                currentlyPointingAt = null;
+            }
         }
-
-        // This is to make it extend infinite. There is DEFINATELY an easier way to do this. Find it later!
-        Vector3 theVector = this.transform.forward;
-        hitPoint = this.transform.position;
-        float distance_formula_on_vector = theVector.magnitude;
-        // Using formula to find a point which lies at distance on a 3D line from vector and direction
-        hitPoint = hitPoint + (100 / (distance_formula_on_vector)) * theVector;
-
-        laser.SetActive(true);
-        laserTransform.position = Vector3.Lerp(this.transform.position, hitPoint, .5f);
-        laserTransform.LookAt(hitPoint);
-        laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y,
-           100);
+        else if(hitInfo.transform.gameObject != currentlyPointingAt) {
+            // Unhighlight previous one and highlight this one
+            onUnhover.Invoke();
+            currentlyPointingAt = hitInfo.transform.gameObject;
+            onHover.Invoke();
+        }
     }
-
 
     void ToggleARM() {
-        if (!ARMOn) {
-            lastDirectionPointing = trackedObj.transform.forward;
-            lastRotation = trackedObj.transform.rotation;
-            lastPosition = trackedObj.transform.position;
-        }
+        armPosition = trackedObj.transform.position;
+        armRotation = trackedObj.transform.rotation;
         ARMOn = !ARMOn;
-    }
-
-    void UpdatePositionAndRotationToFollowController() {
-        this.transform.position = trackedObj.transform.position;
-
-        Quaternion rotationOfDevice = trackedObj.transform.rotation;
-        if (ARMOn) {
-            // scaled down by factor of 10
-            this.transform.rotation = Quaternion.Lerp(lastRotation, trackedObj.transform.rotation, 0.1f);
-            this.transform.position = Vector3.Lerp(lastPosition, trackedObj.transform.position, 0.1f);
-            print("On");
-        } else {
-            this.transform.rotation = trackedObj.transform.rotation;
-            this.transform.position = trackedObj.transform.position;
-        }
     }
     
     // Update is called once per frame
     void Update() {
         MakeModelChild();
-        UpdatePositionAndRotationToFollowController();
 
-        if (Physics.Raycast(this.transform.position, this.transform.forward, out RaycastHit hit, 100))
-        {
-            hitPoint = hit.point;
-            ShowLaser(hit);
-        }
-        else
-        {
-            ShowLaser();
-        }
+        float scale = ARMOn ? scaleBy : 1;
+        transform.position = Vector3    .Lerp(armPosition, trackedObj.transform.position, scale);
+        transform.rotation = Quaternion .Lerp(armRotation, trackedObj.transform.rotation, scale);
 
+        ShowLaser();
 
-        if (ControllerEvents() == ControllerState.TRIGGER_DOWN &&
-            !pressed) {
-            pressed = true;
+        if (ControllerEvents() == ControllerState.TRIGGER_DOWN ) {
             ToggleARM();
-        }else if(ControllerEvents() == ControllerState.TRIGGER_UP && pressed)
-        {
-            pressed = false;
         }
 
         //// If remote trigger pulled

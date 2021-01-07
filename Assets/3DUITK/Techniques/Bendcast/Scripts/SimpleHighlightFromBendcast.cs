@@ -1,6 +1,8 @@
 ﻿/*
- *  SimpleHighlightFromBendCast - Script that can be attached to an object displaying how to utilize the bend cast controllers events to react externally when an object
- *                                is highlighted or selected.
+ *  SimpleHighlightFromBendCast 
+ *  - Script that can be attached to an object displaying how to utilize 
+ *  - the bend cast controllers events to react externally when an object
+ *  - is highlighted or selected.
  *  
  *  Copyright(C) 2018  Ian Hanan
  *
@@ -16,44 +18,52 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.If not, see<http://www.gnu.org/licenses/>.
-
  */
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleHighlightFromBendcast : MonoBehaviour {
+public class SimpleHighlightFromBendcast : MonoBehaviour
+{
+    new private Renderer renderer;
+    public Bendcast bendcast;
 
-	public Material highlightMaterial;
-	private Material defaultMaterial;
+    public Material highlightMaterial;
+    private Material defaultMaterial;
 
-	public BendCast selectObject;
+    // Use this for initialization
+    void Start()
+    {
+        renderer = GetComponent<Renderer>();
+        defaultMaterial = renderer.material;
 
-	// Use this for initialization
-	void Start () {
-		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.hovered.AddListener(highlight);
-		selectObject.unHovered.AddListener(unHighlight);	
-		selectObject.selectedObject.AddListener(playSelectSound);	
-	}
+        bendcast = FindObjectOfType<Bendcast>();
+        bendcast.onHover        .AddListener(Highlight);
+        bendcast.onUnhover      .AddListener(Unhighlight);
+        bendcast.onSelectObject .AddListener(PlaySelectSound);
+    }
 
-	void highlight() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
-			print("highlight");
-			this.GetComponent<Renderer>().material = highlightMaterial;
-		} 
-	}
+    void Highlight()
+    {
+        if (bendcast.currentlyPointingAt == gameObject)
+        {
+            print("highlight");
+            renderer.material = highlightMaterial;
+        }
+    }
 
-	void unHighlight() {
-		print("unhighlight");
-		this.GetComponent<Renderer>().material = defaultMaterial;
-			
-	}
+    void Unhighlight()
+    {
+        print("unhighlight");
+        renderer.material = defaultMaterial;
+    }
 
-	void playSelectSound() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
-			this.GetComponent<AudioSource>().Play();
-		}	
-	}
+    void PlaySelectSound()
+    {
+        if (bendcast.currentlyPointingAt == gameObject)
+        {
+            this.GetComponent<AudioSource>().Play();
+        }
+    }
 }

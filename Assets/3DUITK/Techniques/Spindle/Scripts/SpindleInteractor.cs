@@ -4,57 +4,34 @@ using UnityEngine;
 using UnityEngine.Events;
 using Valve.VR;
 
-public class SpindleInteractor : MonoBehaviour {
-
-#if SteamVR_Legacy
-    public SteamVR_TrackedObject trackedObj1;
-    public SteamVR_TrackedObject trackedObj2;
-
-    private SteamVR_Controller.Device Controller1
-    {
-        get { return SteamVR_Controller.Input((int)trackedObj1.index); }
-    }
-        private SteamVR_Controller.Device Controller2
-    {
-        get { return SteamVR_Controller.Input((int)trackedObj2.index); }
-    }
-#elif SteamVR_2
-    public SteamVR_Action_Boolean m_controllerPress;
-    public SteamVR_Behaviour_Pose trackedObj1;
-    public SteamVR_Behaviour_Pose trackedObj2;
-#else
-    public GameObject trackedObj1;
-    public GameObject trackedObj2;
-#endif
-
-    public LayerMask interactionLayers;
-
-
+public class SpindleInteractor : Technique {
 
     private float distanceBetweenControllersOnPickup;
     private Vector3 objectScaleOnPickup;
 
-
-
     // Pickup Vars
     public GameObject collidingObject;
     public GameObject objectInHand;
-    private bool pickedUpWith1 = false;
-    private bool pickedUpWith2 = false;
 
-    
-    public UnityEvent selectedObject; // Invoked when an object is selected
+    void Awake()
+    {
+        InitializeControllers();
+    }
 
-    public UnityEvent hovered; // Invoked when an object is hovered by technique
-    public UnityEvent unHovered; // Invoked when an object is no longer hovered by the technique
-    public UnityEvent droppedObject;
-
+    protected void InitializeController()
+    {
+#if Oculus_Quest_Hands
+            //QuestDebug.Instance.Log("Making the Hands");
+            SetUpHandInput(leftController.GetComponent<OVRHand>());
+            SetUpHandInput(rightController.GetComponent<OVRHand>());
+#endif
+    }
 
     public enum ControllerState {
         TRIGGER_UP1, TRIGGER_DOWN1, TRIGGER_UP2, TRIGGER_DOWN2, NONE
     }
 
-    private ControllerState controllerEvents() {
+    new private ControllerState ControllerEvents() {
 #if SteamVR_Legacy
         if (Controller1.GetHairTriggerDown()) {
             return ControllerState.TRIGGER_DOWN1;
@@ -69,88 +46,114 @@ public class SpindleInteractor : MonoBehaviour {
             return ControllerState.TRIGGER_UP2;
         }
 #elif SteamVR_2
-        if (m_controllerPress.GetStateDown(trackedObj1.inputSource)) {
+        if (m_controllerPress.GetStateDown(leftController.inputSource)) {
             return ControllerState.TRIGGER_DOWN1;
         }
-        if (m_controllerPress.GetStateUp(trackedObj1.inputSource)) {
+        if (m_controllerPress.GetStateUp(leftController.inputSource)) {
             return ControllerState.TRIGGER_UP1;
         }
-        if (m_controllerPress.GetStateDown(trackedObj2.inputSource)) {
+        if (m_controllerPress.GetStateDown(rightController.inputSource)) {
             return ControllerState.TRIGGER_DOWN2;
         }
-        if (m_controllerPress.GetStateUp(trackedObj2.inputSource)) {
+        if (m_controllerPress.GetStateUp(rightController.inputSource)) {
             return ControllerState.TRIGGER_UP2;
         }
+#elif Oculus_Quest_Controllers
+        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RTouch))
+        {
+            return ControllerState.TRIGGER_DOWN1;
+        }
+        else if (OVRInput.GetUp(OVRInput.Button.One, OVRInput.Controller.RTouch))
+        {
+            return ControllerState.TRIGGER_UP1;
+        }
+        else if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.LTouch))
+        {
+            return ControllerState.TRIGGER_DOWN2;
+        }
+        else if (OVRInput.GetUp(OVRInput.Button.One, OVRInput.Controller.LTouch))
+        {
+            return ControllerState.TRIGGER_UP2;
+        }
+#elif Oculus_Quest_Hands
+        PalmTrigger input = palm.GetComponent<PalmTrigger>();
+
+        if (fingerPressToggleEnabled)
+        {
+            ControllerState toReturn = ControllerState.NONE;
+            if (input.GetFingerDown(Finger.indexFinger))
+            {
+                if (!fingerPressToggle.indexFinger)
+                {
+                    toReturn = ControllerState.TRIGGER_DOWN1;
+                }
+                else
+                {
+                    toReturn = ControllerState.TRIGGER_UP1;
+                }
+                fingerPressToggle.indexFinger = !fingerPressToggle.indexFinger;
+            }
+            return toReturn;
+        }
+        else
+        {
+            if (input.GetFingerDown(Finger.indexFinger))
+            {
+                return ControllerState.TRIGGER_DOWN1;
+            }
+            else if (input.GetFingerUp(Finger.indexFinger))
+            {
+                return ControllerState.TRIGGER_UP1;
+            }
+        }
 #endif
+
         return ControllerState.NONE;
     }
 
+    // Used to adjust the scale of the object that is currently being held
     void adjustScale()
     {
-
-        float currentDistanceBetweenControllers = Vector3.Distance(trackedObj1.transform.position, trackedObj2.transform.position);
-        float changeInDistance = (distanceBetweenControllersOnPickup - currentDistanceBetweenControllers) * -1;
-        objectInHand.transform.localScale = new Vector3(objectScaleOnPickup.x + changeInDistance, objectScaleOnPickup.y + changeInDistance, objectScaleOnPickup.z + changeInDistance);
+        float currentDistanceBetweenControllers = Vector3.Distance(leftController.transform.position, rightController.transform.position);
+        float changeInDistance =  currentDistanceBetweenControllers - distanceBetweenControllersOnPickup;
+        objectInHand.transform.localScale = objectScaleOnPickup + (changeInDistance * Vector3.one);
     }
 
     void pickupWithController()
     {
-        if(trackedObj1 == null && trackedObj2 == null)
+        if(leftController == null && rightController == null)
         {
             return;
         }
-        if (controllerEvents() == ControllerState.TRIGGER_DOWN1 || controllerEvents() == ControllerState.TRIGGER_DOWN2) {
+        ControllerState currentState = ControllerEvents();
+
+        if (currentState == ControllerState.TRIGGER_DOWN1 ||
+            currentState == ControllerState.TRIGGER_DOWN2) {
             if (collidingObject)
             {
                 GrabObject();
-                distanceBetweenControllersOnPickup = Vector3.Distance(trackedObj1.transform.position, trackedObj2.transform.position);
+                distanceBetweenControllersOnPickup = Vector3.Distance(leftController.transform.position, rightController.transform.position);
                 objectScaleOnPickup = objectInHand.transform.localScale;
-            }
-            if(controllerEvents() == ControllerState.TRIGGER_DOWN1) {
-                pickedUpWith1 = true;
-            } else
-            {
-                pickedUpWith2 = true;
-            }         
+            }      
         }
 
-        if (controllerEvents() == ControllerState.TRIGGER_UP1 || controllerEvents() == ControllerState.TRIGGER_UP2) {
+        if (currentState == ControllerState.TRIGGER_UP1 || 
+            currentState == ControllerState.TRIGGER_UP2) {
             if (objectInHand)
             {
                 ReleaseObject();
             }
-            if (controllerEvents() == ControllerState.TRIGGER_UP1)
-            {
-                pickedUpWith1 = false;
-            }
-            else
-            {
-                pickedUpWith2 = false;
-            }
+
         }
     }
 
 	// Update is called once per frame
 	void Update () {
-
-        if(pickedUpWith1)
+        pickupWithController();
+        if (objectInHand != null)
         {
-            pickupWithController();
             adjustScale();
-
-        } else  if (pickedUpWith2)
-        {
-            pickupWithController();
-            adjustScale();
-
-        } else if(!pickedUpWith1 && !pickedUpWith2)
-        {
-            pickupWithController();
-            if(!pickedUpWith1)
-            {
-                pickupWithController();
-            }
-        }
+        } 
     }
 
     // Pickup methods
@@ -162,7 +165,7 @@ public class SpindleInteractor : MonoBehaviour {
             return;
         }
         collidingObject = other.gameObject;
-		hovered.Invoke ();
+		onHover.Invoke ();
     }
 
 
@@ -184,15 +187,14 @@ public class SpindleInteractor : MonoBehaviour {
         {
             return;
         }
-		unHovered.Invoke ();
+		onUnhover.Invoke ();
         collidingObject = null;
     }
 
     private void GrabObject()
     {
-
         objectInHand = collidingObject;
-        selectedObject.Invoke();
+        onSelectObject.Invoke();
         collidingObject = null;
 
         var joint = AddFixedJoint();
@@ -219,12 +221,12 @@ public class SpindleInteractor : MonoBehaviour {
             objectInHand.GetComponent<Rigidbody>().velocity = Controller1.velocity;
             objectInHand.GetComponent<Rigidbody>().angularVelocity = Controller1.angularVelocity;
 #elif SteamVR_2
-            objectInHand.GetComponent<Rigidbody>().velocity = trackedObj1.GetVelocity();
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = trackedObj1.GetAngularVelocity();
+            objectInHand.GetComponent<Rigidbody>().velocity = leftController.GetVelocity();
+            objectInHand.GetComponent<Rigidbody>().angularVelocity = leftController.GetAngularVelocity();
 #endif
 
         }
-        droppedObject.Invoke();
+        onDropObject.Invoke();
         objectInHand = null;
     }
 }

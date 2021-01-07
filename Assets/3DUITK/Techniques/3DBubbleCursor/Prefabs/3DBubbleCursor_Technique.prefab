@@ -79,6 +79,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -140,36 +141,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fc23d5894f5744aaa8892edb6f57a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactableLayer:
+  trackedObj: {fileID: 0}
+  interactionType: 2
+  interactionLayers:
     serializedVersion: 2
     m_Bits: 256
-  interactionType: 2
   controllerPicked: 1
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
+  head: {fileID: 0}
+  laserPrefab: {fileID: 1107956822668496, guid: 98c6cc6bf4d2ef9459724351f383d934,
+    type: 3}
+  onSelectObject:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onDropObject:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onHover:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   currentlyHovering: {fileID: 0}
-  controllerRight: {fileID: 0}
-  controllerLeft: {fileID: 0}
-  cameraHead: {fileID: 0}
-  selectedObject:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  droppedObject:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  hovered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  unHovered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  cursorSpeed: 20
 --- !u!114 &114618638167346354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a774bfae91e4a442b0bcebb9e989274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  technique: {fileID: 114868945821734950}
 --- !u!114 &4983763589384735256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +280,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -380,6 +385,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

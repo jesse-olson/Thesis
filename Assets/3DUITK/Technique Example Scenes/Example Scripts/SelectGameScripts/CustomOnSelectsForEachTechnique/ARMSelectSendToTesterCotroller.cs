@@ -4,27 +4,21 @@ using UnityEngine;
 
 public class ARMSelectSendToTesterCotroller : MonoBehaviour {
 
-	
-	public ARMLaser selectObject;
+	public ARMLaser armLaser;
 
 	private TesterController controller;
 
 	// Use this for initialization
 	void Start () {
-		selectObject.selectedObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+        armLaser.onSelectObject.AddListener(TellTesterOfSelection);
+		controller = GetComponentInParent<TesterController>();
 	}
 
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.lastSelectedObject == this.gameObject) {
+		if(armLaser.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 		}	
 	}
 }

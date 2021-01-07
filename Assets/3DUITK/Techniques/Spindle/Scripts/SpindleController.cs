@@ -4,17 +4,20 @@ using UnityEngine;
 using Valve.VR;
 
 [ExecuteInEditMode]
-public class SpindleController : MonoBehaviour {
+public class SpindleController : Controller
+{
 
-	private enum SelectionController {
+    private enum SelectionController
+    {
         LeftController,
         RightController
-    } 
+    }
 
-	SelectionController selectionController = SelectionController.RightController;
+    SelectionController selectionController = SelectionController.RightController;
 
-	// Use this for initialization
-	void Awake() {
+    // Use this for initialization
+    void Awake()
+    {
         GameObject leftController = null, rightController = null;
 #if SteamVR_Legacy
         SteamVR_ControllerManager CameraRigObject = FindObjectOfType<SteamVR_ControllerManager>();
@@ -23,16 +26,16 @@ public class SpindleController : MonoBehaviour {
 
 		Spindle spindleComponent = this.GetComponent<Spindle>();
 
-		if(spindleComponent.trackedObj1 == null || spindleComponent.trackedObj2 == null) {
+		if(spindleComponent.leftController == null || spindleComponent.rightController == null) {
 			print("here");
 			SteamVR_TrackedObject trackedL = leftController.GetComponent<SteamVR_TrackedObject>();
 			SteamVR_TrackedObject trackedR = rightController.GetComponent<SteamVR_TrackedObject>();
-			spindleComponent.trackedObj1 = trackedL;
-			spindleComponent.trackedObj2 = trackedR;
+			spindleComponent.leftController = trackedL;
+			spindleComponent.rightController = trackedR;
 
 			SpindleInteractor interactionPointComponent = this.GetComponentInChildren<SpindleInteractor>();
-			interactionPointComponent.trackedObj1 = trackedL;
-			interactionPointComponent.trackedObj2 = trackedR;			
+			interactionPointComponent.leftController = trackedL;
+			interactionPointComponent.rightController = trackedR;			
 		}
 #elif SteamVR_2
         SteamVR_Behaviour_Pose[] controllers = FindObjectsOfType<SteamVR_Behaviour_Pose>();
@@ -44,19 +47,73 @@ public class SpindleController : MonoBehaviour {
             leftController = controllers[0].inputSource.ToString() == "LeftHand" ? controllers[0].gameObject : null;
             rightController = controllers[0].inputSource.ToString() == "RightHand" ? controllers[0].gameObject : null;
         }
-        if(spindleComponent.trackedObj1 == null || spindleComponent.trackedObj2 == null) {
+        if(spindleComponent.leftController == null || spindleComponent.rightController == null) {
         	SteamVR_Behaviour_Pose trackedL = leftController.GetComponent<SteamVR_Behaviour_Pose>();
 			SteamVR_Behaviour_Pose trackedR = rightController.GetComponent<SteamVR_Behaviour_Pose>();
-			spindleComponent.trackedObj1 = trackedL;
-			spindleComponent.trackedObj2 = trackedR;
+			spindleComponent.leftController = trackedL;
+			spindleComponent.rightController = trackedR;
 
 			SpindleInteractor interactionPointComponent = this.GetComponentInChildren<SpindleInteractor>();
-			interactionPointComponent.trackedObj1 = trackedL;
-			interactionPointComponent.trackedObj2 = trackedR;
+			interactionPointComponent.leftController = trackedL;
+			interactionPointComponent.rightController = trackedR;
         }
+#elif Oculus_Quest_Hands
+        OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+        if (cameraRig != null)
+        {
+            cameraRig.EnsureGameObjectIntegrity();
+
+            //Making controller game objects and attaching them to their respective transform
+            leftController = cameraRig.leftHandAnchor.GetComponentInChildren<OVRHand>().gameObject;
+            rightController = cameraRig.rightHandAnchor.GetComponentInChildren<OVRHand>().gameObject;
+
+            Spindle spindleComponent = this.GetComponent<Spindle>();
+
+            if (spindleComponent.leftController == null || spindleComponent.rightController == null)
+            {
+                print("here");
+                spindleComponent.leftController = leftController;
+                spindleComponent.rightController = rightController;
+
+                SpindleInteractor interactionPointComponent = this.GetComponentInChildren<SpindleInteractor>();
+                interactionPointComponent.leftController = leftController;
+                interactionPointComponent.rightController = rightController;
+            }
+            else
+            {
+                Debug.Log("There is no camera rig.");
+            }
+#else
+        OVRCameraRig cameraRig = FindObjectOfType<OVRCameraRig>();
+        if (cameraRig != null)
+        {
+            cameraRig.EnsureGameObjectIntegrity();
+
+            //Making controller game objects and attaching them to their respective transform
+            leftController = new GameObject("leftController");
+            leftController.transform.SetParent(cameraRig.leftControllerAnchor);
+
+            rightController = new GameObject("rightController");
+            rightController.transform.SetParent(cameraRig.rightControllerAnchor);
+
+            Spindle spindleComponent = this.GetComponent<Spindle>();
+
+            if (spindleComponent.leftController == null || spindleComponent.rightController == null)
+            {
+                print("here");
+                spindleComponent.leftController = leftController;
+                spindleComponent.rightController= rightController;
+
+                SpindleInteractor interactionPointComponent = this.GetComponentInChildren<SpindleInteractor>();
+                interactionPointComponent.leftController = leftController;
+                interactionPointComponent.rightController = rightController;
+            }
+            else
+            {
+                Debug.Log("There is no camera rig.");
+            }
 #endif
 
-
-
+        }
     }
 }

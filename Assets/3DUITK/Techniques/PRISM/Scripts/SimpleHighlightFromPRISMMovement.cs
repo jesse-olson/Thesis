@@ -14,9 +14,9 @@ public class SimpleHighlightFromPRISMMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.hovered.AddListener(highlight);
-		selectObject.unHovered.AddListener(unHighlight);	
-		selectObject.selectedObject.AddListener(playSelectSound);	
+		selectObject.onHover.AddListener(highlight);
+		selectObject.onUnhover.AddListener(unHighlight);	
+		selectObject.onSelectObject.AddListener(playSelectSound);	
 	}
 
 	void highlight() {
