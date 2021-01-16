@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{2A924A7C-E451-ED1A-4566-45E45C19CFEC}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/3DUITK/Techniques/Bendcast/Scripts/BendCast.cs">
+    <Files>
+      <File FileName="Assets/3DUITK/Techniques/Image-Plane Pointing/Scripts/ImagePlane_StickyHand_Controller.cs" Line="4" Column="57" />
+      <File FileName="Assets/3DUITK/Techniques/Image-Plane Pointing/Scripts/ImagePlane_FramingHands.cs" Line="1" Column="1" />
+      <File FileName="Assets/3DUITK/Techniques/Image-Plane Pointing/Scripts/ImagePlane_FramingHands_Controller.cs" Line="1" Column="1" />
+      <File FileName="Assets/3DUITK/Techniques/Image-Plane Pointing/Scripts/ImagePlane_StickyHand.cs" Line="85" Column="6" />
+      <File FileName="Assets/3DUITK/Techniques/Bendcast/Scripts/BendCast.cs" Line="109" Column="52" />
+      <File FileName="Assets/3DUITK/Progressive Refinement/IRefinable.cs" Line="1" Column="28" />
+      <File FileName="Assets/3DUITK/Technique Example Scenes/Example Scripts/DisableEnableRigidBodyOnPickup/ImagePlaneStickyDisableEnableRigidOnPickup.cs" Line="11" Column="20" />
+      <File FileName="Assets/3DUITK/Technique Example Scenes/Example Scripts/SelectGameScripts/CustomOnSelectsForEachTechnique/imagePlaneStickySelectAndSendToController.cs" Line="16" Column="30" />
+      <File FileName="Assets/3DUITK/Techniques/Double Bubble/Scripts/BubbleCursor3D.cs" Line="62" Column="62" />
+      <File FileName="Assets/3DUITK/Techniques/-ParentClass/ControllerSetup/Scripts/BothHandController.cs" Line="20" Column="6" />
+      <File FileName="Assets/3DUITK/Techniques/-ParentClass/Technique/Technique.cs" Line="40" Column="32" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="2c249597-e0ca-4102-9f77-8cb5979d289d" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

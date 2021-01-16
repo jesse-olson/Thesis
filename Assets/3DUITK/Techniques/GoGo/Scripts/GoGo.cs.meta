@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 47554b65ef353434a906e9eb86026090
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - trackedObj: {instanceID: 0}
+  - leftController: {instanceID: 0}
+  - rightController: {instanceID: 0}
+  - head: {instanceID: 0}
+  - laserPrefab: {instanceID: 0}
+  - theModel: {fileID: 4651081436487203885, guid: 089ca3584130c4acc85da13bf47b8822,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
