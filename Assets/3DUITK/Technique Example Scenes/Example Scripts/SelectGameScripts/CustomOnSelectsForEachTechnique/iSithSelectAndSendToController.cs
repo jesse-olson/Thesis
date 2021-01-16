@@ -3,28 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class iSithSelectAndSendToController : MonoBehaviour {
-
 	
-	public iSithGrabObject selectObject;
+	public ISith iSith;
 
 	private TesterController controller;
 
 	// Use this for initialization
 	void Start () {
-		selectObject.selectedObject.AddListener(tellTesterOfSelection);
+		iSith.onSelectObject.AddListener(TellTesterOfSelection);
 		controller = this.GetComponentInParent<TesterController>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.collidingObject == this.gameObject) {
+		if(iSith.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 		}	
 	}
 }

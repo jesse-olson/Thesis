@@ -20,14 +20,12 @@
  *  along with this program.If not, see<http://www.gnu.org/licenses/>.
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SimpleHighlightFromBendcast : MonoBehaviour
 {
-    new private Renderer renderer;
-    public Bendcast bendcast;
+    private Renderer _renderer;
+    public BendCast bendcast;
 
     public Material highlightMaterial;
     private Material defaultMaterial;
@@ -35,10 +33,10 @@ public class SimpleHighlightFromBendcast : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        renderer = GetComponent<Renderer>();
-        defaultMaterial = renderer.material;
+        _renderer = GetComponent<Renderer>();
+        defaultMaterial = _renderer.material;
 
-        bendcast = FindObjectOfType<Bendcast>();
+        bendcast = FindObjectOfType<BendCast>();
         bendcast.onHover        .AddListener(Highlight);
         bendcast.onUnhover      .AddListener(Unhighlight);
         bendcast.onSelectObject .AddListener(PlaySelectSound);
@@ -46,24 +44,27 @@ public class SimpleHighlightFromBendcast : MonoBehaviour
 
     void Highlight()
     {
-        if (bendcast.currentlyPointingAt == gameObject)
+        if (bendcast.highlightedObject == gameObject)
         {
             print("highlight");
-            renderer.material = highlightMaterial;
+            _renderer.material = highlightMaterial;
         }
     }
 
     void Unhighlight()
     {
-        print("unhighlight");
-        renderer.material = defaultMaterial;
+        if (bendcast.highlightedObject == gameObject)
+        {
+            print("unhighlight");
+            _renderer.material = defaultMaterial;
+        }
     }
 
     void PlaySelectSound()
     {
-        if (bendcast.currentlyPointingAt == gameObject)
+        if (bendcast.selectedObject == gameObject)
         {
-            this.GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().Play();
         }
     }
 }

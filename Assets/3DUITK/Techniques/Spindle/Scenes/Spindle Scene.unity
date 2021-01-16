@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 323629745}
+  spindle: {fileID: 0}
 --- !u!82 &13150529
 AudioSource:
   m_ObjectHideFlags: 0
@@ -342,18 +342,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &323629745 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1408006687}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03d8b0d53c088ce44bac7f44b0ad209b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &398309572
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,6 +506,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 443882187}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &443882190 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400012, guid: ce816f2e6abb0504092c23ed9b970dfd,
+    type: 3}
+  m_PrefabInstance: {fileID: 443882187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &443882191 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1125068011842588, guid: ce816f2e6abb0504092c23ed9b970dfd,
+    type: 3}
+  m_PrefabInstance: {fileID: 443882187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &443882192 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1660603843503870, guid: ce816f2e6abb0504092c23ed9b970dfd,
+    type: 3}
+  m_PrefabInstance: {fileID: 443882187}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &776822014
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,6 +615,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &914810818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 914810819}
+  m_Layer: 0
+  m_Name: head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &914810819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914810818}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 443882190}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &948555035 stripped
 Transform:
@@ -775,53 +811,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpindleTechnique
       objectReference: {fileID: 0}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: trackedObj1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: trackedObj2
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: pointFrom
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: leftController
-      value: 
-      objectReference: {fileID: 1333327838}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: rightController
-      value: 
-      objectReference: {fileID: 1761099063}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: interactionType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: controllerPicked
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: tipPrefab
-      value: 
-      objectReference: {fileID: 2383010686801960238, guid: 7b4674a8eaa28b845bf6fe09bdaf93e8,
-        type: 3}
-    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
-        type: 3}
-      propertyPath: palmPrefab
-      value: 
-      objectReference: {fileID: 5364837565047045099, guid: 6da134d5da958be4bb846e0a34f31771,
-        type: 3}
     - target: {fileID: 4475381787471112, guid: ebf93d20ab72f884684e798ddec41e8d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -876,11 +865,73 @@ PrefabInstance:
       propertyPath: trackedObj2
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 114210960310864654, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: interactionLayers.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 114210960310864654, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: leftController
+      value: 
+      objectReference: {fileID: 443882192}
+    - target: {fileID: 114210960310864654, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: rightController
+      value: 
+      objectReference: {fileID: 443882191}
     - target: {fileID: 1877843170693940324, guid: ebf93d20ab72f884684e798ddec41e8d,
         type: 3}
       propertyPath: steamVR_Version
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: trackedObj1
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: trackedObj2
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: pointFrom
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: leftController
+      value: 
+      objectReference: {fileID: 1333327838}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: rightController
+      value: 
+      objectReference: {fileID: 1761099063}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: interactionType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: controllerPicked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: tipPrefab
+      value: 
+      objectReference: {fileID: 2383010686801960238, guid: 7b4674a8eaa28b845bf6fe09bdaf93e8,
+        type: 3}
+    - target: {fileID: 114978323444329166, guid: ebf93d20ab72f884684e798ddec41e8d,
+        type: 3}
+      propertyPath: palmPrefab
+      value: 
+      objectReference: {fileID: 5364837565047045099, guid: 6da134d5da958be4bb846e0a34f31771,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebf93d20ab72f884684e798ddec41e8d, type: 3}
 --- !u!1001 &1462978252
@@ -1094,7 +1145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 323629745}
+  spindle: {fileID: 0}
 --- !u!82 &1848349200
 AudioSource:
   m_ObjectHideFlags: 0

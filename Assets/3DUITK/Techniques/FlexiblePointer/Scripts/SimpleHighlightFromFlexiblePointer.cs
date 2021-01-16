@@ -6,33 +6,33 @@ public class SimpleHighlightFromFlexiblePointer : MonoBehaviour {
 	public Material highlightMaterial;
 	private Material defaultMaterial;
 
-	public FlexiblePointer selectObject;
+	public FlexiblePointer flexiblePointer;
 
 	// Use this for initialization
 	void Start () {
-		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.onHover.AddListener(highlight);
-		selectObject.onUnhover.AddListener(unHighlight);	
-		selectObject.onSelectObject.AddListener(playSelectSound);	
+		defaultMaterial = GetComponent<Renderer>().material;
+		flexiblePointer.onHover.AddListener(Highlight);
+		flexiblePointer.onUnhover.AddListener(UnHighlight);
+		flexiblePointer.onSelectObject.AddListener(PlaySelectSound);
 	}
 
-	void highlight() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
+	void Highlight() {
+		if(flexiblePointer.highlightedObject == gameObject) {
 			print("highlight");
-			this.GetComponent<Renderer>().material = highlightMaterial;
-		}		
+			GetComponent<Renderer>().material = highlightMaterial;
+		}
 	}
 
-	void unHighlight() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
+	void UnHighlight() {
+		if(flexiblePointer.highlightedObject == gameObject) {
 			print("unhighlight");
-			this.GetComponent<Renderer>().material = defaultMaterial;
-		}		
+			GetComponent<Renderer>().material = defaultMaterial;
+		}
 	}
 
-	void playSelectSound() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
-			this.GetComponent<AudioSource>().Play();
-		}	
+	void PlaySelectSound() {
+		if(flexiblePointer.selectedObject == gameObject) {
+			GetComponent<AudioSource>().Play();
+		}
 	}
 }

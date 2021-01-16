@@ -1,11 +1,14 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - DepthRay
-    - DepthRayController
-    - Joystick
+    - BendCast
+    - BothHandController
+    - ControllerEventSystem
     - ONSPSettings
+    - OvrAvatar
+    - OvrAvatarLocalDriver
     - OvrAvatarSettings
+    - SimpleHighlightFromBendcast
     - SteamVR_ControllerManager
     - SteamVR_ExternalCamera
     - SteamVR_TrackedObject
@@ -18,13 +21,9 @@ ScriptsOnlyBuild:
     Oculus.VR.dll:
     - OVRCameraRig
     - OVRCustomSkeleton
-    - OVRDebugInfo
     - OVRHand
     - OVRHeadsetEmulator
     - OVRManager
-    - OVRPlayerController
-    - OVRSceneSampleController
-    - OVRScreenFade
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
     - UnityEditor.Tilemaps.GridPaletteBrushes
@@ -43,7 +42,7 @@ ScriptsOnlyBuild:
     com.unity.multiplayer-hlapi.Runtime.dll:
     - UnityEngine.Networking.NetworkIdentity
   sceneClasses:
-    Assets/3DUITK/Techniques/Depth Ray/Scenes/DepthRayScene.unity:
+    Assets/3DUITK/Techniques/Bendcast/Scenes/Bencast1.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -62,13 +61,15 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
-    - Class: 54
-      Script: {instanceID: 0}
     - Class: 64
       Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
     - Class: 81
+      Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
       Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
@@ -83,75 +84,71 @@ ScriptsOnlyBuild:
     - Class: 109
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9858}
+      Script: {instanceID: 9868}
     - Class: 114
-      Script: {instanceID: 9936}
+      Script: {instanceID: 9946}
     - Class: 114
-      Script: {instanceID: 9958}
+      Script: {instanceID: 9968}
     - Class: 114
-      Script: {instanceID: 10082}
+      Script: {instanceID: 10094}
     - Class: 114
-      Script: {instanceID: 10086}
+      Script: {instanceID: 10098}
     - Class: 114
-      Script: {instanceID: 10158}
+      Script: {instanceID: 10112}
     - Class: 114
-      Script: {instanceID: 10198}
+      Script: {instanceID: 10172}
     - Class: 114
-      Script: {instanceID: 10208}
+      Script: {instanceID: 10212}
     - Class: 114
-      Script: {instanceID: 10234}
+      Script: {instanceID: 10248}
     - Class: 114
-      Script: {instanceID: 10258}
+      Script: {instanceID: 10274}
     - Class: 114
-      Script: {instanceID: 10424}
+      Script: {instanceID: 10576}
     - Class: 114
-      Script: {instanceID: 10428}
+      Script: {instanceID: 10600}
     - Class: 114
-      Script: {instanceID: 10560}
+      Script: {instanceID: 10860}
     - Class: 114
-      Script: {instanceID: 10844}
+      Script: {instanceID: 10914}
     - Class: 114
-      Script: {instanceID: 10898}
+      Script: {instanceID: 10990}
     - Class: 114
-      Script: {instanceID: 10974}
+      Script: {instanceID: 11040}
     - Class: 114
-      Script: {instanceID: 11024}
+      Script: {instanceID: 11146}
     - Class: 114
-      Script: {instanceID: 11128}
+      Script: {instanceID: 11470}
     - Class: 114
-      Script: {instanceID: 11308}
+      Script: {instanceID: 11702}
     - Class: 114
-      Script: {instanceID: 11350}
+      Script: {instanceID: 11704}
     - Class: 114
-      Script: {instanceID: 11510}
+      Script: {instanceID: 11818}
     - Class: 114
-      Script: {instanceID: 11680}
+      Script: {instanceID: 11892}
     - Class: 114
-      Script: {instanceID: 11794}
+      Script: {instanceID: 11932}
     - Class: 114
-      Script: {instanceID: 11868}
+      Script: {instanceID: 12104}
     - Class: 114
-      Script: {instanceID: 11908}
+      Script: {instanceID: 12160}
     - Class: 114
-      Script: {instanceID: 12080}
+      Script: {instanceID: 12404}
     - Class: 114
-      Script: {instanceID: 12192}
+      Script: {instanceID: 12676}
     - Class: 114
-      Script: {instanceID: 12376}
+      Script: {instanceID: 12750}
     - Class: 114
-      Script: {instanceID: 12642}
+      Script: {instanceID: 12828}
     - Class: 114
-      Script: {instanceID: 12716}
+      Script: {instanceID: 12846}
     - Class: 114
-      Script: {instanceID: 12794}
+      Script: {instanceID: 12904}
     - Class: 114
-      Script: {instanceID: 12812}
+      Script: {instanceID: 13036}
     - Class: 114
-      Script: {instanceID: 12870}
-    - Class: 114
-      Script: {instanceID: 13328}
-    - Class: 114
-      Script: {instanceID: 20288}
+      Script: {instanceID: 13368}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -159,8 +156,6 @@ ScriptsOnlyBuild:
     - Class: 136
       Script: {instanceID: 0}
     - Class: 137
-      Script: {instanceID: 0}
-    - Class: 143
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -179,7 +174,7 @@ ScriptsOnlyBuild:
   scriptHashData:
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 7f962cfeea4b889fe1e7ab60930e8905
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpindleController
@@ -227,7 +222,7 @@ ScriptsOnlyBuild:
     className: SteamVR_TestController
   - hash:
       serializedVersion: 2
-      Hash: 984dcc0ba3707b7691fbdca8ff508d28
+      Hash: 3c08375166df118bd1801438fc36b92f
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SelectionCaret
@@ -239,7 +234,7 @@ ScriptsOnlyBuild:
     className: ObjectID
   - hash:
       serializedVersion: 2
-      Hash: 08bd03429c7749d2504d88700f0605b1
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: iSithLaser
@@ -275,13 +270,7 @@ ScriptsOnlyBuild:
     className: AudioPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 99d999018d3c1c5fb2bea275f7609d4d
-    assemblyName: Oculus.VR.dll
-    namespaceName: 
-    className: OVRMixedRealityCaptureSettings
-  - hash:
-      serializedVersion: 2
-      Hash: bf530eb47e6a86dcee1d42e40c3b7ac8
+      Hash: 626925ef558787b2d85c809198164d19
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_Dropdown
@@ -293,7 +282,7 @@ ScriptsOnlyBuild:
     className: OVRCameraRig
   - hash:
       serializedVersion: 2
-      Hash: 0c4829931a7be6131dc8bfa5dd03528a
+      Hash: 50a050ff5927d1d51d737411248b3309
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ImagePlane_StickyHand
@@ -311,7 +300,7 @@ ScriptsOnlyBuild:
     className: OculusSpatializerUnity
   - hash:
       serializedVersion: 2
-      Hash: 9c4933142c1ab0945cd2bfb87287387a
+      Hash: c9a3d8e9d1004480f87eaa28e3a01af1
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: Throwable
@@ -323,7 +312,7 @@ ScriptsOnlyBuild:
     className: ObjectSelector
   - hash:
       serializedVersion: 2
-      Hash: 7106f651646162343013fe63505aa099
+      Hash: 7777a3ed8184bdaebefc6ec2c63cb41e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Spindle
@@ -351,6 +340,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HOMERDisableEnableRigidBody
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PrismInteractor
   - hash:
       serializedVersion: 2
       Hash: c8ebe1a6445d89267090af7e7c5c957f
@@ -389,10 +384,10 @@ ScriptsOnlyBuild:
     className: P2PNetworkGoal
   - hash:
       serializedVersion: 2
-      Hash: 560aa07a7f221f2727a2dd87e98c1b28
+      Hash: 34660ed563d73fc3d971af18faffb98a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Bendcast
+    className: BendCast
   - hash:
       serializedVersion: 2
       Hash: 04e4a8b0447477cc4e933d9e5311188f
@@ -431,7 +426,7 @@ ScriptsOnlyBuild:
     className: OVRDebugHeadController
   - hash:
       serializedVersion: 2
-      Hash: dbe1b252c24004ec1bed8e85decdc21d
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HookController
@@ -473,19 +468,19 @@ ScriptsOnlyBuild:
     className: OvrAvatarRenderComponent
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 0b6d94cf4cf48c53bd06203b48bda696
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DoubleBubbleController
   - hash:
       serializedVersion: 2
-      Hash: fc108ce7d98c40ac0907e8ca7f500c76
+      Hash: 72712369a7c681ad84fc255a5ec0b333
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Text
   - hash:
       serializedVersion: 2
-      Hash: 06a330481ec400be50745bb7faf76bd0
+      Hash: 499fd23433e68e265d153aa6b95d0047
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Scrollbar
@@ -503,7 +498,7 @@ ScriptsOnlyBuild:
     className: SimpleHighlightFromAperature
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DepthRayController
@@ -527,22 +522,22 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: RaycastingController
   - hash:
       serializedVersion: 2
-      Hash: 789dfd49b5186355b971c4d9afa555a8
+      Hash: 3afb4bdc09fdfd7dbfe680e215df87e0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SerialSelectionMode
   - hash:
       serializedVersion: 2
-      Hash: df732eed1ab4252f35547774d7933b1a
+      Hash: f2c4eaff25c2f877c6114f80e52504fd
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: iSithGrabObject
+    className: ISith
   - hash:
       serializedVersion: 2
       Hash: b5d01a44c9a694c6b9bce4626dd0a12e
@@ -551,7 +546,7 @@ ScriptsOnlyBuild:
     className: OVRControllerTest
   - hash:
       serializedVersion: 2
-      Hash: 89498a9a4a6296605faa18a2c5f758a4
+      Hash: 8e0313c6f5e2ce35991fec2d64f8eaab
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Image
@@ -581,7 +576,7 @@ ScriptsOnlyBuild:
     className: SteamVR_LoadLevel
   - hash:
       serializedVersion: 2
-      Hash: 9e70ecf91466f07d9bd649be625cae52
+      Hash: 234235b9fb07320d11497e08a726cc56
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_InputField
@@ -683,7 +678,7 @@ ScriptsOnlyBuild:
     className: RichPresenceSample
   - hash:
       serializedVersion: 2
-      Hash: 2a611b870b4461adf3dd1c9503c2b358
+      Hash: 1d84c18a3843334766b271d0c96ba58b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Hook
@@ -713,10 +708,10 @@ ScriptsOnlyBuild:
     className: OvrAvatarSDKManager
   - hash:
       serializedVersion: 2
-      Hash: 26eaffdc314a0a9a63d08abd2b4df0e3
+      Hash: 4f076de029e47e3b5139067c2bc09ab5
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: ControllerColliderVH
+    className: SimpleHandInteractor
   - hash:
       serializedVersion: 2
       Hash: 939e6f53913ed8a8d268564fc9fbb676
@@ -725,13 +720,13 @@ ScriptsOnlyBuild:
     className: ExpandMenu
   - hash:
       serializedVersion: 2
-      Hash: 6a77bf8a6622108e73cfcd0356550328
+      Hash: a01f5fdb7bcdde54e45412c1be54d990
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: UIElement
   - hash:
       serializedVersion: 2
-      Hash: e4e7102dc6b8827761c1841c4859bcab
+      Hash: bd0e8c1d06be12ab040a5b1068e1602f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleHighlightForObjectsWithChildMesh
@@ -773,7 +768,7 @@ ScriptsOnlyBuild:
     className: OvrAvatarLocalDriver
   - hash:
       serializedVersion: 2
-      Hash: 460f22e21003e18d139ce2cc5fd08fce
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GoGoController
@@ -815,13 +810,13 @@ ScriptsOnlyBuild:
     className: RectMask2D
   - hash:
       serializedVersion: 2
-      Hash: 00274a21279f5cb831ce20f895049e38
+      Hash: 4e9333594897a1fb8b136ad2eae996c7
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SubMeshUI
   - hash:
       serializedVersion: 2
-      Hash: 3c9c78bc127cf82b00b5701fe6aafaef
+      Hash: 25da12c215652afee494fb2083efbba5
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AperatureSelectionSelector
@@ -839,7 +834,7 @@ ScriptsOnlyBuild:
     className: TransitionArmModel
   - hash:
       serializedVersion: 2
-      Hash: 0165befc9e52c11e8267f5447d2ba6f4
+      Hash: e4f35bb6778a5bcc50bda48f24ac69d9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BubbleCursor3D
@@ -881,7 +876,7 @@ ScriptsOnlyBuild:
     className: OVRResources
   - hash:
       serializedVersion: 2
-      Hash: e4e7102dc6b8827761c1841c4859bcab
+      Hash: 3bee4eff66053d290cfad620ea6d64c8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleHighlightFromGrabObject
@@ -975,12 +970,6 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: InteractableExample
-  - hash:
-      serializedVersion: 2
-      Hash: 6bb3152315714e0067a820830276b92e
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ControllerColliderSWG
   - hash:
       serializedVersion: 2
       Hash: cc4274b586df3c02688bac01b88bd16c
@@ -1097,7 +1086,7 @@ ScriptsOnlyBuild:
     className: ImagePlaneStickyDisableEnableRigidOnPickup
   - hash:
       serializedVersion: 2
-      Hash: 1536796b441a71798ecc1e4be0d43bb4
+      Hash: c57fea396248cfa36722600949a059ed
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: InteractableButtonEvents
@@ -1121,10 +1110,10 @@ ScriptsOnlyBuild:
     className: ComplexThrowable
   - hash:
       serializedVersion: 2
-      Hash: b8923517145888ead45d26bc87c87359
+      Hash: be74078d9cdec13bf835693171089c9b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: GrabObject
+    className: GoGo
   - hash:
       serializedVersion: 2
       Hash: 76056c447cc3c6f6ef56bfcaed33514e
@@ -1133,7 +1122,7 @@ ScriptsOnlyBuild:
     className: OVRPlatformMenu
   - hash:
       serializedVersion: 2
-      Hash: 7f145dd8858c85458188c3733bb8fe04
+      Hash: c87fd59886017421117c82d5738e8ad2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FlexiblePointer
@@ -1151,7 +1140,7 @@ ScriptsOnlyBuild:
     className: OVRHeadsetEmulator
   - hash:
       serializedVersion: 2
-      Hash: 6750e4bc491272c2feceb218beb0853c
+      Hash: 40406ee6a12da42737f3730f5e37d72d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FishingReelSelectSendToTesterController
@@ -1169,7 +1158,7 @@ ScriptsOnlyBuild:
     className: TeleportPoint
   - hash:
       serializedVersion: 2
-      Hash: 213ef6064f3765da839c9607f671ebb9
+      Hash: 3973377f9b61ded771e125bd318813ea
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SquadMenu
@@ -1193,13 +1182,13 @@ ScriptsOnlyBuild:
     className: OVRLipSyncSequence
   - hash:
       serializedVersion: 2
-      Hash: d46bf02823d9fd3a7eaca4c32fd9b48e
+      Hash: 5f603031df4f412519943b04d1265c08
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: HapticRack
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 0b6d94cf4cf48c53bd06203b48bda696
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SerialSelectionModeController
@@ -1217,13 +1206,13 @@ ScriptsOnlyBuild:
     className: OvrAvatarTouchController
   - hash:
       serializedVersion: 2
-      Hash: 1810601ba7ca9d459348d2825f23f997
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpindleInteractor
   - hash:
       serializedVersion: 2
-      Hash: c1bd13a2235a2e058c852978ab359497
+      Hash: 50a050ff5927d1d51d737411248b3309
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BubbleCursor
@@ -1253,13 +1242,13 @@ ScriptsOnlyBuild:
     className: ONSPReflectionZone
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ImagePlane_StickyHand_Controller
   - hash:
       serializedVersion: 2
-      Hash: 4ee2e57b235b230ce3b86306aee377c6
+      Hash: 4ff8d04dc9e367c27ed6480cc6543d1a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: iSithSelectAndSendToController
@@ -1295,7 +1284,7 @@ ScriptsOnlyBuild:
     className: BubbleCursor2D
   - hash:
       serializedVersion: 2
-      Hash: 7d60b1fef3607377096713ebe110e9ab
+      Hash: 992a6e5b432e59db3adfded46591e434
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: InteractableHoverEvents
@@ -1313,7 +1302,7 @@ ScriptsOnlyBuild:
     className: LinearBlendshape
   - hash:
       serializedVersion: 2
-      Hash: 44d41be3debfcf1cf7f54b6c8a2f4881
+      Hash: ee9ab56439a4d0460829c2a4c3a741be
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DepthRay
@@ -1349,10 +1338,10 @@ ScriptsOnlyBuild:
     className: OVRDebugInfo
   - hash:
       serializedVersion: 2
-      Hash: 96eb1d1b1564ce983f25bd3d5e5a4f81
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: FlashlightSelection
+    className: FlashlightInteractor
   - hash:
       serializedVersion: 2
       Hash: dacb14f839d4c9f7cc865626dc4d227b
@@ -1379,7 +1368,7 @@ ScriptsOnlyBuild:
     className: AppManagerVR
   - hash:
       serializedVersion: 2
-      Hash: 97ace6213ad0f149b0917a4c669c6ca3
+      Hash: d4020bafcd3ccbb5601a6e6c8ac78be0
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: ScrollRect
@@ -1391,7 +1380,7 @@ ScriptsOnlyBuild:
     className: CallbackRunner
   - hash:
       serializedVersion: 2
-      Hash: 6fdd3214eef47b090e69d9fea5419c89
+      Hash: 0abfef529550f977583312676c607f35
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ScaledWorldSelectAndSendToController
@@ -1409,7 +1398,7 @@ ScriptsOnlyBuild:
     className: WIMController
   - hash:
       serializedVersion: 2
-      Hash: 8d66ebc702bd532b954ffedaa1966a56
+      Hash: 7a12ed9bdfc3ada303567908d323da90
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: DepthRaySelectAndSendToTesterController
@@ -1433,7 +1422,7 @@ ScriptsOnlyBuild:
     className: OVRResetOrientation
   - hash:
       serializedVersion: 2
-      Hash: dd675ec981c8a017c5e73adcc5ad57fe
+      Hash: e29631f652f775943669ace33ebf0f52
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleHighlightFromBendcast
@@ -1445,13 +1434,13 @@ ScriptsOnlyBuild:
     className: P2PNetworkBall
   - hash:
       serializedVersion: 2
-      Hash: 5cc7ade165b2310a4a585d12c53a89e5
+      Hash: e2702b6532a877ab077a690037cea73f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ImagePlane_FramingHands
   - hash:
       serializedVersion: 2
-      Hash: e36d75213d316cc9ecc5b40f7294fdc6
+      Hash: 93ebc87acecc93e90b58b33f2f6e9fcd
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ScaledWorldGrab
@@ -1493,7 +1482,7 @@ ScriptsOnlyBuild:
     className: NetworkManager
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 7f962cfeea4b889fe1e7ab60930e8905
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FlexiblePointerController
@@ -1511,7 +1500,7 @@ ScriptsOnlyBuild:
     className: OVRHandTest
   - hash:
       serializedVersion: 2
-      Hash: 978892ed35c0a8d0ec85d7efb784d803
+      Hash: e9c0e6ad1d03e6854e44db3e9192182b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Flashlight
@@ -1547,7 +1536,7 @@ ScriptsOnlyBuild:
     className: ItemPackage
   - hash:
       serializedVersion: 2
-      Hash: 1b35d69b49aa4fc59ec89428f820a68d
+      Hash: b672f38eeb0106f8809ad01a97149c50
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GoGoSelectSendToTesterController
@@ -1583,19 +1572,25 @@ ScriptsOnlyBuild:
     className: LinearMapping
   - hash:
       serializedVersion: 2
+      Hash: 2ec63da723b5b948fd88bbbd7832b36e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SimpleHighlight
+  - hash:
+      serializedVersion: 2
       Hash: 45f2a4e63a8b43166e3f85c4d543f00d
     assemblyName: Oculus.VR.dll
     namespaceName: 
     className: OVRSceneLoader
   - hash:
       serializedVersion: 2
-      Hash: 136285f260a00eb6aa6c280787f602e3
+      Hash: a1ca17d19b8ef94b39a143e7fa0875e4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BendcastSelectSendToTesterController
   - hash:
       serializedVersion: 2
-      Hash: 01742c247bf2711359261f27a89c6687
+      Hash: b1d4845d55849b3829b5281d78bcd496
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HOMERSelectAndSendToController
@@ -1625,7 +1620,7 @@ ScriptsOnlyBuild:
     className: OVRLipSyncContextCanned
   - hash:
       serializedVersion: 2
-      Hash: b7ada47a529dfda414e0db86521039b1
+      Hash: 34660ed563d73fc3d971af18faffb98a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Raycasting
@@ -1655,13 +1650,13 @@ ScriptsOnlyBuild:
     className: OVRLipSyncContextMorphTarget
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BothHandController
   - hash:
       serializedVersion: 2
-      Hash: 7add30ced0b51c1b3f4907ca61873380
+      Hash: a5d4acba29db2d1c7f70de5fc435c1fc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HOMER
@@ -1697,7 +1692,7 @@ ScriptsOnlyBuild:
     className: OVRCubemapCapture
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 0b6d94cf4cf48c53bd06203b48bda696
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SphereCastingController
@@ -1721,7 +1716,7 @@ ScriptsOnlyBuild:
     className: TextContainer
   - hash:
       serializedVersion: 2
-      Hash: 840c6a06c661abdd3679f66be362b80b
+      Hash: fb5315ee48393cb1fd8382b0d33d9ca4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PRISMMovementController
@@ -1733,7 +1728,7 @@ ScriptsOnlyBuild:
     className: DestroyOnTriggerEnter
   - hash:
       serializedVersion: 2
-      Hash: 82dab56ff8d102b71e61a61548eeeaa7
+      Hash: 018d4f259f04257898a67e4ea48357c6
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: ItemPackageSpawner
@@ -1745,7 +1740,7 @@ ScriptsOnlyBuild:
     className: PRISMSelectAndSendToController
   - hash:
       serializedVersion: 2
-      Hash: 516824a435828eadd660ef2f1658a48e
+      Hash: 5f1752ed2092162f016c19510c28a8b9
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Button
@@ -1763,7 +1758,7 @@ ScriptsOnlyBuild:
     className: ImagePlane_FramingHands_Controller
   - hash:
       serializedVersion: 2
-      Hash: 92da9881aed190e8bb74661bcd74aa2c
+      Hash: feb9a5a121d15fa3654d4e50a5233045
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: RawImage
@@ -1865,7 +1860,7 @@ ScriptsOnlyBuild:
     className: GuardianBoundaryDisplay
   - hash:
       serializedVersion: 2
-      Hash: 1528fe5f6d0da3db3adbeee721705bfc
+      Hash: 1acefecd8bcf9dc1ae8b8b2739152c78
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleHighlightFromFlashlight
@@ -1943,19 +1938,13 @@ ScriptsOnlyBuild:
     className: SteamVR_Skybox
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 0b6d94cf4cf48c53bd06203b48bda696
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ARMController
   - hash:
       serializedVersion: 2
-      Hash: 5ada96c5bcf6eb430b7dfe1f3035b9b3
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: HookObject
-  - hash:
-      serializedVersion: 2
-      Hash: ae4e14bd096aec837d639266da9cebe7
+      Hash: fdaa947974d8085eb8a952498bc183d5
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SphereCasting
@@ -1991,13 +1980,13 @@ ScriptsOnlyBuild:
     className: OVRLipSyncContext
   - hash:
       serializedVersion: 2
-      Hash: 12e64d607873da15ad3f833620350d51
+      Hash: 783f593b9380cf72d0f7ebfd4a0d4bcd
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: InputField
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FishingReelController
@@ -2015,16 +2004,10 @@ ScriptsOnlyBuild:
     className: OVRWaitCursor
   - hash:
       serializedVersion: 2
-      Hash: 3f8d7b92a6be3c715e55d5cfa7cc8384
+      Hash: c9a8b80298a116835b51ba1cf9284367
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalReceiver
-  - hash:
-      serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: BendcastController
   - hash:
       serializedVersion: 2
       Hash: b36223912f62fae2a6038e95251fe57d
@@ -2141,7 +2124,7 @@ ScriptsOnlyBuild:
     className: PlatformManager
   - hash:
       serializedVersion: 2
-      Hash: 04a6ad6dfabd9a313c371444dda87ec5
+      Hash: e39bc2fb499b7b96a1d5347552fb5e25
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AperatureSelectionController
@@ -2153,7 +2136,7 @@ ScriptsOnlyBuild:
     className: DestroyOnDetachedFromHand
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ScaledWorldGrabController
@@ -2180,6 +2163,12 @@ ScriptsOnlyBuild:
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
+    className: ISithInteractor
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
     className: OvrAvatarSettingsEditor
   - hash:
       serializedVersion: 2
@@ -2189,7 +2178,7 @@ ScriptsOnlyBuild:
     className: PoseEditHelper
   - hash:
       serializedVersion: 2
-      Hash: c15dd0e3289a870c552d684461f8e1ce
+      Hash: 5bf39070dc8ee62d2ec590b043d97c82
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleHighlightFromFlexiblePointer
@@ -2213,7 +2202,7 @@ ScriptsOnlyBuild:
     className: ArrowHand
   - hash:
       serializedVersion: 2
-      Hash: b7ada47a529dfda414e0db86521039b1
+      Hash: 34660ed563d73fc3d971af18faffb98a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FishingReel
@@ -2243,19 +2232,19 @@ ScriptsOnlyBuild:
     className: SteamVR_SphericalProjection
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BubbleCursorController
   - hash:
       serializedVersion: 2
-      Hash: 2d6609798b6762e866298a0660b326a6
+      Hash: b85bcacefb9a6ca96dd2a2ecb9150050
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PRISMMovement
   - hash:
       serializedVersion: 2
-      Hash: 500da1a73f31da1c32aa63e5ced604b2
+      Hash: 1e7dc511cb00740c257cd669eb315e40
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AperatureSelection
@@ -2273,7 +2262,7 @@ ScriptsOnlyBuild:
     className: DebugUIBuilder
   - hash:
       serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HOMERController
@@ -2289,12 +2278,6 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: Balloon
-  - hash:
-      serializedVersion: 2
-      Hash: 839588aac6421773c8692d132d113c0c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ScrollingTechnique
   - hash:
       serializedVersion: 2
       Hash: 25c426f94768dd848da129dbfa3f5e2d
@@ -2315,13 +2298,13 @@ ScriptsOnlyBuild:
     className: PipeSystem
   - hash:
       serializedVersion: 2
-      Hash: 9b82c8fa6a9414554e613438be58b6b8
+      Hash: 4aa309b8cea7299aae5a2ed7285c83dc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ARMLaser
   - hash:
       serializedVersion: 2
-      Hash: 83cd9800b27188ccf99990581619fa4d
+      Hash: f8bb2cc79349b96e5ecea34d34245dbd
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FlashlightSelectSendToTesterController
@@ -2351,13 +2334,13 @@ ScriptsOnlyBuild:
     className: ColorPicker
   - hash:
       serializedVersion: 2
-      Hash: c2cd3f3cb37715f706ebfab9ed62e446
+      Hash: f2586378569532ad3156b6696c87103d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpindleSelectAndSendToController
   - hash:
       serializedVersion: 2
-      Hash: ee0cef6caaac8ae485bfa82f000f0f7b
+      Hash: 3b760e6526e13f7504f59e210145899a
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TextMeshProUGUI
@@ -2375,7 +2358,7 @@ ScriptsOnlyBuild:
     className: TesterController
   - hash:
       serializedVersion: 2
-      Hash: ddc0129fc514dc0baf7e68c65718d4cf
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ScaledWorldDisableEnableRigidOnPickup
@@ -2393,10 +2376,16 @@ ScriptsOnlyBuild:
     className: GazeTargetSpawner
   - hash:
       serializedVersion: 2
-      Hash: 516824a435828eadd660ef2f1658a48e
+      Hash: 5f1752ed2092162f016c19510c28a8b9
     assemblyName: Unity.Analytics.DataPrivacy.dll
     namespaceName: UnityEngine.Analytics
     className: DataPrivacyButton
+  - hash:
+      serializedVersion: 2
+      Hash: 05b0b7cd4ee6e93436d4145b2ca6287a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SingleHandFlexiblePointer
   - hash:
       serializedVersion: 2
       Hash: f8438efc679de058330bd3e038df1378
@@ -2435,12 +2424,6 @@ ScriptsOnlyBuild:
     className: GraphicRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 2b53f59862431a49bddb49554a56f085
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: PickupObjects
-  - hash:
-      serializedVersion: 2
       Hash: 34c971ccf5a4d4c276f7753251cba95d
     assemblyName: Oculus.VR.dll
     namespaceName: 
@@ -2471,13 +2454,13 @@ ScriptsOnlyBuild:
     className: Unparent
   - hash:
       serializedVersion: 2
-      Hash: 6f8a7ff2f25a1b041c16c9756bdc968d
+      Hash: a54ac435e705ecafe6052e459e21ed02
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GoGoShadow
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleVirtualHandController
@@ -2487,12 +2470,6 @@ ScriptsOnlyBuild:
     assemblyName: Oculus.VR.Editor.dll
     namespaceName: 
     className: OVRConfig
-  - hash:
-      serializedVersion: 2
-      Hash: 2808a4dd6dc85d972a869d63edf646bd
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Controller
   - hash:
       serializedVersion: 2
       Hash: 8b9f42d72019bde2f9fe0667762eaff3
@@ -2531,7 +2508,7 @@ ScriptsOnlyBuild:
     className: ImagePlaneFramingHandsDisableRigidOnPickup
   - hash:
       serializedVersion: 2
-      Hash: f91cb688355a2c7124846064fa9b7918
+      Hash: 96da068d974cf8acaa9fb2f198864139
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: ArcheryTarget
@@ -2633,7 +2610,7 @@ ScriptsOnlyBuild:
     className: OvrAvatarHand
   - hash:
       serializedVersion: 2
-      Hash: fbc24594e93d561c7ee8a9c9c1156153
+      Hash: bac6690ec003cb2122f768a06c544b98
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleHighlightFromSpindle
@@ -2663,13 +2640,25 @@ ScriptsOnlyBuild:
     className: Dock
   - hash:
       serializedVersion: 2
+      Hash: 7f962cfeea4b889fe1e7ab60930e8905
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TwoHandController
+  - hash:
+      serializedVersion: 2
+      Hash: 565f744f65c6e5b6eade13a3b0141b56
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ControllerEventSystem
+  - hash:
+      serializedVersion: 2
       Hash: e6ae40841db498b6e673877ac45ad208
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
     className: NetworkAnimator
   - hash:
       serializedVersion: 2
-      Hash: e6df19155a08b73f140a73917cebcc77
+      Hash: 3009d5bb832d1f829b886dbec2a2ab5a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BubbleSelection
@@ -2687,13 +2676,13 @@ ScriptsOnlyBuild:
     className: Pipes
   - hash:
       serializedVersion: 2
-      Hash: 8014cef86a484e9df6012c143a62bfe4
+      Hash: 1a16daecbd24553695431674de0b3db9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FlashlightController
   - hash:
       serializedVersion: 2
-      Hash: 6ac223d1e09017fcb3e95f6e4eb2ea23
+      Hash: 65aa1eed000a6822a5aba6155c16e80a
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
     className: CircularDrive
@@ -2705,7 +2694,7 @@ ScriptsOnlyBuild:
     className: ImagePlanePointing
   - hash:
       serializedVersion: 2
-      Hash: 5b919040df58f7a0dc07713df49e542b
+      Hash: c4f7b21bf8c3845597900ae7992a1fd0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleHighlightFromiSith
@@ -2717,7 +2706,7 @@ ScriptsOnlyBuild:
     className: LipSyncDemo_SetCurrentTarget
   - hash:
       serializedVersion: 2
-      Hash: 5372ed2ce39229b1ac910757999a8be2
+      Hash: df434544c9f7b33d1cc7e635b180d279
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TextMeshPro
@@ -2735,7 +2724,7 @@ ScriptsOnlyBuild:
     className: Laser
   - hash:
       serializedVersion: 2
-      Hash: 556e60bc3ffb25747673c23c5c7c07c0
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PRISM
@@ -2771,12 +2760,6 @@ ScriptsOnlyBuild:
     className: FallbackCameraController
   - hash:
       serializedVersion: 2
-      Hash: 839588aac6421773c8692d132d113c0c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Technique
-  - hash:
-      serializedVersion: 2
       Hash: b8c7297a93272bb07020274d63eb3934
     assemblyName: Assembly-CSharp.dll
     namespaceName: Valve.VR.InteractionSystem
@@ -2801,7 +2784,7 @@ ScriptsOnlyBuild:
     className: NetworkManagerHUD
   - hash:
       serializedVersion: 2
-      Hash: 3f52d34ea17dfc771004b80f5d492445
+      Hash: a63fc1a3b035e5a0b5839cd7f7b3086e
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: EventTrigger
@@ -2813,25 +2796,19 @@ ScriptsOnlyBuild:
     className: TMP_SubMesh
   - hash:
       serializedVersion: 2
-      Hash: 839588aac6421773c8692d132d113c0c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SingleHandTechnique
-  - hash:
-      serializedVersion: 2
-      Hash: 7090bc1e5ccaec2a9d0d1335ed8cee99
+      Hash: 20eeaeae829475b5e354d1f626c51a2b
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner
     className: PlaymodeTestsController
   - hash:
       serializedVersion: 2
-      Hash: 0852116b29df10ce3f9156850d406521
+      Hash: 2aeeec1b1a144c469cd2d37776bc2315
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Dropdown
   - hash:
       serializedVersion: 2
-      Hash: 31278783e6f85261c1556d035e458531
+      Hash: 6429d011a7336fb83de57892955b07bb
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PalmTrigger
@@ -2861,7 +2838,7 @@ ScriptsOnlyBuild:
     className: SteamVR_Frustum
   - hash:
       serializedVersion: 2
-      Hash: 3ab7272a8b7d3ea5a142e0c9b6aae63b
+      Hash: aa88ae22474df55295327e4ee99e5a24
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Toggle
@@ -2873,7 +2850,7 @@ ScriptsOnlyBuild:
     className: SignalEmitter
   - hash:
       serializedVersion: 2
-      Hash: 3f931fc3187101b86cd71bf1a1576fba
+      Hash: 50a050ff5927d1d51d737411248b3309
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SimpleVirtualHand
@@ -2897,7 +2874,7 @@ ScriptsOnlyBuild:
     className: VREyeRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 85c97bcc5f84eeb0999d75902803b99d
+      Hash: 7072231382eb3c4871b3dd75ad0227e1
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Slider
@@ -2927,22 +2904,22 @@ ScriptsOnlyBuild:
     className: SimpleHighlightFromBubble
   - hash:
       serializedVersion: 2
-      Hash: 5d0ba0c0105bfc3af7bc896a9f56816b
+      Hash: 24a112db13b5db4ed57f2cf26ee80fb6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MovingObject
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 0b6d94cf4cf48c53bd06203b48bda696
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpherecastingExpController
   - hash:
       serializedVersion: 2
-      Hash: 93486a4b9eb39055e0eddc9fbde26538
+      Hash: 720d7be4fa8566f0a71d8cf60bf4a922
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: iSithController
+    className: ISithController
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
@@ -2951,11 +2928,17 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
-      Hash: 7899f00be827a6e6f58b8c57e8ea151b
+      Hash: 81ad11b54352055a8d170221bcc2358b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: RotationPRISM
+    className: PRISMRotation
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SphereCastInteractor
   platform: 13
   scenePathNames:
-  - Assets/3DUITK/Techniques/Depth Ray/Scenes/DepthRayScene.unity
-  playerPath: C:/Users/Jesse/Desktop/Thesis/BendCast3DJoystick.apk
+  - Assets/3DUITK/Techniques/Bendcast/Scenes/Bencast1.unity
+  playerPath: /Users/jesse/Thesis/BendCast.apk

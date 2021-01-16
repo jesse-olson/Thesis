@@ -24,38 +24,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SimpleHighlightFromGrabObject : MonoBehaviour {
-
-	
 	public Material highlightMaterial;
 	private Material defaultMaterial;
 
-	public GrabObject selectObject;
+	public GoGo grabObject;
 
 	// Use this for initialization
 	void Start () {
-		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.onHover.AddListener(highlight);
-		selectObject.onUnhover.AddListener(unHighlight);	
-		selectObject.onSelectObject.AddListener(playSelectSound);	
+		defaultMaterial = GetComponent<Renderer>().material;
+        grabObject.onHover		.AddListener(Highlight);
+        grabObject.onUnhover	.AddListener(Unhighlight);
+        grabObject.onSelectObject.AddListener(PlaySelectSound);	
 	}
 
-	void highlight() {
-		if(selectObject.collidingObject == this.gameObject && selectObject.selection == null) {
+    private void Highlight() {
+		if(grabObject.highlightedObject == gameObject && !grabObject.selected) 
+        {
 			print("highlight");
-			this.GetComponent<Renderer>().material = highlightMaterial;
+			GetComponent<Renderer>().material = highlightMaterial;
 		}		
 	}
 
-	void unHighlight() {
-		if(selectObject.collidingObject == this.gameObject) {
+    private void Unhighlight() {
+		if(grabObject.highlightedObject == gameObject) {
 			print("unhighlight");
-			this.GetComponent<Renderer>().material = defaultMaterial;
+			GetComponent<Renderer>().material = defaultMaterial;
 		}		
 	}
 
-	void playSelectSound() {
-		if(selectObject.collidingObject == this.gameObject) {
-			this.GetComponent<AudioSource>().Play();
+    private void PlaySelectSound() {
+		if(grabObject.selectedObject == gameObject) {
+			GetComponent<AudioSource>().Play();
 		}	
 	}
 }

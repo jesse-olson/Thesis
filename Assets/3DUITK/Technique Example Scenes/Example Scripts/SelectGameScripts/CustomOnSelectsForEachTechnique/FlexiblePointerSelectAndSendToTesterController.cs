@@ -11,7 +11,7 @@ public class FlexiblePointerSelectAndSendToTesterController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
+		controller = GetComponentInParent<TesterController>();
 	}
 	
 	// Update is called once per frame
@@ -21,9 +21,9 @@ public class FlexiblePointerSelectAndSendToTesterController : MonoBehaviour {
 
 	void tellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.selection == this.gameObject) {
+		if(selectObject.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 		}	
 	}
 }

@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Valve.VR;
+﻿using UnityEngine;
+
 [ExecuteInEditMode]
-public class BubbleCursorController : Controller {
-}
+public class BubbleCursorController : BothHandController {}

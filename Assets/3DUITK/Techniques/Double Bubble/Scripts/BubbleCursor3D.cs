@@ -17,123 +17,90 @@
 *  along with this program.If not, see<http://www.gnu.org/licenses/>.
 */
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using Valve.VR;
 
 public class BubbleCursor3D : ScrollingTechnique {
     private static readonly float MIN_RAD = 1f;
-    private static readonly float MIN_DIA = 2 * MIN_RAD;
 
     private GameObject[] interactableObjects; // In-game objects
     internal GameObject cursor;
-    private GameObject radiusBubble;
+    private  GameObject radiusBubble;
     internal GameObject objectBubble;
 
     public BubbleSelection bubbleSelection;
     
     public readonly float bubbleOffset = 0.6f;
 
-    public GameObject controllerRight;
     public GameObject controllerLeft;
+    public GameObject controllerRight;
     public GameObject cameraHead;
     
-    private bool pickedUpObject = false; //ensure only 1 object is picked up at a time
-	internal GameObject selectedObject;
-
-    private GameObject[] getInteractableObjects() {
-        GameObject[] AllSceneObjects = FindObjectsOfType<GameObject>();
-        List<GameObject> interactableObjects = new List<GameObject>();
-        foreach(GameObject obj in AllSceneObjects) {
-            if(obj.layer == Mathf.Log(interactionLayers.value, 2)) {
-                interactableObjects.Add(obj);
-            }
-        }
-        return interactableObjects.ToArray();
-    }
 
     void Awake() {
-        cursor = this.transform.Find("BubbleCursor").gameObject;
+        cursor       = transform.Find("BubbleCursor").gameObject;
         radiusBubble = cursor.transform.Find("RadiusBubble").gameObject;
-        objectBubble = this.transform.Find("ObjectBubble").gameObject;
+        objectBubble = transform.Find("ObjectBubble").gameObject;
 
-        InitializeControllers();
+        FindEventSystem();
+        //InitializeControllers();
 
         if (interactionType == InteractionType.Manipulation_UI) {
-            this.gameObject.AddComponent<SelectionManipulation>();
-            this.GetComponent<SelectionManipulation>().trackedObj = trackedObj;
+            gameObject.AddComponent<SelectionManipulation>();
+            GetComponent<SelectionManipulation>().trackedObj = trackedObj.gameObject;
         }
     }
 
     // Use this for initialization
-	void Start () {
-		interactableObjects = getInteractableObjects();
-		extendDistance = Vector3.Distance(trackedObj.transform.position, cursor.transform.position);
-	
-        cursor.transform.SetParent(trackedObj.transform);
+    void Start () {
+        interactableObjects = GetInteractableObjects();
+        extendDistance = Vector3.Distance(trackedObj.position, cursor.transform.position);
+    
+        cursor.transform.SetParent(trackedObj);
 
-        bubbleSelection.trackedObj = trackedObj;
+        //bubbleSelection.trackedObj = trackedObj.gameObject;
         bubbleSelection.cameraHead = cameraHead;
     }
 
     // Update is called once per frame
     void Update() {
-		if (bubbleSelection.inBubbleSelection == false) {
-			PadScrolling ();
+        if (bubbleSelection.inBubbleSelection == false) {
+            PadScrolling ();
 
-			GameObject[] closestObjects = FindClosestObjects();
+            GameObject[] closestObjects = FindClosestObjects();
 
-			//Different colliders
-			if (interactableObjects.Length >= 2) {
+            //Different colliders
+            if (interactableObjects.Length >= 2) {
                 float closestCircleRadius       = closestObjects[0].GetComponent<Renderer>().bounds.SqrDistance(cursor.transform.position);
                 float secondClosestCircleRadius = closestObjects[1].GetComponent<Renderer>().bounds.SqrDistance(cursor.transform.position);
 
-                float closestValue = 2 * Mathf.Min (closestCircleRadius, secondClosestCircleRadius);
+                float closestRadius = Mathf.Min (closestCircleRadius, secondClosestCircleRadius);
 
-                cursor.GetComponent<SphereCollider>().radius = closestValue / 2f;
-                if (cursor.GetComponent<SphereCollider>().radius < MIN_RAD)
-                {
-                    cursor.GetComponent<SphereCollider>().radius = MIN_RAD;
-                }
+                float newRadius = Mathf.Max(closestRadius, MIN_RAD);
 
-                radiusBubble.transform.localScale = closestValue * Vector3.one;
-                if (radiusBubble.transform.localScale.x < MIN_DIA)
-                {
-                    radiusBubble.transform.localScale = MIN_DIA * Vector3.one;
-                }
+                cursor.GetComponent<SphereCollider>().radius = newRadius;
 
-                if (closestCircleRadius < secondClosestCircleRadius) {
-					objectBubble.transform.localScale = Vector3.zero;
-				}
-                else {
-					objectBubble.transform.position   = closestObjects[0].transform.position;
-                    objectBubble.transform.localScale = closestObjects[0].transform.localScale + bubbleOffset * Vector3.one;
-				}
+                radiusBubble.transform.localScale = 2 * newRadius * Vector3.one;
 
-                if (bubbleSelection.GetSelectableObjects().Count > 1 && bubbleSelection.tempObjectStored == null)
-                {
-                    bubbleSelection.EnableMenu(bubbleSelection.GetSelectableObjects());
-                }
-                else
-                {
-                    PickupObject(closestObjects[0]);
-                }
+                objectBubble.SetActive(closestCircleRadius > secondClosestCircleRadius);
+                objectBubble.transform.position   = closestObjects[0].transform.position;
+                objectBubble.transform.localScale = closestObjects[0].transform.localScale + bubbleOffset * Vector3.one;
+
+                //if (bubbleSelection.GetSelectableObjects().Count > 1 && bubbleSelection.tempObjectStored == null)
+                //{
+                //    bubbleSelection.EnableMenu(bubbleSelection.GetSelectableObjects());
+                //}
+                //else
+                //{
+                //    PickupObject(closestObjects[0]);
+                //}
             }
-		}
-	}
+        }
+    }
 
-    /// <summary>
-    /// Loops through interactable gameObjects within the scene & stores them in a 2D array.
-    ///     -2D array is used to keep store gameObjects distance & also keep track of their index. eg [0][0] returns objects distance [0][1] returns objects index.
-    /// Using Linq 2D array is sorted based on closest distances
-    /// </summary>
-    /// <returns>2D Array which contains order of objects with the closest distances & their allocated index</returns>
-	private GameObject[] FindClosestObjects()
+
+    private GameObject[] FindClosestObjects()
     {
         float shortestDistance = float.MaxValue;
         float secondShortestDistance = float.MaxValue;
@@ -160,37 +127,66 @@ public class BubbleCursor3D : ScrollingTechnique {
         }
         return toReturn;
     }
+
     
-
-	void PickupObject(GameObject obj) {
-		if (ControllerEvents() == ControllerState.TRIGGER_DOWN && pickedUpObject == false) {
-            pickedUpObject = true;
-            switch (interactionType)
-            {
-                case InteractionType.Selection:
-                    selectedObject = obj;
-                    break;
-
-                case InteractionType.Manipulation_Movement:
-                case InteractionType.Manipulation_Full:
-                    obj.transform.SetParent(cursor.transform);
-                    selectedObject = obj; // Storing the object as an instance variable instead of using the obj parameter fixes glitch of it not properly resetting on TriggerUp
-                    break;
-
-                case InteractionType.Manipulation_UI:
-                    selectedObject = obj;
-                    this.GetComponent<SelectionManipulation>().selectedObject = obj;
-                    break;
+    private GameObject[] GetInteractableObjects() {
+        GameObject[] AllSceneObjects = FindObjectsOfType<GameObject>();
+        interactableObjects = new GameObject[0];
+        
+        foreach(GameObject obj in AllSceneObjects) {
+            if(1 << obj.layer == interactionLayers) {
+                interactableObjects.Append(obj);
             }
-            onSelectObject.Invoke();
-		}
-		else if (ControllerEvents() == ControllerState.TRIGGER_UP && pickedUpObject == true) {
-			if(interactionType == InteractionType.Manipulation_Movement || interactionType == InteractionType.Manipulation_Full) {
-				selectedObject.transform.SetParent(null);
-				bubbleSelection.tempObjectStored = null;
-                onDropObject.Invoke();
-			}
-			pickedUpObject = false;
-		}
-	}
+        }
+        return interactableObjects.ToArray();
+    }
+
+    public override void SelectObject()
+    {
+        selected = true;
+        selectedObject = highlightedObject;
+        switch (interactionType)
+        {
+            case InteractionType.Selection:
+                break;
+
+            case InteractionType.Manipulation_Movement:
+            case InteractionType.Manipulation_Full:
+                selectedObject.transform.SetParent(cursor.transform);
+                break;
+
+            case InteractionType.Manipulation_UI:
+                if (!GetComponent<SelectionManipulation>().inManipulationMode)
+                    GetComponent<SelectionManipulation>().selectedObject = selectedObject;
+                break;
+        }
+        onSelectObject.Invoke();
+    }
+
+    public override void ReleaseObject()
+    {
+        switch (interactionType) {
+            case InteractionType.Manipulation_Movement:
+            case InteractionType.Manipulation_Full:
+                selectedObject.transform.SetParent(null);
+                break;
+
+            default:
+                // Do nothing
+                break;
+        }
+        onDropObject.Invoke();
+        selected = false;
+        selectedObject = null;
+    }
+
+    protected override void Enable()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void Disable()
+    {
+        throw new System.NotImplementedException();
+    }
 }

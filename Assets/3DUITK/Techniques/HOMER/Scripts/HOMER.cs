@@ -1,7 +1,8 @@
 ﻿/* HOMER implementation by Kieran May
  * University of South Australia
  * 
- * The developed HOMER algorithm was based off: (pg 34-35) https://people.cs.vt.edu/~bowman/3dui.org/course_notes/siggraph2001/basic_techniques.pdf 
+ * The developed HOMER algorithm was based off: (pg 34-35) 
+ * https://people.cs.vt.edu/~bowman/3dui.org/course_notes/siggraph2001/basic_techniques.pdf 
  * 
  *  Copyright(C) 2019 Kieran May
  *
@@ -19,134 +20,110 @@
  *  along with this program.If not, see<http://www.gnu.org/licenses/>.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using Valve.VR;
+/* 
+ * TODO: I feel like this technique will work better if we were to 
+ * use the shoulder rather than the head as the point from which we project.
+ */
 
-public class HOMER : Technique {    
-    void Awake()
-    {
-        //cameraHead = GameObject.Find("Camera (eye)");
-        mirroredCube = this.transform.Find("Mirrored Cube").gameObject;
-        InitializeControllers();
-    }
+using UnityEngine;
+
+public class HOMER : Technique {
+    private static readonly float RAY_DIST = 100.0f;
+
+    public  GameObject handPrefab;  // Object to be used as the stand in for a virtual hand
+
+    private float virtToRealRatio;  // The distance ratio between the virtual and real hands
+    private GameObject virtualHand; // Object representing the virtual hand. Mainly used for visual feedback. May be removed later.
+    private Transform  oldParent;   // The original transform parent of the selected object.
+
+    public GameObject laserPrefab;
+    private GameObject laser;
 
     // Use this for initialization
     void Start()
     {
-        laser = Instantiate(laserPrefab);
-        laserTransform = laser.transform;
+        FindEventSystem();
+
+        laser = Instantiate(laserPrefab) as GameObject;
+        laser.transform.SetParent(trackedObj);
+
+        virtualHand = Instantiate(handPrefab) as GameObject;
+        virtualHand.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-#if SteamVR_Legacy
-        controller = SteamVR_Controller.Input((int)trackedObj.index);
-#endif
-        if (!objSelected)
+        if (!selected)
         {
-            MoveMirroredCube();
             CastRay();
         }
-        else
-        {
-            HomerFormula();
-        }
+        MoveVirtualHand();
     }
 
-    private void ShowLaser()
+    private void MoveVirtualHand()
     {
-        laser.SetActive(true);
-        mirroredCube.SetActive(true);
-    }
+        Vector3 handPos = (trackedObj.position - head.transform.position); // Physical hand position relative to head
+        Vector3 virtPos = virtToRealRatio * handPos;    // Virtual  hand position relative to head
 
-    private void ShowLaser(RaycastHit hit) {
-        Vector3 hitPoint = hit.point;
-
-        mirroredCube.SetActive(false);
-        laser.SetActive(true);
-        laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
-        laserTransform.LookAt(hitPoint);
-        laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y, hit.distance);
-
-        if (interactionLayers == (interactionLayers | (1 << hit.transform.gameObject.layer))) {
-            hoveredObject = hit.transform.gameObject;
-            onUnhover.Invoke();
-            onHover.Invoke();
-            InstantiateObject(hit.transform.gameObject);
-        }
-    }
-
-    
-    float Disth = 0f;
-    float Disto = 0f;
-    bool objSelected = false;
-    private GameObject virtualHand;
-    public GameObject objectInHand;
-    public GameObject handPrefab;
-    private Transform oldParent;
-    public GameObject hoveredObject;
-
-    private void InstantiateObject(GameObject obj) {
-        if (ControllerEvents() == ControllerState.TRIGGER_DOWN) {
-            virtualHand = Instantiate(handPrefab);
-            virtualHand.transform.position = obj.transform.position;
-            virtualHand.SetActive(true);
-
-            objectInHand = obj;
-            oldParent = objectInHand.transform.parent;
-            objectInHand.transform.SetParent(virtualHand.transform);
-            objSelected = true;
-
-            laser.SetActive(false);
-            onSelectObject.Invoke();
-
-            Disth = Vector3.Distance(trackedObj.transform.position, head.transform.position);
-            Disto = Vector3.Distance(obj.transform.position, head.transform.position);
-        }
-    }
-
-    private void HomerFormula() {
-        virtualHand.transform.localRotation = trackedObj.transform.localRotation;
-
-        float currentHandDist = Vector3.Distance(trackedObj.transform.position, head.transform.position); // Physical hand distance
-        float currentVirtualHandDist = currentHandDist * (Disto / Disth); // Virtual hand distance
-        Vector3 currentTrackedDirection = (trackedObj.transform.position - head.transform.position);
-        virtualHand.transform.position = head.transform.position + currentVirtualHandDist * currentTrackedDirection;
-
-        if (ControllerEvents() == ControllerState.TRIGGER_DOWN) {
-            objSelected = false;
-            Destroy(virtualHand);
-            objectInHand.transform.SetParent(oldParent);
-            onDropObject.Invoke();
-        }
+        virtualHand.transform.position = head.transform.position + virtPos;
+        virtualHand.transform.rotation = trackedObj.rotation;
     }
 
     private void CastRay() {
-        ShowLaser();
+        Ray  ray    = new Ray(trackedObj.position, trackedObj.forward);
+        bool didHit = Physics.Raycast(ray, out RaycastHit hit, RAY_DIST, interactionLayers);
 
-        if (Physics.Raycast(trackedObj.transform.position, trackedObj.transform.forward, out RaycastHit hit, 100))
-        {
-            ShowLaser(hit);
-        }
-        else
-        {
-            onUnhover.Invoke();
-        }
+        float laserScale = didHit ? hit.distance : RAY_DIST;
+        laser.transform.localScale = new Vector3(1, 1, laserScale);
+
+        GameObject hitObject = didHit ? hit.transform.gameObject : null;
+        HighlightObject(hitObject);
     }
 
-    void MoveMirroredCube() {
-        //getControllerPosition();
-        Vector3 mirroredPos   = trackedObj.transform.position;
-        Vector3 controllerPos = trackedObj.transform.forward;
-        float distance_formula_on_vector = controllerPos.magnitude;
+    public override void SelectObject()
+    {
+        if (selected || !highlighted) return;
+        laser.SetActive(false);     // Turn off laser
+        virtualHand.SetActive(true);
 
-        mirroredPos += (100f / (distance_formula_on_vector)) * controllerPos;
+        selected = true;
+        selectedObject = highlightedObject;
 
-        mirroredCube.transform.position = mirroredPos;
-        mirroredCube.transform.rotation = trackedObj.transform.rotation;
+        virtualHand.transform.position = selectedObject.transform.position;
+
+        float handDist = Vector3.Distance(head.transform.position, trackedObj.position);
+        float virtDist = Vector3.Distance(head.transform.position, selectedObject.transform.position);
+
+        virtToRealRatio = virtDist / handDist;
+
+        oldParent = selectedObject.transform.parent;
+
+        selectedObject.transform.SetParent(virtualHand.transform);
+        selectedObject.transform.localPosition = Vector3.zero;
+        selectedObject.transform.localRotation = Quaternion.identity;
+
+        onSelectObject.Invoke();
+    }
+
+    public override void ReleaseObject()
+    {
+        if (!selected) return;
+        laser.SetActive(true);
+        virtualHand.SetActive(false);
+
+        onDropObject.Invoke();
+        selected = false;
+        selectedObject.transform.SetParent(oldParent);
+    }
+
+    protected override void Enable()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    protected override void Disable()
+    {
+        //throw new System.NotImplementedException();
     }
 }

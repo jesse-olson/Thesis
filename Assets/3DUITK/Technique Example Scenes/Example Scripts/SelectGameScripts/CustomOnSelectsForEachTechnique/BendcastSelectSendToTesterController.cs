@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BendcastSelectSendToTesterController : MonoBehaviour {
 
-	public Bendcast bendcast;
+	public BendCast bendcast;
 	private TesterController controller;
 
 	// Use this for initialization

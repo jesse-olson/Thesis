@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571336, b: 0.3069219, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -136,11 +136,11 @@ GameObject:
   m_Component:
   - component: {fileID: 18378093}
   - component: {fileID: 18378097}
+  - component: {fileID: 18378095}
   - component: {fileID: 18378096}
+  - component: {fileID: 18378094}
   - component: {fileID: 18378100}
   - component: {fileID: 18378098}
-  - component: {fileID: 18378095}
-  - component: {fileID: 18378094}
   - component: {fileID: 18378101}
   m_Layer: 8
   m_Name: Cube (4)
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &18378100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &18378101
 AudioSource:
   m_ObjectHideFlags: 0
@@ -524,11 +524,11 @@ GameObject:
   m_Component:
   - component: {fileID: 479885458}
   - component: {fileID: 479885457}
+  - component: {fileID: 479885455}
   - component: {fileID: 479885456}
+  - component: {fileID: 479885454}
   - component: {fileID: 479885452}
   - component: {fileID: 479885450}
-  - component: {fileID: 479885455}
-  - component: {fileID: 479885454}
   - component: {fileID: 479885453}
   m_Layer: 8
   m_Name: Cube (1)
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &479885452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,7 +564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &479885453
 AudioSource:
   m_ObjectHideFlags: 0
@@ -760,11 +760,11 @@ GameObject:
   m_Component:
   - component: {fileID: 484894832}
   - component: {fileID: 484894831}
+  - component: {fileID: 484894829}
   - component: {fileID: 484894830}
+  - component: {fileID: 484894828}
   - component: {fileID: 484894826}
   - component: {fileID: 484894824}
-  - component: {fileID: 484894829}
-  - component: {fileID: 484894828}
   - component: {fileID: 484894827}
   m_Layer: 8
   m_Name: Cube (2)
@@ -786,7 +786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &484894826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,7 +800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &484894827
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1053,18 +1053,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1892179450}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &627395991 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-    type: 3}
-  m_PrefabInstance: {fileID: 1381104580}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42b7e96f9ef08d4da2a5f2a788e0054, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &855236640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,11 +1156,11 @@ GameObject:
   m_Component:
   - component: {fileID: 891177389}
   - component: {fileID: 891177393}
+  - component: {fileID: 891177391}
   - component: {fileID: 891177392}
+  - component: {fileID: 891177390}
   - component: {fileID: 891177396}
   - component: {fileID: 891177394}
-  - component: {fileID: 891177391}
-  - component: {fileID: 891177390}
   - component: {fileID: 891177397}
   m_Layer: 8
   m_Name: Cube (6)
@@ -1283,7 +1271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &891177396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1297,7 +1285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &891177397
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1404,11 +1392,11 @@ GameObject:
   m_Component:
   - component: {fileID: 894191230}
   - component: {fileID: 894191234}
+  - component: {fileID: 894191232}
   - component: {fileID: 894191233}
+  - component: {fileID: 894191231}
   - component: {fileID: 894191237}
   - component: {fileID: 894191235}
-  - component: {fileID: 894191232}
-  - component: {fileID: 894191231}
   - component: {fileID: 894191238}
   m_Layer: 8
   m_Name: Cube (5)
@@ -1519,7 +1507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &894191237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1533,7 +1521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &894191238
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1640,11 +1628,11 @@ GameObject:
   m_Component:
   - component: {fileID: 918587149}
   - component: {fileID: 918587153}
+  - component: {fileID: 918587151}
   - component: {fileID: 918587152}
+  - component: {fileID: 918587150}
   - component: {fileID: 918587156}
   - component: {fileID: 918587154}
-  - component: {fileID: 918587151}
-  - component: {fileID: 918587150}
   - component: {fileID: 918587157}
   m_Layer: 8
   m_Name: Cube (3)
@@ -1755,7 +1743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &918587156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1769,7 +1757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &918587157
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1876,11 +1864,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1044456919}
   - component: {fileID: 1044456923}
+  - component: {fileID: 1044456921}
   - component: {fileID: 1044456922}
+  - component: {fileID: 1044456920}
   - component: {fileID: 1044456926}
   - component: {fileID: 1044456924}
-  - component: {fileID: 1044456921}
-  - component: {fileID: 1044456920}
   - component: {fileID: 1044456927}
   m_Layer: 8
   m_Name: Cube (7)
@@ -1991,7 +1979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &1044456926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2005,7 +1993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &1044456927
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2112,11 +2100,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1321088927}
   - component: {fileID: 1321088926}
+  - component: {fileID: 1321088924}
   - component: {fileID: 1321088925}
+  - component: {fileID: 1321088932}
   - component: {fileID: 1321088929}
   - component: {fileID: 1321088928}
-  - component: {fileID: 1321088924}
-  - component: {fileID: 1321088932}
   - component: {fileID: 1321088930}
   m_Layer: 8
   m_Name: Cube
@@ -2211,7 +2199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &1321088929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2225,7 +2213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &1321088930
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2348,11 +2336,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1338996198}
   - component: {fileID: 1338996202}
+  - component: {fileID: 1338996200}
   - component: {fileID: 1338996201}
+  - component: {fileID: 1338996199}
   - component: {fileID: 1338996205}
   - component: {fileID: 1338996203}
-  - component: {fileID: 1338996200}
-  - component: {fileID: 1338996199}
   - component: {fileID: 1338996206}
   m_Layer: 8
   m_Name: Cube (8)
@@ -2463,7 +2451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 1858734517}
+  selectObject: {fileID: 1381104581}
 --- !u!114 &1338996205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2477,7 +2465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightMaterial: {fileID: 2100000, guid: 6729a932de5127b419aacfd9be7dde0d, type: 2}
-  selectObject: {fileID: 627395991}
+  selectObject: {fileID: 1381104582}
 --- !u!82 &1338996206
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2585,43 +2573,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flashlight_Technique
       objectReference: {fileID: 0}
-    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: pointFrom
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: fingerPressToggleEnabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: interactionType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: controllerPicked
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: trackedObj
-      value: 
-      objectReference: {fileID: 570128220}
-    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: tipPrefab
-      value: 
-      objectReference: {fileID: 2383010686801960238, guid: 7b4674a8eaa28b845bf6fe09bdaf93e8,
-        type: 3}
-    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: palmPrefab
-      value: 
-      objectReference: {fileID: 5364837565047045099, guid: 6da134d5da958be4bb846e0a34f31771,
-        type: 3}
     - target: {fileID: 4462647340846496, guid: b2525b470226d424892b52140d4a1de0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2652,7 +2603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4462647340846496, guid: b2525b470226d424892b52140d4a1de0, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4462647340846496, guid: b2525b470226d424892b52140d4a1de0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2691,10 +2642,13 @@ PrefabInstance:
       propertyPath: controllerPicked
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114287082986208806, guid: b2525b470226d424892b52140d4a1de0,
-        type: 3}
-      propertyPath: objectAttachedTo
-      value: 
+    - target: {fileID: 1381104582, guid: b2525b470226d424892b52140d4a1de0, type: 3}
+      propertyPath: steamVR_Version
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1027894598381728, guid: b2525b470226d424892b52140d4a1de0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114624464056501392, guid: b2525b470226d424892b52140d4a1de0,
         type: 3}
@@ -2706,10 +2660,48 @@ PrefabInstance:
       propertyPath: trackedObj
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 1381104582, guid: b2525b470226d424892b52140d4a1de0, type: 3}
-      propertyPath: steamVR_Version
-      value: 3
+    - target: {fileID: 114287082986208806, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: objectAttachedTo
+      value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: pointFrom
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: fingerPressToggleEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: interactionType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: controllerPicked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: trackedObj
+      value: 
+      objectReference: {fileID: 570128220}
+    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: tipPrefab
+      value: 
+      objectReference: {fileID: 2383010686801960238, guid: 7b4674a8eaa28b845bf6fe09bdaf93e8,
+        type: 3}
+    - target: {fileID: 114361144413972980, guid: b2525b470226d424892b52140d4a1de0,
+        type: 3}
+      propertyPath: palmPrefab
+      value: 
+      objectReference: {fileID: 5364837565047045099, guid: 6da134d5da958be4bb846e0a34f31771,
+        type: 3}
     - target: {fileID: 114390609378747924, guid: b2525b470226d424892b52140d4a1de0,
         type: 3}
       propertyPath: pointFrom
@@ -2730,22 +2722,30 @@ PrefabInstance:
       propertyPath: controllerPicked
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1027894598381728, guid: b2525b470226d424892b52140d4a1de0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2525b470226d424892b52140d4a1de0, type: 3}
---- !u!114 &1858734517 stripped
+--- !u!114 &1381104581 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114390609378747924, guid: b2525b470226d424892b52140d4a1de0,
+  m_CorrespondingSourceObject: {fileID: 2007506081976746653, guid: b2525b470226d424892b52140d4a1de0,
     type: 3}
   m_PrefabInstance: {fileID: 1381104580}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42b7e96f9ef08d4da2a5f2a788e0054, type: 3}
+  m_Script: {fileID: 11500000, guid: 022935a7ed375ae4184b82d083fa9290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1381104582 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2518078008073467665, guid: b2525b470226d424892b52140d4a1de0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1381104580}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022935a7ed375ae4184b82d083fa9290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1885193259
@@ -2789,7 +2789,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2919,5 +2919,5 @@ Transform:
   - {fileID: 1044456919}
   - {fileID: 1338996198}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

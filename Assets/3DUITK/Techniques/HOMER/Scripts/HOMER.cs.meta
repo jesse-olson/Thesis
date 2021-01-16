@@ -1,11 +1,17 @@
 fileFormatVersion: 2
 guid: 29d26648e4c32784d99a2fce323ee7d6
-timeCreated: 1523527154
-licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - trackedObj: {instanceID: 0}
+  - leftController: {instanceID: 0}
+  - rightController: {instanceID: 0}
+  - head: {instanceID: 0}
+  - laserPrefab: {fileID: 1552384495066432, guid: 2cc15a0130634d44bbf67d7ccb76b9ee,
+      type: 3}
+  - handPrefab: {fileID: 4651081436487203885, guid: 089ca3584130c4acc85da13bf47b8822,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

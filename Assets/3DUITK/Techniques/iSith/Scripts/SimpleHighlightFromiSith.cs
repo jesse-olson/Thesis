@@ -7,32 +7,32 @@ public class SimpleHighlightFromiSith : MonoBehaviour {
 	public Material highlightMaterial;
 	private Material defaultMaterial;
 
-	public iSithGrabObject selectObject;
+	public ISith iSith;
 
 	// Use this for initialization
 	void Start () {
 		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.hovered.AddListener(highlight);
-		selectObject.unHovered.AddListener(unHighlight);	
-		selectObject.selectedObject.AddListener(playSelectSound);	
+        iSith.onHover.AddListener(Highlight);
+        iSith.onUnhover.AddListener(Unhighlight);
+        iSith.onSelectObject.AddListener(PlaySelectSound);	
 	}
 
-	void highlight() {
-		if(selectObject.collidingObject == this.gameObject) {
+    private void Highlight() {
+		if(iSith.highlightedObject == gameObject) {
 			print("highlight");
 			this.GetComponent<Renderer>().material = highlightMaterial;
 		}		
 	}
 
-	void unHighlight() {
-		if(selectObject.collidingObject == this.gameObject) {
+    private void Unhighlight() {
+		if(iSith.highlightedObject == gameObject) {
 			print("unhighlight");
 			this.GetComponent<Renderer>().material = defaultMaterial;
 		}		
 	}
 
-	void playSelectSound() {
-		if(selectObject.objectInHand == this.gameObject) {
+    private void PlaySelectSound() {
+		if(iSith.selectedObject == gameObject) {
 			this.GetComponent<AudioSource>().Play();
 		}	
 	}

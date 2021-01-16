@@ -8,7 +8,7 @@ public class SimpleHighlightForObjectsWithChildMesh : MonoBehaviour {
 	public Material highlightMaterial;
 	private Material defaultMaterial;
 
-	public GrabObject selectObject;
+	public GoGo selectObject;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +28,7 @@ public class SimpleHighlightForObjectsWithChildMesh : MonoBehaviour {
 	}
 
 	void highlight() {
-		if(selectObject.collidingObject == this.gameObject && selectObject.selection == null) {
+		if(selectObject.highlightedObject == gameObject && !selectObject.selected) {
 			print("highlight");
 			foreach(Transform obj in this.transform) {
 				Renderer render;
@@ -40,7 +40,7 @@ public class SimpleHighlightForObjectsWithChildMesh : MonoBehaviour {
 	}
 
 	void unHighlight() {
-		if(selectObject.collidingObject == this.gameObject) {
+		if(selectObject.highlightedObject == gameObject) {
 			print("unhighlight");
 			foreach(Transform obj in this.transform) {
 				Renderer render;
@@ -52,7 +52,7 @@ public class SimpleHighlightForObjectsWithChildMesh : MonoBehaviour {
 	}
 
 	void playSelectSound() {
-		if(selectObject.collidingObject == this.gameObject) {
+		if(selectObject.selectedObject == gameObject) {
 			this.GetComponent<AudioSource>().Play();
 		}	
 	}

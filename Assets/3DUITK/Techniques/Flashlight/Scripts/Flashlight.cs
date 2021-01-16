@@ -18,114 +18,203 @@
  *  along with this program.If not, see<http://www.gnu.org/licenses/>.
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
 
 // Must be parented to a steam controller to can access controls to change size
 
-public class Flashlight : MonoBehaviour {
+public class Flashlight : ScrollingTechnique {
+    private static readonly float MIN_LENGTH = 1;
+    private static readonly float MAX_LENGTH = 20;
 
-#if SteamVR_Legacy
-    public SteamVR_TrackedObject trackedObj;
-    private SteamVR_Controller.Device device;
-#elif SteamVR_2
-    public SteamVR_Behaviour_Pose trackedObj;
+    private Transform interactor;
 
-#elif Oculus_Quest
-    public Transform trackedObj;
+    private List<GameObject> collidingObjects;
 
-#else
-    public GameObject trackedObj;
+    [Range(1, 20)]
+    public float length = 1;
+    [Range(1, 5)]
+    public float diameter = 1;
+
+    void OnEnable()
+    {
+        collidingObjects = new List<GameObject>();
+        var render = SteamVR_Render.instance;
+        if (render == null)
+        {
+            enabled = false;
+            return;
+        }
+    }
+
+    void Awake()
+    {
+        extendDistance = length;
+        if (interactionType == InteractionType.Manipulation_UI)
+        {
+            gameObject.AddComponent<SelectionManipulation>();
+            GetComponent<SelectionManipulation>().trackedObj = trackedObj.gameObject;
+#if SteamVR_2
+            this.GetComponent<SelectionManipulation>().m_controllerPress = m_controllerPress;
 #endif
-
-    public GameObject objectAttachedTo;
-
-    public float transparency = 0.5f;
-    public Color theColor = new Color(1f, 1f, 1f, 1f);
-
-    public float resizeSpeed = 0.01f;
+        }
+    }
 
     // Use this for initialization
     void Start() {
-        // Mesh render wasnt enabled outside of game so as not to be annoying. Must now enable
-        this.GetComponent<Renderer>().enabled = true;
-
-        // set this flashlight to be child of the object it is set to be attached to
-        this.transform.parent = trackedObj.transform;
-        // making sure rotation and position is correct
-        this.transform.eulerAngles = new Vector3(0, 180, 0);
-        this.transform.localPosition = new Vector3(0, 0, 0);
-
-        // Translates the cone so that whatever size it is as long as it is at position 0,0,0 if contoller it will jump to the origin point for flashlight
-        translateConeDistanceAlongForward(this.GetComponent<Renderer>().bounds.size.z / 2f);
-#if SteamVR_Legacy
-        device = SteamVR_Controller.Input((int)trackedObj.index);
-#endif
+        FindEventSystem();
+        // Set this flashlight to be child of the object it is set to be attached to
+        transform.SetParent(trackedObj);
+        // Making sure rotation and position is correct
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 
     // Update is called once per frame
     void Update() {
-        checkForInput();
+        PadScrolling();
+        if(extendDistance < MIN_LENGTH)
+            extendDistance = MIN_LENGTH;
+        else if (extendDistance > MAX_LENGTH)
+            extendDistance = MAX_LENGTH;
 
-        //this.transform.position = objectAttachedTo.transform.position;
-        Quaternion rot = objectAttachedTo.transform.rotation;
-        //this.transform.rotation = controller.transform.rotation;
-        //this.transform.rotation = Quaternion.LookRotation(objectAttachedTo.transform.forward * -1); // Might be able to fix this with initial rotation of cone being changed
+        interactor.gameObject.transform.localScale =
+            new Vector3(diameter / 2, diameter / 2, length);
+
+        GetObjectHoveringOver();
     }
 
-    void translateConeDistanceAlongForward(float theDistance) {
 
-        this.transform.position = this.transform.position + trackedObj.transform.forward * theDistance;
-    }
+    public override void SelectObject()
+    {
+        if (selected || !highlighted) return;
 
-    void checkForInput() {
-        //FlashlightSelection childSelection = this.transform.GetComponent<FlashlightSelection>();
+        selected = true;
+        selectedObject = highlightedObject;
 
-        //OVRInput.Update();
-
-        //if (!childSelection.holdingObject())
-        //{
-
-        //}
-        return;
-        //Dont allow size to change if object is in hand - check by getting child object
-        /*device = SteamVR_Controller.Input((int)trackedObj.index);
-        FlashlightSelection childSelector = this.transform.GetComponent<FlashlightSelection>();
-        if (!childSelector.holdingObject())
+        switch (interactionType)
         {
-            Vector2 touchpad = (device.GetAxis(EVRButtonId.k_EButton_Axis0)); // Getting reference to the touchpad
+            case InteractionType.Selection:
+                // Pure selection
+                print("selected " + selectedObject);
+                break;
+
+            case InteractionType.Manipulation_Movement:
+            case InteractionType.Manipulation_Full:
+                //Manipulation
+                GrabObject();
+                break;
+
+            case InteractionType.Manipulation_UI:
+                if (!GetComponent<SelectionManipulation>().inManipulationMode)
+                    GetComponent<SelectionManipulation>().selectedObject = selectedObject;
+                break;
+
+            default:
+                // Do nothing
+                break;
+        }
+        onSelectObject.Invoke();
+    }
+
+    public override void ReleaseObject()
+    {
+        if (!selected) return;
+        FixedJoint joint = GetComponent<FixedJoint>();
+        if (joint != null)
+        {
+            joint.connectedBody = null;
+            Destroy(joint);
+#if SteamVR_Legacy
+            selectedObject.GetComponent<Rigidbody>().velocity = Controller.velocity * Vector3.Distance(Controller.transform.pos, selectedObject.transform.position);
+            selectedObject.GetComponent<Rigidbody>().angularVelocity = Controller.angularVelocity;
+#elif SteamVR_2
+            selectedObject.GetComponent<Rigidbody>().velocity = trackedObj.GetVelocity() * Vector3.Distance(trackedObj.transform.position, selectedObject.transform.position);
+            selectedObject.GetComponent<Rigidbody>().angularVelocity = trackedObj.GetAngularVelocity();
+#endif
+        }
+        onDropObject.Invoke();
+        selected = false;
+        selectedObject = null;
+    }
 
 
-            if (touchpad.y > 0.7f) // Touchpad up
-            {
-                this.transform.localScale += new Vector3(0f, 0f, resizeSpeed);
-                translateConeDistanceAlongForward(resizeSpeed);  // Move to match the resize of cone so that it stays locked to origin position
-            }
+    /**
+     * Adds the object involved in a trigger event 
+     * to the collidingObjects list
+     */
+    public void AddCollidingObject(Collider col)
+    {
+        if (!collidingObjects.Contains(col.gameObject) &&
+            interactionLayers == 1 << col.gameObject.layer &&
+            col.gameObject.GetComponent<Rigidbody>())
+        {
+            collidingObjects.Add(col.gameObject);
+        }
+    }
 
-            else if (touchpad.y < -0.7f) // Touchpad down
+    public void RemoveCollidingObject(Collider col)
+    {
+        collidingObjects.Remove(col.gameObject);
+    }
+
+
+
+    private void GetObjectHoveringOver()
+    {
+        Vector3 controllerPos = trackedObj.position;
+        Vector3 controllerFwd = trackedObj.forward;
+
+        float closestDist = float.PositiveInfinity;
+        GameObject closestObject = null;
+
+        foreach (GameObject potentialObject in collidingObjects)
+        {
+            // Using vector algebra to get shortest distance between object and vector 
+            Vector3 localObjectPos = potentialObject.transform.position - controllerPos;
+            float dist = Vector3.Cross(localObjectPos, controllerFwd).magnitude;
+
+            if (dist < closestDist)
             {
-                if (this.transform.localScale.z > 0f)
-                {
-                    this.transform.localScale -= new Vector3(0f, 0f, resizeSpeed);
-                    translateConeDistanceAlongForward(resizeSpeed*-1);// Move to match the resize of cone so that it stays locked to origin position
-                }
+                closestDist = dist;
+                closestObject = potentialObject;
             }
-            
-            else if (touchpad.x > 0.7f) // Touchpad right 
-            {
-                    this.transform.localScale += new Vector3(resizeSpeed, resizeSpeed, 0f);
-                    //this.transform.localPosition = anchorPoint;
-            }
-            else if (touchpad.x < -0.7f) // Touchpad left
-            {
-                if (this.transform.localScale.x > 0f && this.transform.localScale.y > 0f)
-                {
-                    this.transform.localScale -= new Vector3(resizeSpeed, resizeSpeed, 0f);
-                    //this.transform.localPosition = anchorPoint;
-                }     
-            }
-        }*/
+        }
+
+        HighlightObject(closestObject);
+    }
+
+
+    void GrabObject()
+    {
+        var joint = AddFixedJoint();
+        selectedObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        joint.connectedBody = selectedObject.GetComponent<Rigidbody>();
+    }
+
+    private FixedJoint AddFixedJoint()
+    {
+        FixedJoint fx = trackedObj.gameObject.AddComponent<FixedJoint>();
+        fx.breakForce = Mathf.Infinity;
+        fx.breakTorque = Mathf.Infinity;
+        return fx;
+    }
+
+    protected override void Enable()
+    {
+        interactor.gameObject.SetActive(true);
+    }
+
+    protected override void Disable()
+    {
+        interactor.gameObject.SetActive(false);
+        ReleaseObject();
+        HighlightObject(null);
+    }
+
+    public void SetInteractor(Transform interactor)
+    {
+        this.interactor = interactor;
     }
 }

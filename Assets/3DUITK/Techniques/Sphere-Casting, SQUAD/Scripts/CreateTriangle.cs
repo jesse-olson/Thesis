@@ -1,75 +1,56 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CreateTriangle : MonoBehaviour {
-
-    Mesh mesh;
-    MeshRenderer meshRenderer;
-    Vector3[] vertices;
-    int[] triangles;
+    private static float cos45 = Mathf.Cos(Mathf.PI / 4);
+    readonly Vector3[] vertices = {
+        new Vector3(0,0,0),
+        new Vector3( cos45, cos45, 0),
+        new Vector3(-cos45, cos45, 0)
+    };
+    readonly int[] triangles = { 0, 1, 2 };
 
     public Material material;
-    //public Material blendMaterial;
-    private GameObject triangle = null;
     public GameObject cameraHead;
 
     // Use this for initialization
     void Start () {
         GameObject newTriangle = new GameObject();
-        newTriangle.AddComponent<MeshFilter>();
-        meshRenderer = newTriangle.AddComponent<MeshRenderer>();
 
-        meshRenderer.material = material;
+        MeshFilter   _filter = newTriangle.AddComponent<MeshFilter>();
+        MeshRenderer _renderer = newTriangle.AddComponent<MeshRenderer>();
+        MeshCollider _collider = newTriangle.AddComponent<MeshCollider>();
 
-        mesh = new Mesh();
-        newTriangle.GetComponent<MeshFilter>().mesh = mesh;
-		newTriangle.AddComponent<MeshCollider> ().convex = true;
-		//newTriangle.GetComponent<MeshCollider> ().convex = true;
-        vertices = new[] {
-            new Vector3(0,0,0),
-            new Vector3(0,1,0),
-            new Vector3(1,0,0),
+        _renderer.material = material;
+        _collider.convex = true;
+
+        Mesh mesh = new Mesh()
+        {
+            vertices = vertices,
+            triangles = triangles
         };
-        mesh.vertices = vertices;
-        triangles = new[] { 0, 1, 2 };
-        mesh.triangles = triangles;
 
-        triangle = Instantiate(newTriangle, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
-        triangle.transform.localEulerAngles = new Vector3(0f, 0f, 45f);
-        //triangle.transform.name = "TriangleNorth";
-        triangle.transform.name = "TriangleQuad North";
-        triangle.transform.SetParent(this.transform, false);
-        //triangle.AddComponent<Renderer>().material = blendMaterial;
-        //triangle.GetComponent<Renderer>().material.color = Color.clear;
+        _filter.mesh = mesh;
 
-        triangle = Instantiate(newTriangle, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
-        triangle.transform.localEulerAngles  = new Vector3(0f, 0f, 135f);
-        //triangle.transform.name = "TriangleWest";
-        triangle.transform.name = "TriangleQuad West";
-        triangle.transform.SetParent(this.transform, false);
-        //triangle.AddComponent<Renderer>().material = blendMaterial;
-        //triangle.GetComponent<Renderer>().material.color = Color.clear;
+        GameObject triangle = Create(0, newTriangle);
+        triangle.transform.name = "North";
 
-        triangle = Instantiate(newTriangle, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
-        triangle.transform.localEulerAngles = new Vector3(0f, 0f, 225f);
-        triangle.transform.name = "TriangleQuad South";
-        //triangle.transform.name = "TriangleSouth";
-        triangle.transform.SetParent(this.transform, false);
-        //triangle.AddComponent<Renderer>().material = blendMaterial;
-        //triangle.GetComponent<Renderer>().material.color = Color.clear;
+        triangle = Create(1, newTriangle);
+        triangle.transform.name = "West";
 
-        triangle = Instantiate(newTriangle, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
-        triangle.transform.localEulerAngles = new Vector3(0f, 0f, 315f);
-        triangle.transform.name = "TriangleQuad East";
-        //triangle.transform.name = "TriangleEast";
-        triangle.transform.SetParent(this.transform, false);
-        //triangle.AddComponent<Renderer>().material = blendMaterial;
-        //triangle.GetComponent<Renderer>().material.color = Color.clear;
+        triangle = Create(2, newTriangle);
+        triangle.transform.name = "South";
 
-		this.transform.SetParent (cameraHead.transform);
-		this.gameObject.SetActive (false);
-		this.transform.localEulerAngles = new Vector3 (0f, 0f, 0f);
-		this.transform.localPosition = new Vector3 (0f, 0f, 1f);
+        triangle = Create(3, newTriangle);
+        triangle.transform.name = "East";
+
+		transform.SetParent(cameraHead.transform);
+        transform.localRotation = Quaternion.identity;
+		transform.localPosition = new Vector3 (0f, 0f, 1f);
+		gameObject.SetActive(false);
+    }
+
+    public GameObject Create(int i, GameObject triangle)
+    {
+        return Instantiate(triangle, Vector3.zero, Quaternion.AngleAxis(45 + i * 90, Vector3.forward), transform) as GameObject;
     }
 }

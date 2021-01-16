@@ -10,8 +10,8 @@ public class AperatureSelectAndSendToTesterController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
+		selectObject.onSelectObject.AddListener(TellTesterOfSelection);
+		controller = GetComponentInParent<TesterController>();
 	}
 	
 	// Update is called once per frame
@@ -19,11 +19,11 @@ public class AperatureSelectAndSendToTesterController : MonoBehaviour {
 		
 	}
 
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.selection == this.gameObject) {
+		if(selectObject.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 		}	
 	}
 }

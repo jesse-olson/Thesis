@@ -17,14 +17,14 @@ public class SimpleHighlightFromBubble : MonoBehaviour {
 	}
 
 	void Highlight() {
-		if(bubbleCursor.currentlyHovering == gameObject) {
+		if(bubbleCursor.highlightedObject == gameObject) {
 			print("highlight");
 			GetComponent<Renderer>().material = highlightMaterial;
 		} 
 	}
 
 	void UnHighlight() {
-		if(bubbleCursor.currentlyHovering == gameObject) {
+		if(bubbleCursor.highlightedObject == gameObject) {
 			GetComponent<Renderer>().material = defaultMaterial;
 		}
 	}

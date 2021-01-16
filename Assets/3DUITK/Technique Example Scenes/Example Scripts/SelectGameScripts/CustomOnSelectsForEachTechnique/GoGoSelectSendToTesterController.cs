@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GoGoSelectSendToTesterController : MonoBehaviour {
 
-	public GrabObject selectObject;
+	public GoGo selectObject;
 
 	private TesterController controller;
 
@@ -21,9 +21,9 @@ public class GoGoSelectSendToTesterController : MonoBehaviour {
 
 	void tellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.collidingObject == this.gameObject) {
+		if(selectObject.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 		}	
 	}
 }

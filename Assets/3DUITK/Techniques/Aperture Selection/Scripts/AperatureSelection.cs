@@ -16,13 +16,13 @@ public class AperatureSelection : MonoBehaviour {
     public GameObject headsetTrackedObj;
 #endif
 
-    // Uses a laser as the handle
-    public GameObject laserPrefab;
-    private GameObject laser;
-    private Transform laserTransform;
-    private Vector3 hitPoint;
+    //// Uses a laser as the handle
+    //public GameObject laserPrefab;
+    //private GameObject laser;
+    //private Transform laserTransform;
+    //private Vector3 hitPoint;
 
-    public GameObject laserContainer;
+    //public GameObject laserContainer;
 
     public GameObject aperatureVolume;
 
@@ -42,9 +42,9 @@ public class AperatureSelection : MonoBehaviour {
         aperatureVolume.transform.localEulerAngles = new Vector3(0, 180, 0);
 
 
-        laser = Instantiate(laserPrefab);
-        laserTransform = laser.transform;
-        laser.transform.parent = laserContainer.transform;
+        //laser = Instantiate(laserPrefab);
+        //laserTransform = laser.transform;
+        //laser.transform.parent = laserContainer.transform;
 
         // Translates the cone so that whatever size it is as long as it is at position 0,0,0 if contoller it will jump to the origin point for flashlight
         if (aperatureVolume.GetComponent<Renderer>().bounds.size.z != 0) {
@@ -88,17 +88,17 @@ public class AperatureSelection : MonoBehaviour {
     }
 
     private void ShowLaser() {
-        // Laser shows which controller is controlling
-        Vector3 theVector = trackedObj.transform.forward;
-        hitPoint = trackedObj.transform.position;
-        float distance_formula_on_vector = theVector.magnitude;
-        // Using formula to find a point which lies at distance on a 3D line from vector and direction
-        hitPoint += (0.05f / (distance_formula_on_vector)) * theVector;
+        //// Laser shows which controller is controlling
+        //Vector3 theVector = trackedObj.transform.forward;
+        //hitPoint = trackedObj.transform.position;
+        //float distance_formula_on_vector = theVector.magnitude;
+        //// Using formula to find a point which lies at distance on a 3D line from vector and direction
+        //hitPoint += (0.05f / (distance_formula_on_vector)) * theVector;
 
-        laser.SetActive(true);
-        laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
-        laserTransform.LookAt(hitPoint);
-        laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y,
-           0.05f);
+        //laser.SetActive(true);
+        //laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
+        //laserTransform.LookAt(hitPoint);
+        //laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y,
+        //   0.05f);
     }
 }

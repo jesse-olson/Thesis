@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Valve.VR;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
-public class HOMERController : Controller { 
-}
+public class HOMERController : BothHandController {}

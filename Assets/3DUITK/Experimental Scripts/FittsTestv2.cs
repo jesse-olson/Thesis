@@ -57,10 +57,10 @@ public class FittsTestv2 : MonoBehaviour {
     }*/
 
     void Start () {
-        objectSelected();
+        ObjectSelected();
     }
 
-    void objectSelected() {
+    void ObjectSelected() {
         
         script.GetComponent<FishingReel>();
         int randomObject = UnityEngine.Random.Range(0, interactableObjects.Length);
@@ -81,8 +81,9 @@ public class FittsTestv2 : MonoBehaviour {
 
 	void Update () {
         timer += Time.deltaTime * 1000;
-        if (script.GetComponent<FishingReel>().lastSelectedObject != null && script.GetComponent<FishingReel>().lastSelectedObject.Equals(chosenObject)) {
-                objectSelected();
+        if (script.GetComponent<FishingReel>().selected &&
+            script.GetComponent<FishingReel>().selectedObject.Equals(chosenObject)) {
+                ObjectSelected();
         }
 	}
 }

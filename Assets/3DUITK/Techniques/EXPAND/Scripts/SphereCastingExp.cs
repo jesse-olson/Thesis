@@ -176,7 +176,7 @@ public class SphereCastingExp : MonoBehaviour {
             hitPoint = hit.point;
             ShowLaser(hit);
             if (menu.isActive() == false && menu.getSelectableObjects().Count > 0) {
-                menu.enableEXPAND(menu.getSelectableObjects());
+                menu.EnableEXPAND(menu.getSelectableObjects());
                 menu.clearList();
             } else if (menu.isActive() == true) {
                 menu.selectObject(hit.transform.gameObject);

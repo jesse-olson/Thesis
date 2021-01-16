@@ -9,30 +9,30 @@ EditorBuildSettings:
     path: Assets/3DUITK/Techniques/3DBubbleCursor/Scenes/3DBubbleCursorTestScene1.unity
     guid: c222627cb288c43409c965463d835284
   - enabled: 0
-    path: Assets/3DUITK/Techniques/Aperture Selection/Scenes/Aperature Selection Test.unity
-    guid: 021f4b0c780f88f409e3a4969383c087
-  - enabled: 0
     path: Assets/3DUITK/Techniques/Absolute And Relative Mapping/Scenes/ARM.unity
     guid: 6cd1c012ae554c247b253841265869e0
-  - enabled: 0
+  - enabled: 1
     path: Assets/3DUITK/Techniques/Bendcast/Scenes/Bencast1.unity
     guid: 3285dd01f3ecfec4ea81766e4685843f
-  - enabled: 1
+  - enabled: 0
     path: Assets/3DUITK/Techniques/Depth Ray/Scenes/DepthRayScene.unity
     guid: 5be85f84adb7e994d8f3707dd67af516
   - enabled: 0
-    path: Assets/3DUITK/Techniques/Flashlight/Scenes/FlashLightTest.unity
-    guid: 844a4a7e8d4b56842a81a58f02cb9d66
+    path: Assets/3DUITK/Techniques/FlexiblePointer/Scenes/FlexiblePointerScene.unity
+    guid: 8a5d0887b853d5843a59c7688204c702
+  - enabled: 0
+    path: Assets/3DUITK/Techniques/GoGo/Scenes/GoGo.unity
+    guid: d7598bf261db4c646bbce25c77a2cf17
   - enabled: 0
     path: Assets/3DUITK/Techniques/HOMER/Scenes/HomerScene.unity
     guid: 98e2390ac98319847a302daee32d4c17
   - enabled: 0
+    path: Assets/3DUITK/Techniques/Image-Plane Pointing/Scenes/ImagePlane_StickyHand.unity
+    guid: 95a2bbb9975a73b4b9d1703bb9b7aeae
+  - enabled: 0
     path: Assets/3DUITK/Techniques/PRISM/Scenes/PRISMMovement.unity
     guid: 96deff0034670a24d9d88db5069f9f92
   - enabled: 0
-    path: Assets/3DUITK/Techniques/Spindle/Scenes/Spindle Scene.unity
-    guid: 8d52740e29729a049869df64102ecd1d
-  - enabled: 0
-    path: Assets/3DUITK/Techniques/Fishing Reel/Scenes/FishingReelScene 1.unity
-    guid: 704ce5e71e8621d4094e13d791dadde4
+    path: Assets/3DUITK/Techniques/Raycasting/Scenes/Raycasting.unity
+    guid: a84b7308457acf541bec4e92c585c130
   m_configObjects: {}

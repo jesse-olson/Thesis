@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FishingReelSelectSendToTesterController : MonoBehaviour {
 
-	public FishingReel selectObject;
+	public FishingReel fishingReel;
 
 	private TesterController controller;
 
@@ -13,20 +13,15 @@ public class FishingReelSelectSendToTesterController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		originalParent = this.transform.parent.gameObject;
-		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
+		fishingReel.onSelectObject.AddListener(TellTesterOfSelection);
 		controller = this.GetComponentInParent<TesterController>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.lastSelectedObject == this.gameObject) {
+		if(fishingReel.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 
 			// Due to bubble trying to grab with parent can cancel out with this
 			Rigidbody bod;

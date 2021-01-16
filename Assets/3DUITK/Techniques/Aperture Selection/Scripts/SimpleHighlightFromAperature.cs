@@ -33,31 +33,31 @@ public class SimpleHighlightFromAperature : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.onHover.AddListener(highlight);
-		selectObject.onUnhover.AddListener(unHighlight);	
-		selectObject.onSelectObject.AddListener(playSelectSound);	
+		selectObject.onHover.AddListener(Highlight);
+		selectObject.onUnhover.AddListener(Unhighlight);	
+		selectObject.onSelectObject.AddListener(PlaySelectSound);	
 	}
 
-	void highlight() {
+	void Highlight() {
 		print("highlight Invoked");
-		if(selectObject.objectHoveredOver == this.gameObject && selectObject.selection == null) {
+		if(selectObject.highlighted == gameObject && !selectObject.selected) {
 			print("highlight");
 			this.GetComponent<Renderer>().material = highlightMaterial;
 		}		
 	}
 
-	void unHighlight() {
+	void Unhighlight() {
 		print("unhighlight invoked");
-		if(selectObject.objectHoveredOver == this.gameObject) {
+		if(selectObject.highlightedObject == gameObject) {
 			print("unhighlight");
-			this.GetComponent<Renderer>().material = defaultMaterial;
+			GetComponent<Renderer>().material = defaultMaterial;
 		}		
 	}
 
-	void playSelectSound() {
+	void PlaySelectSound() {
 		print("Grab invoked");
-		if(selectObject.objectHoveredOver == this.gameObject) {
-			this.GetComponent<AudioSource>().Play();
+		if(selectObject.selectedObject == gameObject) {
+			GetComponent<AudioSource>().Play();
 		}	
 	}
 }

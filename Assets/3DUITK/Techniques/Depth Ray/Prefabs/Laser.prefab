@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7533533551253725641}
   - component: {fileID: 9158336140147894582}
   m_Layer: 0
-  m_Name: Laser
+  m_Name: LaserGeom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/3DUITK/Techniques/Absolute And Relative Mapping/Scenes/ARM.unity
+- path: Assets/3DUITK/Techniques/GoGo/Scenes/GoGo.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

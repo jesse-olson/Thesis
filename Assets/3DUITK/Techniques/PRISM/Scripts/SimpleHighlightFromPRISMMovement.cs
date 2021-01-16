@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SimpleHighlightFromPRISMMovement : MonoBehaviour {
-
-
-
 	public Material highlightMaterial;
 	private Material defaultMaterial;
 
@@ -21,21 +18,21 @@ public class SimpleHighlightFromPRISMMovement : MonoBehaviour {
 
 	void highlight() {
 		print("trying");
-		if(selectObject.collidingObject == this.gameObject && selectObject.objectInHand == null) {
+		if(selectObject.highlightedObject == this.gameObject && !selectObject.selected) {
 			print("highlight");
 			this.GetComponent<Renderer>().material = highlightMaterial;
 		}		
 	}
 
 	void unHighlight() {
-		if(selectObject.collidingObject == this.gameObject) {
+		if(selectObject.highlightedObject == this.gameObject) {
 			print("unhighlight");
 			this.GetComponent<Renderer>().material = defaultMaterial;
 		}		
 	}
 
 	void playSelectSound() {
-		if(selectObject.objectInHand == this.gameObject) {
+		if(selectObject.highlightedObject == this.gameObject) {
 			this.GetComponent<AudioSource>().Play();
 		}	
 	}

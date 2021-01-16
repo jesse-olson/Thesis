@@ -9,8 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4134803416702570}
-  - component: {fileID: 114990689408183148}
-  - component: {fileID: 114390275538862974}
+  - component: {fileID: 6508321698453192535}
   - component: {fileID: 54727961136750092}
   - component: {fileID: 65893410658448056}
   m_Layer: 0
@@ -19,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4134803416702570
 Transform:
   m_ObjectHideFlags: 0
@@ -34,28 +33,7 @@ Transform:
   m_Father: {fileID: 4575591030642104}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114990689408183148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1069578959314208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4ce619cebaa06d4db881d37d4afc02a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackedObj: {fileID: 0}
-  cameraRig: {fileID: 0}
-  armLengthCalculator: 1
-  armLength: 0.66
-  armLengthCoeff: 0
-  distanceFromHeadToChest: 0.3
-  theController: {fileID: 0}
-  theModel: {fileID: 0}
-  extensionVariable: 10
---- !u!114 &114390275538862974
+--- !u!114 &6508321698453192535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,27 +45,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47554b65ef353434a906e9eb86026090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackedObj: {fileID: 0}
+  interactionType: 1
   interactionLayers:
     serializedVersion: 2
     m_Bits: 256
-  interactionType: 1
-  selection: {fileID: 0}
-  collidingObject: {fileID: 0}
-  selectedObject:
+  controllerPicked: 0
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
+  head: {fileID: 0}
+  laserPrefab: {fileID: 0}
+  onSelectObject:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  hovered:
+  onDropObject:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  unHovered:
+  onHover:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+  onUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  armLengthCalculator: 0
+  armLength: 0.66
+  armLengthCoeff: 0.6666667
+  extensionVariable: 10
+  theModel: {fileID: 4651081436487203885, guid: 089ca3584130c4acc85da13bf47b8822,
+    type: 3}
 --- !u!54 &54727961136750092
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -143,7 +128,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098929134175738}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0340765, z: -0.06380053}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4134803416702570}
@@ -163,7 +148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a603432826e914286ae5eb9375eca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 0}
+  technique: {fileID: 0}
+  picked: 0
+  leftHand: {fileID: 1069578959314208}
   rightHand: {fileID: 1844558259205528}
 --- !u!114 &5164854844610775191
 MonoBehaviour:
@@ -187,9 +174,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4055617943753994}
-  - component: {fileID: 114982789788772634}
+  - component: {fileID: 7260621323820078062}
   - component: {fileID: 54566538235899822}
-  - component: {fileID: 114918901750512486}
   - component: {fileID: 65188533110078128}
   m_Layer: 0
   m_Name: RightHand
@@ -212,7 +198,7 @@ Transform:
   m_Father: {fileID: 4575591030642104}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114982789788772634
+--- !u!114 &7260621323820078062
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,18 +207,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 1844558259205528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4ce619cebaa06d4db881d37d4afc02a, type: 3}
+  m_Script: {fileID: 11500000, guid: 47554b65ef353434a906e9eb86026090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackedObj: {fileID: 0}
-  cameraRig: {fileID: 0}
-  armLengthCalculator: 1
+  interactionType: 1
+  interactionLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  controllerPicked: 1
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
+  head: {fileID: 0}
+  laserPrefab: {fileID: 0}
+  onSelectObject:
+    m_PersistentCalls:
+      m_Calls: []
+  onDropObject:
+    m_PersistentCalls:
+      m_Calls: []
+  onHover:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  armLengthCalculator: 0
   armLength: 0.66
-  armLengthCoeff: 0
-  distanceFromHeadToChest: 0.3
-  theController: {fileID: 0}
-  theModel: {fileID: 0}
+  armLengthCoeff: 0.6666667
   extensionVariable: 10
+  theModel: {fileID: 4651081436487203885, guid: 089ca3584130c4acc85da13bf47b8822,
+    type: 3}
 --- !u!54 &54566538235899822
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -249,39 +254,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114918901750512486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844558259205528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47554b65ef353434a906e9eb86026090, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionLayers:
-    serializedVersion: 2
-    m_Bits: 256
-  interactionType: 1
-  selection: {fileID: 0}
-  collidingObject: {fileID: 0}
-  selectedObject:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  hovered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  unHovered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!65 &65188533110078128
 BoxCollider:
   m_ObjectHideFlags: 0

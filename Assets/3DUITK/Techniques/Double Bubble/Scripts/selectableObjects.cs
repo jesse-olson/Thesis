@@ -5,16 +5,18 @@ using UnityEngine;
 public class selectableObjects : MonoBehaviour {
 
     private BubbleSelection bubbleSelection;
-    public GameObject radiusBubble;
+    public  GameObject radiusBubble;
 
     private void Start() {
         bubbleSelection = radiusBubble.GetComponent<BubbleSelection>();
     }
 
     private void OnTriggerStay(Collider collider) {
-        if (collider.gameObject.layer == Mathf.Log(bubbleSelection.interactionLayers.value, 2) && !bubbleSelection.selectableObjects.Contains(collider.gameObject)) {
-            bubbleSelection.selectableObjects.Add(collider.gameObject);
-        }
+        //if( 1 << collider.gameObject.layer == bubbleSelection.interactionLayers.value &&
+        //    !bubbleSelection.selectableObjects.Contains(collider.gameObject)) 
+        //{
+        //    bubbleSelection.selectableObjects.Add(collider.gameObject);
+        //}
     }
 
 }

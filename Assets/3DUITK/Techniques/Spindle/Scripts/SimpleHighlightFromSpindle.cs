@@ -24,36 +24,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SimpleHighlightFromSpindle : MonoBehaviour {
-	public Material highlightMaterial;
+	public  Material highlightMaterial;
 	private Material defaultMaterial;
 
-	public SpindleInteractor selectObject;
+	public Spindle spindle;
 
 	// Use this for initialization
 	void Start () {
-		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.onHover.AddListener(highlight);
-		selectObject.onUnhover.AddListener(unHighlight);	
-		selectObject.onSelectObject.AddListener(playSelectSound);	
+		defaultMaterial = GetComponent<Renderer>().material;
+        spindle.onHover.AddListener(Highlight);
+        spindle.onUnhover.AddListener(UnHighlight);
+        spindle.onSelectObject.AddListener(PlaySelectSound);	
 	}
 
-	void highlight() {
-		if(selectObject.collidingObject == this.gameObject && selectObject.objectInHand == null) {
-			print("highlight");
-			this.GetComponent<Renderer>().material = highlightMaterial;
+    private void Highlight() {
+		if(spindle.GetHighlighted() == gameObject && !spindle.HasSelected()) {
+			GetComponent<Renderer>().material = highlightMaterial;
 		}		
 	}
 
-	void unHighlight() {
-		if(selectObject.collidingObject == this.gameObject) {
+    private void UnHighlight() {
+		if(spindle.GetHighlighted() == gameObject) {
 			print("unhighlight");
-			this.GetComponent<Renderer>().material = defaultMaterial;
+			GetComponent<Renderer>().material = defaultMaterial;
 		}		
 	}
 
-	void playSelectSound() {
-		if(selectObject.collidingObject == this.gameObject) {
-			this.GetComponent<AudioSource>().Play();
+    private void PlaySelectSound() {
+		if(spindle.selectedObject == gameObject) {
+			GetComponent<AudioSource>().Play();
 		}	
 	}
 }

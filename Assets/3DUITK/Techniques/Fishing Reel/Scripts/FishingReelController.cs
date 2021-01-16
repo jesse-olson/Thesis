@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Valve.VR;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
-public class FishingReelController : Controller {
-
-}
+public class FishingReelController : BothHandController {}

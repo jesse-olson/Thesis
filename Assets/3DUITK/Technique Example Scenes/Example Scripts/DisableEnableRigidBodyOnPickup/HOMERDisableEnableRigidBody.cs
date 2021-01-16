@@ -14,14 +14,14 @@ public class HOMERDisableEnableRigidBody : MonoBehaviour {
 
 
 	void setRigidKinematic() {
-		if(homer.objectInHand == this.gameObject) {
+		if(homer.selectedObject == gameObject) {
 			this.GetComponent<Rigidbody>().isKinematic = true;
 		}
 
 	}
 
 	void setRigidNotKinematic() {
-		if(homer.objectInHand == this.gameObject) {
+		if(homer.selectedObject == gameObject) {
 			this.GetComponent<Rigidbody>().isKinematic = false;
 		}
 	}

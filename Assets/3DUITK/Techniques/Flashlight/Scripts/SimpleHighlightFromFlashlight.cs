@@ -1,6 +1,8 @@
 ﻿/*
- *  SimpleHighlightFromBendCast - Script that can be attached to an object displaying how to utilize the flashlight controllers events to react externally when an object
- *                                is highlighted or selected.
+ *  SimpleHighlightFromBendCast 
+ *  - Script that can be attached to an object displaying how to utilize the 
+ *  flashlight controllers events to react externally when an object is 
+ *  highlighted or selected.
  *  
  *  Copyright(C) 2018  Ian Hanan
  *
@@ -16,11 +18,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.If not, see<http://www.gnu.org/licenses/>.
-
  */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SimpleHighlightFromFlashlight : MonoBehaviour {
@@ -28,33 +27,33 @@ public class SimpleHighlightFromFlashlight : MonoBehaviour {
 	public Material highlightMaterial;
 	private Material defaultMaterial;
 
-	public FlashlightSelection selectObject;
+	public Flashlight selectObject;
 
 	// Use this for initialization
 	void Start () {
-		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.onHover.AddListener(highlight);
+		defaultMaterial = GetComponent<Renderer>().material;
+		selectObject.onHover.AddListener(Highlight);
 		selectObject.onUnhover.AddListener(unHighlight);	
 		selectObject.onSelectObject.AddListener(playSelectSound);	
 	}
 
-	void highlight() {
-		if(selectObject.objectHoveredOver == this.gameObject && selectObject.selection == null) {
+	void Highlight() {
+		if(selectObject.highlightedObject == gameObject) {
 			print("highlight");
-			this.GetComponent<Renderer>().material = highlightMaterial;
+			GetComponent<Renderer>().material = highlightMaterial;
 		}		
 	}
 
 	void unHighlight() {
-		if(selectObject.objectHoveredOver == this.gameObject) {
+		if(selectObject.highlightedObject == gameObject) {
 			print("unhighlight");
-			this.GetComponent<Renderer>().material = defaultMaterial;
+			GetComponent<Renderer>().material = defaultMaterial;
 		}		
 	}
 
 	void playSelectSound() {
-		if(selectObject.objectHoveredOver == this.gameObject) {
-			this.GetComponent<AudioSource>().Play();
+		if(selectObject.selectedObject == gameObject) {
+			GetComponent<AudioSource>().Play();
 		}	
 	}
 }

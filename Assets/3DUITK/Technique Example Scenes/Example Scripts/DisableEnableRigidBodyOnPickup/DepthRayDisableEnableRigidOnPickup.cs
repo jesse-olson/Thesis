@@ -1,28 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DepthRayDisableEnableRigidOnPickup : MonoBehaviour {
 
 	public DepthRay ray;
+
 	// Use this for initialization
 	void Start () {
-		ray.onSelectObject.AddListener(setRigidKinematic);
-		ray.onDropObject.AddListener(setRigidNotKinematic);
+		ray.onSelectObject.AddListener(SetRigidKinematic);
+		ray.onDropObject.AddListener(SetRigidNotKinematic);
 	}
 	
-
-
-	void setRigidKinematic() {
-		if(ray.currentClosestObject == this.gameObject) {
-			this.GetComponent<Rigidbody>().isKinematic = true;
+	void SetRigidKinematic() {
+		if(ray.selectedObject == gameObject) {
+			GetComponent<Rigidbody>().isKinematic = true;
 		}
 		
 	}
 
-	void setRigidNotKinematic() {
-		if(ray.currentClosestObject == this.gameObject) {
-			this.GetComponent<Rigidbody>().isKinematic = false;
+	void SetRigidNotKinematic() {
+		if(ray.selectedObject == gameObject) {
+			GetComponent<Rigidbody>().isKinematic = false;
 		}
 	}
 }

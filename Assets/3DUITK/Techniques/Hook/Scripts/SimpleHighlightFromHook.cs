@@ -11,27 +11,29 @@ public class SimpleHighlightFromHook : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		defaultMaterial = this.GetComponent<Renderer>().material;
-		selectObject.onHover.AddListener(highlight);
-		selectObject.onUnhover.AddListener(unHighlight);	
-		selectObject.onSelectObject.AddListener(playSelectSound);	
+		defaultMaterial = GetComponent<Renderer>().material;
+		selectObject.onHover.AddListener(Highlight);
+		selectObject.onUnhover.AddListener(UnHighlight);	
+		selectObject.onSelectObject.AddListener(PlaySelectSound);	
 	}
 
-	void highlight() {
-		if(selectObject.currentlyHovered == this.gameObject) {
+	void Highlight() {
+		if(selectObject.highlightedObject == gameObject) {
 			print("highlight");
-			this.GetComponent<Renderer>().material = highlightMaterial;
+			GetComponent<Renderer>().material = highlightMaterial;
 		} 
 	}
 
-	void unHighlight() {
-		this.GetComponent<Renderer>().material = defaultMaterial;
-			
+	void UnHighlight() {
+		if (selectObject.highlightedObject == gameObject)
+		{
+			GetComponent<Renderer>().material = defaultMaterial;
+		}	
 	}
 
-	void playSelectSound() {
-		if(selectObject.currentlyHovered == this.gameObject) {
-			this.GetComponent<AudioSource>().Play();
+	void PlaySelectSound() {
+		if(selectObject.selectedObject == gameObject) {
+			GetComponent<AudioSource>().Play();
 		}	
 	}
 }

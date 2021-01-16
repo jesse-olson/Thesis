@@ -21,7 +21,7 @@ public class PRISMSelectAndSendToController : MonoBehaviour {
 
 	void tellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.collidingObject == this.gameObject) {
+		if(selectObject.selectedObject == this.gameObject) {
 			print("success");
 			controller.objectSelected(this.gameObject);
 		}	

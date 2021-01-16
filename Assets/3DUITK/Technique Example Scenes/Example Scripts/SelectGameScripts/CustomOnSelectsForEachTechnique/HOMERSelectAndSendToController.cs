@@ -4,35 +4,29 @@ using UnityEngine;
 
 public class HOMERSelectAndSendToController : MonoBehaviour {
 
-	public HOMER selectObject;
-
-	private TesterController controller;
+	public HOMER homer;
 
 	private GameObject originalParent;
+	private TesterController controller;
 
 	// Use this for initialization
 	void Start () {
-		originalParent = this.transform.parent.gameObject;
-		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
-	}
-
-	// Update is called once per frame
-	void Update () {
-
+		originalParent = transform.parent.gameObject;
+		homer.onSelectObject.AddListener(tellTesterOfSelection);
+		controller = GetComponentInParent<TesterController>();
 	}
 
 	void tellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.objectInHand == this.gameObject) {
+		if(homer.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 
 			// Due to bubble trying to grab with parent can cancel out with this
 			Rigidbody bod;
 			if((bod = this.GetComponent<Rigidbody>()) != null) {
 				bod.isKinematic = false;
-				this.transform.parent = originalParent.transform;
+				transform.parent = originalParent.transform;
 			}
 		}	
 	}

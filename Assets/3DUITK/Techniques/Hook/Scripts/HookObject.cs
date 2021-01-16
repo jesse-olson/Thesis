@@ -2,38 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HookObject : MonoBehaviour {
-    public int score;
+public class HookObject
+{
+    private int score;
     public GameObject ContainingObject { get; set; }
-    public float lastDistance;
+    private float distance;
 
     public HookObject(GameObject ContainingObject)
     {
         this.ContainingObject = ContainingObject;
-        lastDistance = Mathf.Infinity;
+        score = 0;
+        distance = Mathf.Infinity;
     }
 
-    public void setDistance(GameObject obj)
+
+    public float GetDistance()
+    {
+        return distance;
+    }
+
+    public void SetDistance(Transform transform)
     {
         if (ContainingObject != null) {
-            lastDistance = Vector3.Distance(ContainingObject.transform.position, obj.transform.position);
+            distance = Vector3.Distance(ContainingObject.transform.position, transform.position);
         }   
     }
 
-    public bool checkStillExists() {
+    public bool CheckStillExists() {
         // checks if the gameobject this hookobject contains still exists
         return ContainingObject != null;
     }
 
-    public void decreaseScore()
+    public int GetScore()
     {
-        if(score > 0)
-        {
-            score--;
-        }
+        return score;
     }
 
-    public void increaseScore()
+    public void DecreaseScore()
+    {
+        score = --score < 0 ? 0 : score;
+    }
+
+    public void IncreaseScore()
     {
         score++;
     }
@@ -42,5 +52,10 @@ public class HookObject : MonoBehaviour {
     {
         GameObject compared = other as GameObject;
         return ContainingObject.Equals(compared);
+    }
+
+    public override int GetHashCode()
+    {
+        return 1162374466 + EqualityComparer<GameObject>.Default.GetHashCode(ContainingObject);
     }
 }

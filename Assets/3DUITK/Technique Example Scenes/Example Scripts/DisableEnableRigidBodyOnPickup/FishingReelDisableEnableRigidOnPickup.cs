@@ -13,14 +13,14 @@ public class FishingReelDisableEnableRigidOnPickup : MonoBehaviour {
 
 
 	void setRigidKinematic() {
-		if(reel.lastSelectedObject == this.gameObject) {
+		if(reel.selectedObject == gameObject) {
 			this.GetComponent<Rigidbody>().isKinematic = true;
 		}
 		
 	}
 
 	void setRigidNotKinematic() {
-		if(reel.lastSelectedObject == this.gameObject) {
+		if(reel.selectedObject == gameObject) {
 			this.GetComponent<Rigidbody>().isKinematic = false;
 		}
 	}

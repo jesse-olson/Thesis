@@ -7,8 +7,8 @@ public class ImagePlaneStickyDisableEnableRigidOnPickup : MonoBehaviour {
 	public ImagePlane_StickyHand hand;
 	// Use this for initialization
 	void Start () {
-		hand.selectedObjectEvent.AddListener(setRigidKinematic);
-		hand.droppedObject.AddListener(setRigidNotKinematic);
+		hand.onSelectObject.AddListener(setRigidKinematic);
+		hand.onDropObject.AddListener(setRigidNotKinematic);
 	}
 	
 

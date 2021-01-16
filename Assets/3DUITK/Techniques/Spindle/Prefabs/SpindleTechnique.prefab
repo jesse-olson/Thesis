@@ -46,10 +46,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b204ebc0088ddbe41bb28e71b0575937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedObj1: {fileID: 0}
-  trackedObj2: {fileID: 0}
+  trackedObj: {fileID: 0}
+  interactionType: 0
+  interactionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  controllerPicked: 0
+  leftController: {fileID: 0}
+  rightController: {fileID: 0}
+  head: {fileID: 0}
+  laserPrefab: {fileID: 0}
+  onSelectObject:
+    m_PersistentCalls:
+      m_Calls: []
+  onDropObject:
+    m_PersistentCalls:
+      m_Calls: []
+  onHover:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnhover:
+    m_PersistentCalls:
+      m_Calls: []
   spindleAndWheel: 0
-  interactionObject: {fileID: 1665906515201486}
 --- !u!114 &114825471408494146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6656009765dd242af4608f695c8b10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  technique: {fileID: 114210960310864654}
 --- !u!114 &1877843170693940324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,9 +104,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4917827495682022}
-  - component: {fileID: 33930983785852006}
   - component: {fileID: 114978323444329166}
-  - component: {fileID: 65072741909931860}
+  - component: {fileID: 2733081439489192445}
   - component: {fileID: 23916735191263374}
   - component: {fileID: 54708659674264552}
   m_Layer: 2
@@ -104,20 +123,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1665906515201486}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.091642, y: 17.255695, z: 37.210518}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 4475381787471112}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &33930983785852006
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665906515201486}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &114978323444329166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,46 +141,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d8b0d53c088ce44bac7f44b0ad209b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedObj1: {fileID: 0}
-  trackedObj2: {fileID: 0}
-  interactionLayers:
-    serializedVersion: 2
-    m_Bits: 256
-  collidingObject: {fileID: 0}
-  objectInHand: {fileID: 0}
-  selectedObject:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  hovered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  unHovered:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  droppedObject:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
---- !u!65 &65072741909931860
-BoxCollider:
+--- !u!33 &2733081439489192445
+MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1665906515201486}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &23916735191263374
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -187,7 +166,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 36331d89cc2d84e9c966fb5efc39971e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -195,6 +174,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

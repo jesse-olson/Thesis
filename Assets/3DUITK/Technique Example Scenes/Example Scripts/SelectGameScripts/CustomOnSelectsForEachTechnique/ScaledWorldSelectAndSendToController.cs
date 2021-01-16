@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScaledWorldSelectAndSendToController : MonoBehaviour {
 
-	public ControllerColliderSWG selectObject;
+	public ScaledWorldGrab selectObject;
 
 	private TesterController controller;
 
@@ -12,30 +12,25 @@ public class ScaledWorldSelectAndSendToController : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		selectObject.selectedObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
+		selectObject.onSelectObject.AddListener(TellTesterOfSelection);
+		controller = GetComponentInParent<TesterController>();
 	}
 
 	void Start() {
-		originalParent = this.transform.parent.gameObject;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		originalParent = transform.parent.gameObject;
 	}
 
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.scaleSelected == this.gameObject) {
+		if(selectObject.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 
 			// Due to bubble trying to grab with parent can cancel out with this
 			Rigidbody bod;
-			if((bod = this.GetComponent<Rigidbody>()) != null) {
+			if((bod = GetComponent<Rigidbody>()) != null) {
 				bod.isKinematic = false;
-				this.transform.parent = originalParent.transform;
+				transform.parent = originalParent.transform;
 			}
 		}	
 	}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DepthRaySelectAndSendToTesterController : MonoBehaviour {
 
-	public DepthRay selectObject;
+	public DepthRay depthRay;
 
 	private TesterController controller;
 
@@ -12,9 +12,9 @@ public class DepthRaySelectAndSendToTesterController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		originalParent = this.transform.parent.gameObject;
-		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
+		originalParent = transform.parent.gameObject;
+		depthRay.onSelectObject.AddListener(TellTesterOfSelection);
+		controller = GetComponentInParent<TesterController>();
 	}
 	
 	// Update is called once per frame
@@ -22,15 +22,15 @@ public class DepthRaySelectAndSendToTesterController : MonoBehaviour {
 		
 	}
 
-	void tellTesterOfSelection() {
+	void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.currentClosestObject == this.gameObject) {
+		if(depthRay.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 
 			// Due to bubble trying to grab with parent can cancel out with this
 			Rigidbody bod;
-			if((bod = this.GetComponent<Rigidbody>()) != null) {
+			if((bod = GetComponent<Rigidbody>()) != null) {
 				bod.isKinematic = false;
 				this.transform.parent = originalParent.transform;
 			}

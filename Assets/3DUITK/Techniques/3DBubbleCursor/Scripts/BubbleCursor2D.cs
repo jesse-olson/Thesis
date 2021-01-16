@@ -1,20 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
-using System.Linq;
-using UnityEngine.UI;
-using Valve.VR;
-
-public class BubbleCursor2D : MonoBehaviour {
-
-    /* 2D Bubble Cursor implementation by Kieran May
+﻿    /* 2D Bubble Cursor implementation by Kieran May
      * University of South Australia
      * 
      * A flawless 2D implementation of the Bubble Cursor I created as a prototype before implementing the 3D Bubble Cursor.
      * Much of the code shares similiarities with my 3D VR Bubble Cursor implementation.
      * */
 
+using UnityEngine;
+using System.Linq;
+using UnityEngine.UI;
+using Valve.VR;
+
+public class BubbleCursor2D : MonoBehaviour
+{
     private GameObject[] circleObjects;
     private float startRadius = 0f;
     public GameObject closestPointer;
@@ -26,8 +23,8 @@ public class BubbleCursor2D : MonoBehaviour {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.yellow;
-        CircleCollider2D col = this.GetComponent<CircleCollider2D>();
-        Gizmos.DrawWireSphere(this.transform.position, col.radius / 2);
+        CircleCollider2D col = GetComponent<CircleCollider2D>();
+        Gizmos.DrawWireSphere(transform.position, col.radius / 2);
     }
 
     // Use this for initialization

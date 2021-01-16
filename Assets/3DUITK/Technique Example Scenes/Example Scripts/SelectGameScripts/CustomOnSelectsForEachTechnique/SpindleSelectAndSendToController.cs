@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpindleSelectAndSendToController : MonoBehaviour {
 
-	public SpindleInteractor selectObject;
+	public Spindle spindle;
 
 	private TesterController controller;
 
@@ -12,9 +10,9 @@ public class SpindleSelectAndSendToController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		originalParent = this.transform.parent.gameObject;
-		selectObject.onSelectObject.AddListener(tellTesterOfSelection);
-		controller = this.GetComponentInParent<TesterController>();
+		originalParent = transform.parent.gameObject;
+        spindle.onSelectObject.AddListener(TellTesterOfSelection);
+		controller = GetComponentInParent<TesterController>();
 	}
 	
 	// Update is called once per frame
@@ -22,11 +20,11 @@ public class SpindleSelectAndSendToController : MonoBehaviour {
 		
 	}
 
-	void tellTesterOfSelection() {
+    private void TellTesterOfSelection() {
 		print("trying to select");
-		if(selectObject.objectInHand == this.gameObject) {
+        if (spindle.selectedObject == gameObject) {
 			print("success");
-			controller.objectSelected(this.gameObject);
+			controller.objectSelected(gameObject);
 
 			// Due to bubble trying to grab with parent can cancel out with this
 			Rigidbody bod;

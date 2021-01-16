@@ -1,35 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.Events;
 using Valve.VR;
 
 // Information on hook technique
 // http://www.eecs.ucf.edu/isuelab/publications/pubs/Cashion_Jeffrey_A_201412_PhD.pdf pf 13
 
-// TODO: Highlight closest object maybe?
-
-public class Hook : Technique {
-    public GameObject selection; // holds the selected object
-
+public class Hook : Technique
+{
     //  Used lists instead of arrays incase we want future optimization where it dynamically changes
     //  Instead of looping through every object in the scene
-    private List<HookObject> nearbyObjects;
-    int countOfIncreases;
-    private GameObject objectInHand;
+    private List<HookObject> nearbyObjects = new List<HookObject>();
     public bool checkForNewlySpawnedObjects = true;
-    public GameObject currentlyHovered = null; // To hold the closest object
-
-    private GameObject lastHovered = null; // To check if changed
-
 
     // Use this for initialization
-    void Start() {
-        nearbyObjects = new List<HookObject>();
-        populateGameObjectList();
-        // Set count of Increases to 1/3 of the list (int incase is odd and cannot use odd)
-        countOfIncreases = nearbyObjects.Count / 3;
+    void Start()
+    {
+        FindEventSystem();
+        PopulateGameObjectList();
 
         // Controller needs a rigidbody to grab objects in hook
         Rigidbody body = trackedObj.gameObject.AddComponent<Rigidbody>();
@@ -38,120 +26,138 @@ public class Hook : Technique {
 
 
     // Update is called once per frame
-    void Update() {
-        updateHovered();
-        updateHookList();
-
-        ControllerState currentState = ControllerEvents();
-
-        // Pressing trigger to grab object
-        if (currentState == ControllerState.TRIGGER_DOWN) {
-            GrabObject();
-        }
-        if (currentState == ControllerState.TRIGGER_UP) {
-            if (objectInHand) {
-                ReleaseObject();
-            }
-        }
-        // printing list for testing
-        print("Nearby objects: " + nearbyObjects.Count);
+    void Update()
+    {
+        UpdateHookList();
+        HighlightObject(nearbyObjects[0].ContainingObject);
     }
 
-    private void updateHookList() {
+    // Currently of O(n^3)
+    // TODO: need to figure out a way to reduce this
+    private void UpdateHookList()
+    {
+        List<HookObject> newList = new List<HookObject>();
+
         // Remove any null objects from list if they were destroyed
-        int listLength = nearbyObjects.Count;
-        for (int i = 0; i < listLength; i++) {
-            if (!nearbyObjects[i].checkStillExists()) {
-                // doesnt exist anymore so remove
-                nearbyObjects.RemoveAt(i);
-                print("removed");
-            }
-            listLength--;
-        }
-
-        // Check all the objects still exist
-        foreach (HookObject each in nearbyObjects) {
-            each.setDistance(trackedObj.gameObject);
-        }
-        // Reordering all the nearbyobjects by their newly set distance
-        nearbyObjects = nearbyObjects.OrderBy(w => w.lastDistance).ToList();
-        // now increase or decrease score 
-        int count = 0;
-        foreach (HookObject each in nearbyObjects) {
-            if (count < countOfIncreases) {
-                each.increaseScore();
-                count++;
-            } else {
-                each.decreaseScore();
-            }
-        }
-    }
-
-    private void updateHovered() {
-        currentlyHovered = nearbyObjects.ElementAt<HookObject>(0).ContainingObject;
-        if (currentlyHovered != null && currentlyHovered != lastHovered) {
-            // Hovering a new object 
-            onUnhover.Invoke();
-            onHover.Invoke();
-        }
-    }
-
-    void populateGameObjectList() {
-        var allObjects = FindObjectsOfType<GameObject>();
-        foreach (GameObject each in allObjects) {
-            if (interactionLayers == (interactionLayers | (1 << each.layer))) //only works on selectable objects.
+        foreach (HookObject hookObject in nearbyObjects)
+        {
+            if (hookObject.CheckStillExists())
             {
-                nearbyObjects.Add(new HookObject(each));
+                hookObject.SetDistance(trackedObj);
+                newList.Add(hookObject);
             }
         }
+
+        // Reordering all the nearbyobjects by their newly set distance
+        nearbyObjects = newList.OrderBy(w => w.GetDistance()).ToList();
+
+        // now increase or decrease score
+        int increasable = nearbyObjects.Count / 3;
+        for (int i = 0; i < nearbyObjects.Count; i++)
+        {
+            HookObject hookObject = nearbyObjects[i];
+            if (i <= increasable)
+                hookObject.IncreaseScore();
+            else
+                hookObject.DecreaseScore();
+        }
+    }
+
+    private void PopulateGameObjectList()
+    {
+        foreach (GameObject gameObject in FindObjectsOfType<GameObject>())
+        {
+            AddToHookList(gameObject);
+        }
+    }
+
+    private bool AddToHookList(GameObject toAdd)
+    {
+        if(interactionLayers == 1 << toAdd.layer)
+        {
+            nearbyObjects.Add(new HookObject(toAdd));
+            return true;
+        }
+        return false;
     }
 
     // If for example new objects are spaned to the scene the user can access the hook with that object and add that object to the hook with this method
-    public void addNewlySpawnedObjectToHook(GameObject newObject) {
-        nearbyObjects.Add(new HookObject(newObject));
-    }
-
-    private void GrabObject() {
-        if (nearbyObjects.Count > 0) {
-            GameObject objectToSelect = currentlyHovered;
-            if (interactionType == InteractionType.Selection) {
-                // Pure selection
-                selection = objectToSelect;
-            } else {
-                // Manipulation
-                selection = objectToSelect;
-                objectInHand = objectToSelect;
-                objectInHand.transform.position = trackedObj.transform.position;
-
-                var joint = AddFixedJoint();
-                joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
-                joint.connectedBody.useGravity = false; // turn of gravity while grabbing
-            }
-            onSelectObject.Invoke();
-        }
+    public bool AddSpawnedObjectToHook(GameObject newObject)
+    {
+        return AddToHookList(newObject);
     }
 
 
-    private FixedJoint AddFixedJoint() {
+
+    private void GrabObject()
+    {
+        selectedObject.transform.position = trackedObj.position;
+        var joint = AddFixedJoint();
+        joint.connectedBody = selectedObject.GetComponent<Rigidbody>();
+    }
+
+
+    private FixedJoint AddFixedJoint()
+    {
         FixedJoint fx = trackedObj.gameObject.AddComponent<FixedJoint>();
         fx.breakForce = Mathf.Infinity;
         fx.breakTorque = Mathf.Infinity;
         return fx;
     }
 
-    private void ReleaseObject() {
-        if (trackedObj.GetComponent<FixedJoint>()) {
-            trackedObj.GetComponent<FixedJoint>().connectedBody = null;
-            Destroy(trackedObj.GetComponent<FixedJoint>());
-            objectInHand.GetComponent<Rigidbody>().useGravity = true;
+
+
+    public override void ReleaseObject()
+    {
+        if (!selected) return;
+        FixedJoint joint = trackedObj.gameObject.GetComponent<FixedJoint>();
+        if (joint != null)
+        {
+            joint.connectedBody = null;
+            Destroy(joint);
+            selectedObject.GetComponent<Rigidbody>().useGravity = true;
 #if SteamVR_Legacy
-            objectInHand.GetComponent<Rigidbody>().velocity = Controller.velocity;
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = Controller.angularVelocity;
+                objectInHand.GetComponent<Rigidbody>().velocity = Controller.velocity;
+                objectInHand.GetComponent<Rigidbody>().angularVelocity = Controller.angularVelocity;
 #elif SteamVR_2
-            objectInHand.GetComponent<Rigidbody>().velocity = trackedObj.GetVelocity();
-            objectInHand.GetComponent<Rigidbody>().angularVelocity = trackedObj.GetAngularVelocity();
+                objectInHand.GetComponent<Rigidbody>().velocity = trackedObj.GetVelocity();
+                objectInHand.GetComponent<Rigidbody>().angularVelocity = trackedObj.GetAngularVelocity();
 #endif
         }
-        objectInHand = null;
+        onDropObject.Invoke();
+        selected = false;
+        selectedObject = null;
+    }
+
+    public override void SelectObject()
+    {
+        if (selected || !highlighted) return;
+
+        selected = true;
+        selectedObject = highlightedObject;
+
+        switch (interactionType) {
+            case InteractionType.Selection:
+                break;
+
+            case InteractionType.Manipulation_Movement:
+            case InteractionType.Manipulation_Full:
+                GrabObject();
+                break;
+
+            default:
+                break;
+        }
+        onSelectObject.Invoke();
+    }
+
+    protected override void Enable()
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    protected override void Disable()
+    {
+        //throw new System.NotImplementedException();
     }
 }

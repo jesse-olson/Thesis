@@ -18,21 +18,21 @@ public class SimpleHighlightFromARM : MonoBehaviour {
 	}
 
 	void highlight() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
+		if(selectObject.highlightedObject == gameObject) {
 			print("highlight");
 			this.GetComponent<Renderer>().material = highlightMaterial;
 		}		
 	}
 
 	void unHighlight() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
+		if(selectObject.highlightedObject == gameObject) {
 			print("unhighlight");
 			this.GetComponent<Renderer>().material = defaultMaterial;
 		}		
 	}
 
 	void playSelectSound() {
-		if(selectObject.currentlyPointingAt == this.gameObject) {
+		if(selectObject.selectedObject == gameObject) {
 			this.GetComponent<AudioSource>().Play();
 		}	
 	}

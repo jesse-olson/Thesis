@@ -17,116 +17,119 @@
 *  along with this program.If not, see<http://www.gnu.org/licenses/>.
 */
 
+
+// TODO: Need to redo the parenting system. I think that the RigidBody method
+// used by other techniques is the way to go.
 using UnityEngine;
-using UnityEngine.Events;
-using Valve.VR;
 
 public class Raycasting : Technique {
+    private static readonly float RAY_DIST = 100.0f;
 
-    private bool pickedUpObject = false; //ensure only 1 object is picked up at a time
-    public GameObject lastSelectedObject;
-
+    private bool castEnabled;
     private GameObject manipulationIcons;
+
+    public GameObject laserPrefab;
+    private GameObject laser;
+
+    private Transform oldParent;
 
     void Awake()
     {
-        mirroredCube = this.transform.Find("Mirrored Cube").gameObject;
-        InitializeControllers();
-        if (interactionType == InteractionType.Manipulation_Full)
+        FindEventSystem();
+        transform.SetParent(trackedObj.transform);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
+        if (interactionType == InteractionType.Manipulation_UI)
         {
-            this.gameObject.AddComponent<SelectionManipulation>();
-            this.GetComponent<SelectionManipulation>().trackedObj = trackedObj;
-            manipulationIcons = GameObject.Find("Manipulation_Icons");
-            this.GetComponent<SelectionManipulation>().manipulationIcons = manipulationIcons;
+            manipulationIcons    = GameObject.Find("Manipulation_Icons");
+            selectionManipulator = gameObject.AddComponent<SelectionManipulation>();
+            selectionManipulator.trackedObj = trackedObj.gameObject;
+            selectionManipulator.manipulationIcons = manipulationIcons;
         }
 
-    }
-
-    void Start()
-    {
-        laser = Instantiate(laserPrefab);
-        laserTransform = laser.transform;
+        laser = Instantiate(laserPrefab) as GameObject;
+        laser.transform.SetParent(trackedObj.transform);
+        laser.SetActive(true);
     }
 
     void Update()
     {
-        mirroredObject();
-
-        ShowLaser();
-
-        if (Physics.Raycast(trackedObj.transform.position, trackedObj.transform.forward, out RaycastHit hit, 100))
-        {
-            PickupObject(hit.transform.gameObject);
-            ShowLaser(hit);
-        }
+        CastRay();
     }
 
-    private void ShowLaser() {
+    protected override void Enable()
+    {
+        castEnabled = true;
         laser.SetActive(true);
-        mirroredCube.SetActive(true);
     }
 
-    private void ShowLaser(RaycastHit hit) {
-        Vector3 hitPoint = hit.point;
-        mirroredCube.SetActive(false);
-        laser.SetActive(true);
-        laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
-        laserTransform.LookAt(hitPoint);
-        laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y, hit.distance);
+    protected override void Disable()
+    {
+        castEnabled = false;
+        if (selected) ReleaseObject();
+        if (highlighted) HighlightObject(null);
+        laser.SetActive(false);
+    }
+
+    private void CastRay()
+    {
+        if (!castEnabled) return;
+        Ray ray = new Ray(trackedObj.transform.position, trackedObj.transform.forward);
+        bool didHit = Physics.Raycast(ray, out RaycastHit hit, RAY_DIST, interactionLayers);
+
+        GameObject hitObject = didHit ? hit.transform.gameObject : null;
+        float laserDist = didHit ? hit.distance : RAY_DIST;
+
+        laser.transform.localScale = new Vector3(1, 1, laserDist);
+
+        HighlightObject(hitObject);
     }
     
-    public void PickupObject(GameObject obj) {
-        if (interactionLayers != (interactionLayers | (1 << obj.layer))) {
-            // object is wrong layer so return immediately 
-            return;
-        }
-        if(lastSelectedObject != obj) {
-            // is a different object from the currently highlighted so unhover
-            onUnhover.Invoke();
-        }
-        onHover.Invoke();
-        
-        if (trackedObj != null) {
-            if (ControllerEvents() == ControllerState.TRIGGER_DOWN && pickedUpObject == false) {
-                if (interactionType == InteractionType.Selection)
-                {
-                    lastSelectedObject = obj;
-                    objectSelected = true;
-                }
-                else if (interactionType == InteractionType.Manipulation_Movement)
-                {
-                    obj.transform.SetParent(trackedObj.transform);
-                    lastSelectedObject = obj; // Storing the object as an instance variable instead of using the obj parameter fixes glitch of it not properly resetting on TriggerUp
-                    pickedUpObject = true;
-                }
-                else if (interactionType == InteractionType.Manipulation_Full && this.GetComponent<SelectionManipulation>().inManipulationMode == false)
-                {
-                    lastSelectedObject = obj;
-                    objectSelected = true;
-                    this.GetComponent<SelectionManipulation>().selectedObject = obj;
-                    onSelectObject.Invoke();
-                }
-            }
 
-            if (ControllerEvents() == ControllerState.TRIGGER_UP && pickedUpObject == true) {
-                if (interactionType == InteractionType.Manipulation_Movement) {
-                    lastSelectedObject.transform.SetParent(null);
-                    pickedUpObject = false;
-                    onDropObject.Invoke();
-                }
-                objectSelected = false;               
-            }
+    public override void SelectObject() {
+        if (selected || !highlighted) return;
+
+        selected = true;
+        selectedObject = highlightedObject;
+
+        switch (interactionType)
+        {
+            case InteractionType.Manipulation_Movement:
+            case InteractionType.Manipulation_Full:
+                oldParent = selectedObject.transform.parent;
+                selectedObject.transform.SetParent(transform);
+                break;
+
+            case InteractionType.Manipulation_UI:
+                if (!selectionManipulator.inManipulationMode)
+                    selectionManipulator.selectedObject = selectedObject;
+                break;
+
+            default:
+                //Do Nothing
+                break;
         }
+        onSelectObject.Invoke();
     }
 
-    void mirroredObject() {
-        Vector3 controllerPos = trackedObj.transform.forward;
-        float distance_formula_on_vector = controllerPos.magnitude;
-        Vector3 mirroredPos = trackedObj.transform.position;
+    public override void ReleaseObject()
+    {
+        if (!selected) return;
 
-        mirroredPos += (100f / (distance_formula_on_vector)) * controllerPos;
+        switch(interactionType)
+        {
+            case InteractionType.Manipulation_Movement:
+            case InteractionType.Manipulation_Full:
+                selectedObject.transform.SetParent(oldParent);
+                break;
 
-        mirroredCube.transform.position = mirroredPos;
-        mirroredCube.transform.rotation = trackedObj.transform.rotation;
+            default:
+                break;
+        }
+
+        onDropObject.Invoke();
+        selected = false;
+        selectedObject = null;
     }
 }
